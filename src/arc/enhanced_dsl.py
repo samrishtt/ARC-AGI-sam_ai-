@@ -470,6 +470,339 @@ def fill_holes(grid: np.ndarray) -> np.ndarray:
     return np.where(filled & (grid == 0), most_common, grid)
 
 
+# ==================== DIAGONAL OPERATIONS ====================
+
+def diagonal_fill(grid: np.ndarray) -> np.ndarray:
+    """Fill diagonals from non-zero pixels."""
+    result = grid.copy()
+    h, w = grid.shape
+    for r in range(h):
+        for c in range(w):
+            if grid[r, c] > 0:
+                color = grid[r, c]
+                # Fill main diagonal
+                for d in range(1, max(h, w)):
+                    if r + d < h and c + d < w:
+                        result[r + d, c + d] = color
+                    if r - d >= 0 and c - d >= 0:
+                        result[r - d, c - d] = color
+    return result
+
+def anti_diagonal_fill(grid: np.ndarray) -> np.ndarray:
+    """Fill anti-diagonals from non-zero pixels."""
+    result = grid.copy()
+    h, w = grid.shape
+    for r in range(h):
+        for c in range(w):
+            if grid[r, c] > 0:
+                color = grid[r, c]
+                for d in range(1, max(h, w)):
+                    if r + d < h and c - d >= 0:
+                        result[r + d, c - d] = color
+                    if r - d >= 0 and c + d < w:
+                        result[r - d, c + d] = color
+    return result
+
+def extend_lines(grid: np.ndarray) -> np.ndarray:
+    """Extend all lines (horizontal, vertical) to grid boundaries."""
+    result = grid.copy()
+    h, w = grid.shape
+    
+    # Horizontal extension
+    for r in range(h):
+        nonzero = np.where(grid[r] > 0)[0]
+        if len(nonzero) > 0:
+            color = grid[r, nonzero[0]]
+            result[r, :] = color
+    
+    return result
+
+def connect_same_color(grid: np.ndarray) -> np.ndarray:
+    """Connect pixels of same color with lines."""
+    from collections import defaultdict
+    result = grid.copy()
+    h, w = grid.shape
+    
+    # Group positions by color
+    color_positions = defaultdict(list)
+    for r in range(h):
+        for c in range(w):
+            if grid[r, c] > 0:
+                color_positions[grid[r, c]].append((r, c))
+    
+    # Connect each color group
+    for color, positions in color_positions.items():
+        if len(positions) < 2:
+            continue
+        positions.sort()
+        for i in range(len(positions) - 1):
+            r1, c1 = positions[i]
+            r2, c2 = positions[i + 1]
+            # Draw line
+            if r1 == r2:  # Horizontal
+                for c in range(min(c1, c2), max(c1, c2) + 1):
+                    result[r1, c] = color
+            elif c1 == c2:  # Vertical
+                for r in range(min(r1, r2), max(r1, r2) + 1):
+                    result[r, c1] = color
+    
+    return result
+
+
+# ==================== MIRRORING OPERATIONS ====================
+
+def mirror_right(grid: np.ndarray) -> np.ndarray:
+    """Mirror grid to the right (double width)."""
+    return np.hstack([grid, np.fliplr(grid)])
+
+def mirror_left(grid: np.ndarray) -> np.ndarray:
+    """Mirror grid to the left (double width)."""
+    return np.hstack([np.fliplr(grid), grid])
+
+def mirror_down(grid: np.ndarray) -> np.ndarray:
+    """Mirror grid downward (double height)."""
+    return np.vstack([grid, np.flipud(grid)])
+
+def mirror_up(grid: np.ndarray) -> np.ndarray:
+    """Mirror grid upward (double height)."""
+    return np.vstack([np.flipud(grid), grid])
+
+def mirror_4way(grid: np.ndarray) -> np.ndarray:
+    """Create 4-way mirror (quadruple size)."""
+    top = np.hstack([grid, np.fliplr(grid)])
+    return np.vstack([top, np.flipud(top)])
+
+
+# ==================== GRID MANIPULATION ====================
+
+def split_horizontal(grid: np.ndarray) -> np.ndarray:
+    """Take left half of grid."""
+    return grid[:, :grid.shape[1]//2]
+
+def split_vertical(grid: np.ndarray) -> np.ndarray:
+    """Take top half of grid."""
+    return grid[:grid.shape[0]//2, :]
+
+def quarter_top_left(grid: np.ndarray) -> np.ndarray:
+    """Get top-left quarter."""
+    h, w = grid.shape
+    return grid[:h//2, :w//2]
+
+def quarter_top_right(grid: np.ndarray) -> np.ndarray:
+    """Get top-right quarter."""
+    h, w = grid.shape
+    return grid[:h//2, w//2:]
+
+def quarter_bottom_left(grid: np.ndarray) -> np.ndarray:
+    """Get bottom-left quarter."""
+    h, w = grid.shape
+    return grid[h//2:, :w//2]
+
+def quarter_bottom_right(grid: np.ndarray) -> np.ndarray:
+    """Get bottom-right quarter."""
+    h, w = grid.shape
+    return grid[h//2:, w//2:]
+
+def extract_unique_pattern(grid: np.ndarray) -> np.ndarray:
+    """Extract the minimal repeating pattern."""
+    h, w = grid.shape
+    for ph in range(1, h + 1):
+        if h % ph != 0:
+            continue
+        for pw in range(1, w + 1):
+            if w % pw != 0:
+                continue
+            pattern = grid[:ph, :pw]
+            tiled = np.tile(pattern, (h // ph, w // pw))
+            if np.array_equal(tiled, grid):
+                return pattern
+    return grid
+
+def add_border(grid: np.ndarray, color: int = 1) -> np.ndarray:
+    """Add a 1-pixel border around the grid."""
+    h, w = grid.shape
+    result = np.full((h + 2, w + 2), color, dtype=grid.dtype)
+    result[1:-1, 1:-1] = grid
+    return result
+
+def frame_grid(grid: np.ndarray, color: int = 1) -> np.ndarray:
+    """Add a frame (hollow border) around the grid."""
+    h, w = grid.shape
+    result = np.zeros((h + 2, w + 2), dtype=grid.dtype)
+    result[0, :] = color
+    result[-1, :] = color
+    result[:, 0] = color
+    result[:, -1] = color
+    result[1:-1, 1:-1] = grid
+    return result
+
+
+# ==================== OVERLAY OPERATIONS ====================
+
+def overlay_max(grid: np.ndarray) -> np.ndarray:
+    """If grid has pattern, overlay parts taking max color."""
+    return grid  # Base case
+
+def compress_horizontal(grid: np.ndarray) -> np.ndarray:
+    """Compress horizontally by OR-ing columns."""
+    h, w = grid.shape
+    if w < 2:
+        return grid
+    mid = w // 2
+    left = grid[:, :mid]
+    right = grid[:, mid:mid+left.shape[1]]
+    return np.maximum(left, right)
+
+def compress_vertical(grid: np.ndarray) -> np.ndarray:
+    """Compress vertically by OR-ing rows."""
+    h, w = grid.shape
+    if h < 2:
+        return grid
+    mid = h // 2
+    top = grid[:mid, :]
+    bottom = grid[mid:mid+top.shape[0], :]
+    return np.maximum(top, bottom)
+
+
+# ==================== SORTING/ORDERING ====================
+
+def sort_rows_by_sum(grid: np.ndarray) -> np.ndarray:
+    """Sort rows by sum of pixel values."""
+    row_sums = np.sum(grid, axis=1)
+    sorted_indices = np.argsort(row_sums)[::-1]
+    return grid[sorted_indices]
+
+def sort_cols_by_sum(grid: np.ndarray) -> np.ndarray:
+    """Sort columns by sum of pixel values."""
+    col_sums = np.sum(grid, axis=0)
+    sorted_indices = np.argsort(col_sums)[::-1]
+    return grid[:, sorted_indices]
+
+def reverse_rows(grid: np.ndarray) -> np.ndarray:
+    """Reverse row order."""
+    return grid[::-1, :]
+
+def reverse_cols(grid: np.ndarray) -> np.ndarray:
+    """Reverse column order."""
+    return grid[:, ::-1]
+
+
+# ==================== SPECIAL OPERATIONS ====================
+
+def identity(grid: np.ndarray) -> np.ndarray:
+    """Return grid unchanged."""
+    return grid.copy()
+
+def clear_grid(grid: np.ndarray) -> np.ndarray:
+    """Return empty grid of same size."""
+    return np.zeros_like(grid)
+
+def sample_to_1x1(grid: np.ndarray) -> np.ndarray:
+    """Sample grid to 1x1 (most common non-zero color)."""
+    nonzero = grid[grid > 0]
+    if len(nonzero) == 0:
+        return np.array([[0]])
+    most_common = np.bincount(nonzero).argmax()
+    return np.array([[most_common]])
+
+def count_nonzero_to_grid(grid: np.ndarray) -> np.ndarray:
+    """Return 1x1 grid with count of non-zero pixels."""
+    return np.array([[np.count_nonzero(grid)]])
+
+def unique_colors_count(grid: np.ndarray) -> np.ndarray:
+    """Return 1x1 grid with count of unique colors."""
+    return np.array([[len(np.unique(grid[grid > 0]))]])
+
+def most_common_color(grid: np.ndarray) -> np.ndarray:
+    """Return 1x1 grid with most common non-zero color."""
+    nonzero = grid[grid > 0]
+    if len(nonzero) == 0:
+        return np.array([[0]])
+    return np.array([[np.bincount(nonzero).argmax()]])
+
+def min_color(grid: np.ndarray) -> np.ndarray:
+    """Set all non-zero to minimum color value."""
+    if np.any(grid > 0):
+        min_c = np.min(grid[grid > 0])
+        return np.where(grid > 0, min_c, 0)
+    return grid
+
+def max_color(grid: np.ndarray) -> np.ndarray:
+    """Set all non-zero to maximum color value."""
+    if np.any(grid > 0):
+        max_c = np.max(grid)
+        return np.where(grid > 0, max_c, 0)
+    return grid
+
+
+# ==================== REGION OPERATIONS ====================
+
+def top_row(grid: np.ndarray) -> np.ndarray:
+    """Extract top row."""
+    return grid[0:1, :]
+
+def bottom_row(grid: np.ndarray) -> np.ndarray:
+    """Extract bottom row."""
+    return grid[-1:, :]
+
+def left_col(grid: np.ndarray) -> np.ndarray:
+    """Extract left column."""
+    return grid[:, 0:1]
+
+def right_col(grid: np.ndarray) -> np.ndarray:
+    """Extract right column."""
+    return grid[:, -1:]
+
+def main_diagonal(grid: np.ndarray) -> np.ndarray:
+    """Extract main diagonal as column."""
+    diag = np.diag(grid)
+    return diag.reshape(-1, 1)
+
+def anti_diagonal(grid: np.ndarray) -> np.ndarray:
+    """Extract anti-diagonal as column."""
+    diag = np.diag(np.fliplr(grid))
+    return diag.reshape(-1, 1)
+
+
+# ==================== COLOR OPERATIONS EXTENDED ====================
+
+def shift_colors_up(grid: np.ndarray) -> np.ndarray:
+    """Shift all colors up by 1 (1->2, 2->3, etc)."""
+    result = grid.copy()
+    result[grid > 0] = grid[grid > 0] + 1
+    result[result > 9] = 9
+    return result
+
+def shift_colors_down(grid: np.ndarray) -> np.ndarray:
+    """Shift all colors down by 1."""
+    result = grid.copy()
+    result[grid > 1] = grid[grid > 1] - 1
+    return result
+
+def color_to_1(grid: np.ndarray) -> np.ndarray:
+    """Map all non-zero to color 1."""
+    return np.where(grid > 0, 1, 0)
+
+def color_to_2(grid: np.ndarray) -> np.ndarray:
+    """Map all non-zero to color 2."""
+    return np.where(grid > 0, 2, 0)
+
+def color_to_3(grid: np.ndarray) -> np.ndarray:
+    """Map all non-zero to color 3."""
+    return np.where(grid > 0, 3, 0)
+
+def swap_background_foreground(grid: np.ndarray) -> np.ndarray:
+    """Swap 0 with most common non-zero color."""
+    if not np.any(grid > 0):
+        return grid
+    nonzero = grid[grid > 0]
+    most_common = np.bincount(nonzero).argmax()
+    result = grid.copy()
+    result[grid == 0] = most_common
+    result[grid == most_common] = 0
+    return result
+
+
 # ==================== ENHANCED DSL REGISTRY ====================
 
 enhanced_dsl_registry = {
@@ -504,6 +837,14 @@ enhanced_dsl_registry = {
     "invert": invert_binary,
     "normalize": normalize_colors,
     "color_each": color_each_object,
+    "color_to_1": color_to_1,
+    "color_to_2": color_to_2,
+    "color_to_3": color_to_3,
+    "shift_colors_up": shift_colors_up,
+    "shift_colors_down": shift_colors_down,
+    "min_color": min_color,
+    "max_color": max_color,
+    "swap_bg_fg": swap_background_foreground,
     
     # Object
     "keep_largest": keep_largest_object,
@@ -521,14 +862,57 @@ enhanced_dsl_registry = {
     "fill_column": fill_column,
     "fill_down": fill_down_from_top,
     "fill_up": fill_up_from_bottom,
+    "diagonal_fill": diagonal_fill,
+    "anti_diagonal_fill": anti_diagonal_fill,
+    "extend_lines": extend_lines,
+    "connect_same_color": connect_same_color,
     
-    # Symmetry
+    # Symmetry/Mirroring
     "sym_h": make_symmetric_h,
     "sym_v": make_symmetric_v,
+    "mirror_right": mirror_right,
+    "mirror_left": mirror_left,
+    "mirror_down": mirror_down,
+    "mirror_up": mirror_up,
+    "mirror_4way": mirror_4way,
     
     # Morphological
     "dilate": dilate,
     "erode": erode,
     "outline": outline,
     "fill_holes": fill_holes,
+    
+    # Grid manipulation
+    "split_h": split_horizontal,
+    "split_v": split_vertical,
+    "quarter_tl": quarter_top_left,
+    "quarter_tr": quarter_top_right,
+    "quarter_bl": quarter_bottom_left,
+    "quarter_br": quarter_bottom_right,
+    "extract_pattern": extract_unique_pattern,
+    "add_border": add_border,
+    "frame": frame_grid,
+    "compress_h": compress_horizontal,
+    "compress_v": compress_vertical,
+    
+    # Sorting
+    "sort_rows": sort_rows_by_sum,
+    "sort_cols": sort_cols_by_sum,
+    "reverse_rows": reverse_rows,
+    "reverse_cols": reverse_cols,
+    
+    # Region extraction
+    "top_row": top_row,
+    "bottom_row": bottom_row,
+    "left_col": left_col,
+    "right_col": right_col,
+    "main_diag": main_diagonal,
+    "anti_diag": anti_diagonal,
+    
+    # Special
+    "identity": identity,
+    "clear": clear_grid,
+    "sample_1x1": sample_to_1x1,
+    "count_to_grid": count_nonzero_to_grid,
+    "most_common": most_common_color,
 }
