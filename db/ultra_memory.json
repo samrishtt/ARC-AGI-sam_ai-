@@ -1,0 +1,131 @@
+{
+  "solutions": {
+    "c8853cd7bfff08c6": {
+      "task_id": "08ed6ac7",
+      "strategy": "analogical",
+      "transform_chain": [
+        "color_each_object"
+      ],
+      "confidence": 0.75
+    },
+    "7928eca4dea45154": {
+      "task_id": "3c9b0459",
+      "strategy": "direct_pattern",
+      "transform_chain": [
+        "rotate_180"
+      ],
+      "confidence": 0.95
+    },
+    "cf6f465bb57a74ce": {
+      "task_id": "1cf80156",
+      "strategy": "direct_pattern",
+      "transform_chain": [
+        "crop_to_content"
+      ],
+      "confidence": 0.95
+    },
+    "4d1901e824464047": {
+      "task_id": "1e0a9b12",
+      "strategy": "advanced_pattern",
+      "transform_chain": [
+        "detect_gravity"
+      ],
+      "confidence": 0.85
+    },
+    "5174cfcdaf42e742": {
+      "task_id": "1f85a75f",
+      "strategy": "composition_2",
+      "transform_chain": [
+        "keep_largest",
+        "crop_to_content"
+      ],
+      "confidence": 0.8
+    },
+    "659c2500b2f3af63": {
+      "task_id": "25ff71a9",
+      "strategy": "geometric",
+      "transform_chain": [
+        "roll_down"
+      ],
+      "confidence": 0.95
+    },
+    "9105794f26b4fd51": {
+      "task_id": "3906de3d",
+      "strategy": "advanced_pattern",
+      "transform_chain": [
+        "detect_gravity"
+      ],
+      "confidence": 0.85
+    },
+    "e474608b7cbadb32": {
+      "task_id": "4347f46a",
+      "strategy": "mask_overlay",
+      "transform_chain": [
+        "outline"
+      ],
+      "confidence": 0.85
+    },
+    "7ce69719c329f3ab": {
+      "task_id": "22168020",
+      "strategy": "advanced_pattern",
+      "transform_chain": [
+        "detect_line_fill"
+      ],
+      "confidence": 0.85
+    },
+    "1c4871251a252cf4": {
+      "task_id": "28bf18c6",
+      "strategy": "advanced_pattern",
+      "transform_chain": [
+        "detect_block_copy"
+      ],
+      "confidence": 0.85
+    },
+    "d9dab95d17a9fea7": {
+      "task_id": "3af2c5a8",
+      "strategy": "advanced_pattern",
+      "transform_chain": [
+        "detect_reflection_completion"
+      ],
+      "confidence": 0.85
+    }
+  },
+  "strategy_success": {
+    "object_filter": {
+      "success": 3,
+      "total": 3
+    },
+    "color_transform": {
+      "success": 5,
+      "total": 5
+    },
+    "direct_pattern": {
+      "success": 8,
+      "total": 8
+    },
+    "program_synthesis": {
+      "success": 3,
+      "total": 3
+    },
+    "composition_2": {
+      "success": 4,
+      "total": 4
+    },
+    "geometric": {
+      "success": 8,
+      "total": 8
+    },
+    "mask_overlay": {
+      "success": 4,
+      "total": 4
+    },
+    "advanced_pattern": {
+      "success": 15,
+      "total": 15
+    },
+    "analogical": {
+      "success": 1,
+      "total": 1
+    }
+  }
+}
