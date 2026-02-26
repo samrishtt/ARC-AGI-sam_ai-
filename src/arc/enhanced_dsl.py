@@ -637,6 +637,15 @@ def frame_grid(grid: np.ndarray, color: int = 1) -> np.ndarray:
     return result
 
 
+
+# ==================== FRACTAL OPERATIONS ====================
+
+def fractal_copy(grid: np.ndarray) -> np.ndarray:
+    """Replace every non-zero pixel with the grid itself."""
+    mask = (grid > 0).astype(int)
+    return np.kron(mask, grid)
+
+
 # ==================== OVERLAY OPERATIONS ====================
 
 def overlay_max(grid: np.ndarray) -> np.ndarray:

@@ -28,6 +28,23 @@ def analyze(task_id):
     # Try Dreamer
     dreamer = Dreamer(beam_width=100, max_depth=5)
     
+    # Test Hypothesis: Fractal Copy
+    console.print("\n[bold]Testing Hypothesis: Fractal Copy[/bold]")
+    correct = True
+    for inp, out in train:
+        # H1: np.kron((inp>0), inp)
+        mask = (inp > 0).astype(int)
+        pred = np.kron(mask, inp)
+        if not np.array_equal(pred, out):
+            console.print(f"Failed on example. Pred shape {pred.shape}, Out shape {out.shape}")
+            correct = False
+            break
+    
+    if correct:
+        console.print("[green]Hypothesis Correct! It is fractal copy.[/green]")
+    else:
+        console.print("[red]Hypothesis Incorrect.[/red]")
+
     console.print("\n[bold]Running Dreamer...[/bold]")
     result = dreamer.solve(train, timeout_ms=10000) # Give it 10s
     

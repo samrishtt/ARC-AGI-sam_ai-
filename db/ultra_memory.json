@@ -9,12 +9,12 @@
       "confidence": 0.75
     },
     "7928eca4dea45154": {
-      "task_id": "3c9b0459",
-      "strategy": "direct_pattern",
+      "task_id": "0d3d703e",
+      "strategy": "color_transform",
       "transform_chain": [
-        "rotate_180"
+        "color_map"
       ],
-      "confidence": 0.95
+      "confidence": 0.9
     },
     "cf6f465bb57a74ce": {
       "task_id": "1cf80156",
@@ -88,6 +88,14 @@
         "detect_reflection_completion"
       ],
       "confidence": 0.85
+    },
+    "e0f7fa5e580f177d": {
+      "task_id": "007bbfb7",
+      "strategy": "program_synthesis",
+      "transform_chain": [
+        "fractal_copy"
+      ],
+      "confidence": 1.0
     }
   },
   "strategy_success": {
@@ -96,36 +104,36 @@
       "total": 3
     },
     "color_transform": {
-      "success": 5,
-      "total": 5
+      "success": 6,
+      "total": 6
     },
     "direct_pattern": {
-      "success": 8,
-      "total": 8
+      "success": 9,
+      "total": 9
     },
     "program_synthesis": {
-      "success": 3,
-      "total": 3
-    },
-    "composition_2": {
       "success": 4,
       "total": 4
     },
+    "composition_2": {
+      "success": 5,
+      "total": 5
+    },
     "geometric": {
-      "success": 8,
-      "total": 8
+      "success": 10,
+      "total": 10
     },
     "mask_overlay": {
       "success": 4,
       "total": 4
     },
     "advanced_pattern": {
-      "success": 15,
-      "total": 15
+      "success": 18,
+      "total": 18
     },
     "analogical": {
-      "success": 1,
-      "total": 1
+      "success": 2,
+      "total": 2
     }
   }
 }

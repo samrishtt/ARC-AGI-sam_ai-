@@ -15,6 +15,9 @@ class PrimitiveDSL:
     def get_all_primitives() -> Dict[str, Callable]:
         """Get all available primitives as a dictionary."""
         return {
+            # === FRACTAL ===
+            'fractal_copy': fractal_copy,
+            
             # === GEOMETRIC ===
             'identity': identity,
             'rotate_cw': rotate_cw,
