@@ -17,7 +17,7 @@ def run_demo():
 
     # Priority: Anthropic (paid, best) > Groq (free, high quota) > Gemini (free, daily quota) > OpenAI (paid) > Mock (offline)
     if os.getenv("ANTHROPIC_API_KEY"):
-        print("Using Anthropic Claude 3.7 Sonnet (PAID tier - BEST)\n")
+        print("Using Anthropic Claude 4.6 Sonnet (PAID tier - BEST)\n")
         llm = AnthropicProvider()
     elif os.getenv("GROQ_API_KEY"):
         print("Using Groq Llama 3.1 8B (FREE tier)\n")

@@ -39,7 +39,7 @@ def evaluate_csa(limit: int = 5):
     # Boot up LLM (same priority as demo)
     if os.getenv("ANTHROPIC_API_KEY"):
         llm = AnthropicProvider()
-        print("> Using Provider: Anthropic (Claude 3.7 Sonnet)")
+        print("> Using Provider: Anthropic (Claude 4.6 Sonnet)")
     elif os.getenv("GROQ_API_KEY"):
         llm = GroqProvider()
         print("> Using Provider: Groq (Llama 3.1 8B)")

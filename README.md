@@ -3,7 +3,7 @@
 
 [![Python](https://img.shields.io/badge/Python-3.9+-blue)](https://python.org)
 [![Architecture](https://img.shields.io/badge/Architecture-Neuro%20Symbolic-purple)](#)
-[![LLM Support](https://img.shields.io/badge/LLMs-Claude_3.7_|_GPT--4o_|_Llama_3-green)](#)
+[![LLM Support](https://img.shields.io/badge/LLMs-Claude_4.6_|_GPT--4o_|_Llama_3-green)](#)
 
 ## 🚀 Overview
 The Cognitive Synthesis Architecture (CSA) is a highly advanced research framework designed to solve the **Abstraction and Reasoning Corpus (ARC-AGI)**. 
@@ -12,7 +12,7 @@ Moving far beyond simple text-based LLM generation, CSA acts as a **Hybrid Neuro
 
 ## 🤯 Maximizing AGI Potential (New Features)
 
-- **Claude 3.7 Sonnet Integration:** Native support for the world's leading coding/reasoning model, maximizing success rates on complex geometric transformations.
+- **Claude 4.6 Sonnet Integration:** Native support for the world's leading coding/reasoning model, maximizing success rates on complex geometric transformations.
 - **Advanced DSL Primitives (`src/dsl/primitives.py`):** The LLM is armed with a powerful Domain-Specific Language toolkit (Rotations, Flips, Flood Fills, Bresenham Line Drawing, Bounding Box Extraction). It writes 10x less code and achieves vastly higher accuracy.
 - **Iterative Reflection Loop:** If the LLM's generated code fails an ARC training pair, the execution traceback is fed *back* to the LLM to recursively learn and self-correct up to 3 times per task.
 - **Advanced Vision Parser (`src/csa/vision.py`):** Gives the LLM genuine spatial intelligence by analyzing objects for properties like `is_square`, `is_symmetric_v`, and extracting color masses using `scipy` connected-component clustering.
@@ -51,7 +51,7 @@ python demo_csa.py
 ```
 
 ### 2. Run the ARC Evaluator (Full Power)
-To unleash Claude 3.7 (or GPT-4o) on real ARC puzzles and execute the Recursive Testing Sandbox:
+To unleash Claude 4.6 (or GPT-4o) on real ARC puzzles and execute the Recursive Testing Sandbox:
 ```bash
 export PYTHONPATH="."
 python src/eval/evaluate.py
