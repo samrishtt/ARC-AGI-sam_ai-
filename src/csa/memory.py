@@ -22,6 +22,7 @@ class WorkingMemory:
         self.context: str = ""
         self.steps: List[MemoryStep] = []
         self.variables: Dict[str, Any] = {}
+        self.observations: Dict[int, List[str]] = {}
 
     def set_context(self, task_description: str):
         self.context = task_description
@@ -31,6 +32,20 @@ class WorkingMemory:
 
     def set_variable(self, key: str, value: Any):
         self.variables[key] = value
+
+    def add_observation(self, pair_index: int, note: str):
+        if pair_index not in self.observations:
+            self.observations[pair_index] = []
+        self.observations[pair_index].append(note)
+
+    def get_all_observations(self) -> Dict[int, List[str]]:
+        return self.observations
+
+    def clear(self):
+        self.context = ""
+        self.steps = []
+        self.variables = {}
+        self.observations = {}
 
     def get_summary(self) -> str:
         summary = f"Task Context: {self.context}\n"

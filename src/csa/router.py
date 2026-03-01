@@ -41,24 +41,38 @@ You MUST respond with RAW JSON matching this exact schema:
         """
         Takes the user input, queries the LLM for classification, and returns a verified Pydantic model.
         """
-        response = self.llm.generate(
-            system_prompt=self.system_prompt,
-            user_prompt=user_input
-        )
-        
-        # Clean the response in case the LLM wrapped it in markdown code blocks
-        raw_content = response.content.strip()
-        if raw_content.startswith("```json"):
-            raw_content = raw_content[7:]
-        if raw_content.startswith("```"):
-            raw_content = raw_content[3:]
-        if raw_content.endswith("```"):
-            raw_content = raw_content[:-3]
+        for _ in range(2):
+            response = self.llm.generate(
+                system_prompt=self.system_prompt,
+                user_prompt=user_input
+            )
             
-        raw_content = raw_content.strip()
-        
-        # Standard JSON parsing
-        decision_dict = json.loads(raw_content)
-        
-        # Pydantic will automatically validate that the fields match the required enums!
-        return RouteDecision(**decision_dict)
+            # Clean the response in case the LLM wrapped it in markdown code blocks
+            raw_content = response.content.strip()
+            if raw_content.startswith("```json"):
+                raw_content = raw_content[7:]
+            if raw_content.startswith("```"):
+                raw_content = raw_content[3:]
+            if raw_content.endswith("```"):
+                raw_content = raw_content[:-3]
+                
+            raw_content = raw_content.strip()
+            
+            # Debugging the LLM output:
+            if raw_content.startswith("Error:"):
+                print(f"[IntentRouter] LLM API Error encountered:\n{response.content}")
+                
+            # Standard JSON parsing
+            try:
+                decision_dict = json.loads(raw_content)
+                return RouteDecision(**decision_dict)
+            except json.JSONDecodeError as e:
+                print(f"\n[IntentRouter] Warn! Failed to parse JSON. Raw LLM content was:\n---\n{raw_content}\n---\n")
+                
+        # Default fallback after 1 retry
+        return RouteDecision(
+            domain=TaskDomain.CONVERSATIONAL,
+            complexity=TaskComplexity.LOW,
+            reasoning="parse failed",
+            requires_tools=False
+        )
