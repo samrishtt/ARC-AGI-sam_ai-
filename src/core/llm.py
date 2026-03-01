@@ -79,7 +79,7 @@ class GroqProvider(LLMProvider):
 
 class AnthropicProvider(LLMProvider):
     """Paid-tier Anthropic provider for Claude 4.6 Sonnet."""
-    def __init__(self, model: str = "claude-4-6-sonnet-latest"):
+    def __init__(self, model: str = "claude-sonnet-4-6"):
         import anthropic
         self.client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
         self.model = model

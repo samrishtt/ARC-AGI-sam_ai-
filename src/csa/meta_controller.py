@@ -42,7 +42,7 @@ class MetaController:
         """
         The main entry point for a general task.
         """
-        print(f"\n[Meta-Controller] Received Task: '{user_input[:100]}...'")
+        print(f"\n[Meta-Controller] Received Task: '{str(user_input)[:100]}...'")
         
         # Step 1: Route the Intent
         # Truncate input severely for the router to save tokens on huge ARC grids

@@ -66,8 +66,8 @@ def evaluate_csa(limit: int = 5):
         print(f"\n[{i+1}/{total_tasks}] Currently processing task: {task['filename']}")
         
         try:
-            # We must serialize the dict to a string because LLM prompt layers expect strings
-            result = controller.process_task(json.dumps(task))
+            # We pass the dict directly 
+            result = controller.process_task(task)
             
             # The coding handler emits "Code validated against training pairs!" if successful,
             # and then also needs to print the test grid answer correctly.

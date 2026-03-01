@@ -79,8 +79,8 @@ class ProgramSearch:
             examples: List of (input, output) pairs
             max_iterations: Maximum iterations before giving up (default 10000)
         """
-        inputs = [ex[0] for ex in examples]
-        targets = [ex[1] for ex in examples]
+        inputs = [np.array(ex[0]) for ex in examples]
+        targets = [np.array(ex[1]) for ex in examples]
         
         start_h = self.heuristic(inputs, targets)
         counter = 0
@@ -113,7 +113,7 @@ class ProgramSearch:
                     new_grids = []
                     valid_op = True
                     for grid in current_grids:
-                        res = func(grid)
+                        res = np.array(func(grid.tolist()))
                         if res is None: # Should not happen with valid primitives
                             valid_op = False
                             break

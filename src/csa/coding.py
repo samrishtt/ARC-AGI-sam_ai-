@@ -1,6 +1,7 @@
 import subprocess
 import os
 import tempfile
+import json
 from typing import Tuple, Dict, Any, List
 
 from src.core.llm import LLMProvider
@@ -155,9 +156,16 @@ class CodingHandler:
         memory.set_context("Visual-Spatial Transform Code Generation")
 
         max_attempts = 3
+        # Show the LLM the raw training pairs so it can observe the pattern directly
+        pairs_for_prompt = [
+            {"input": inp, "output": out}
+            for inp, out in training_pairs[:3]  # cap at 3 pairs to avoid token overflow
+        ]
         current_prompt = (
-            "Based on the observed transformation rules in the training pairs, "
-            "write the `transform(grid)` function to solve the task."
+            f"Here are the ARC training pairs showing the transformation:\n\n"
+            f"{json.dumps(pairs_for_prompt, separators=(',', ':'))}\n\n"
+            f"Observed hypothesis from pattern analysis:\n{memory.get_summary()}\n\n"
+            f"Write the `transform(grid)` function that correctly maps every input to its output."
         )
 
         for attempt in range(max_attempts):

@@ -123,23 +123,21 @@ def draw_line(grid: List[List[int]], r1: int, c1: int, r2: int, c2: int, color: 
 
 def flood_fill(grid: List[List[int]], r: int, c: int, replacement_color: int) -> List[List[int]]:
     """Fills a contiguous region of the same color starting at (r, c)."""
+    from collections import deque
     np_grid = np.array(grid)
     if not (0 <= r < np_grid.shape[0] and 0 <= c < np_grid.shape[1]):
         return np_grid.tolist()
-        
     target_color = np_grid[r, c]
     if target_color == replacement_color:
         return np_grid.tolist()
-        
-    queue = [(r, c)]
+    queue = deque([(r, c)])
     while queue:
-        curr_r, curr_c = queue.pop(0)
+        curr_r, curr_c = queue.popleft()
         if np_grid[curr_r, curr_c] == target_color:
             np_grid[curr_r, curr_c] = replacement_color
             for nr, nc in [(curr_r-1, curr_c), (curr_r+1, curr_c), (curr_r, curr_c-1), (curr_r, curr_c+1)]:
                 if 0 <= nr < np_grid.shape[0] and 0 <= nc < np_grid.shape[1]:
                     queue.append((nr, nc))
-                    
     return np_grid.tolist()
 
 def get_bounding_boxes(grid: List[List[int]], bg_color: int = 0) -> List[dict]:
@@ -158,3 +156,12 @@ def get_bounding_boxes(grid: List[List[int]], bg_color: int = 0) -> List[dict]:
             left, right = slc[1].start, slc[1].stop - 1
             boxes.append({"top": top, "bottom": bottom, "left": left, "right": right, "color": int(np.median(np_grid[obj_mask]))})
     return boxes
+
+# Registry of single-argument primitives usable by the A* searcher
+dsl_registry = {
+    "rotate_cw":       rotate_cw,
+    "rotate_ccw":      rotate_ccw,
+    "flip_horizontal": flip_horizontal,
+    "flip_vertical":   flip_vertical,
+    "crop_to_content": crop_to_content,
+}

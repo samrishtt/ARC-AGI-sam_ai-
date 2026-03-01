@@ -1,3 +1,5 @@
+# NOTE: This file is legacy/unused. The active pipeline uses MetaController in src/csa/meta_controller.py
+# Do not import this module — dependencies (tools.base, tools.sandbox, memory.store) are deprecated.
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
 import time

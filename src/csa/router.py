@@ -30,10 +30,10 @@ Here is the complexity scale:
 
 You MUST respond with RAW JSON matching this exact schema:
 {
-    "domain": "...", # Must be one of the domains listed above
-    "complexity": "...", # Must be low, medium, or high
-    "reasoning": "...", # Short sentence explaining why you chose this
-    "requires_tools": bool # true if it needs python execution, math tools, etc., false otherwise
+    "domain": "conversational", 
+    "complexity": "low", 
+    "reasoning": "explain why you chose this domain", 
+    "requires_tools": true or false (boolean, no quotes)
 }
 """
 
