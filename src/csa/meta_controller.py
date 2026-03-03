@@ -250,9 +250,9 @@ class MetaController:
         Asks the LLM to describe the transformation rule observed
         across UP TO 2 training pairs before attempting code generation.
         """
-        # Compress data to avoid TPM limits limits (max 2 pairs, compressed JSON)
+        # Claude has a massive context window; we can feed it all the pairs.
         compressed_data = {
-            "pairs": parsed_data.get("pairs", [])[:2]
+            "pairs": parsed_data.get("pairs", [])
         }
         
         system_prompt = (
@@ -263,7 +263,7 @@ class MetaController:
             "and what stays the same."
         )
         user_prompt = (
-            f"Here are the parsed symbolic graphs for up to 2 training pairs:\n\n"
+            f"Here are the parsed symbolic graphs for ALL training pairs:\n\n"
             f"{json.dumps(compressed_data, separators=(',', ':'))}\n\n"
             f"Observations from memory:\n{json.dumps(self.memory.get_all_observations())}\n\n"
             f"Describe the transformation rule in one paragraph."

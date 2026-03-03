@@ -159,10 +159,10 @@ class CodingHandler:
         # Show the LLM the raw training pairs so it can observe the pattern directly
         pairs_for_prompt = [
             {"input": inp, "output": out}
-            for inp, out in training_pairs[:3]  # cap at 3 pairs to avoid token overflow
+            for inp, out in training_pairs  # Provide ALL pairs to Claude for maximum accuracy
         ]
         current_prompt = (
-            f"Here are the ARC training pairs showing the transformation:\n\n"
+            f"Here are ALL the ARC training pairs showing the transformation:\n\n"
             f"{json.dumps(pairs_for_prompt, separators=(',', ':'))}\n\n"
             f"Observed hypothesis from pattern analysis:\n{memory.get_summary()}\n\n"
             f"Write the `transform(grid)` function that correctly maps every input to its output."
