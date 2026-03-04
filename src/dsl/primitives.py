@@ -131,12 +131,15 @@ def flood_fill(grid: List[List[int]], r: int, c: int, replacement_color: int) ->
     if target_color == replacement_color:
         return np_grid.tolist()
     queue = deque([(r, c)])
+    visited = set()
+    visited.add((r, c))
     while queue:
         curr_r, curr_c = queue.popleft()
         if np_grid[curr_r, curr_c] == target_color:
             np_grid[curr_r, curr_c] = replacement_color
             for nr, nc in [(curr_r-1, curr_c), (curr_r+1, curr_c), (curr_r, curr_c-1), (curr_r, curr_c+1)]:
-                if 0 <= nr < np_grid.shape[0] and 0 <= nc < np_grid.shape[1]:
+                if 0 <= nr < np_grid.shape[0] and 0 <= nc < np_grid.shape[1] and (nr, nc) not in visited:
+                    visited.add((nr, nc))
                     queue.append((nr, nc))
     return np_grid.tolist()
 

@@ -26,14 +26,19 @@ def load_data(data_dir: str, limit: int = None) -> List[Dict]:
             tasks.append(data)
     return tasks
 
-def evaluate_csa(limit: int = 5):
+def evaluate_csa(limit: int = 50):
     """
     Runs the MetaController on a subset of the ARC training dataset 
     and measures its accuracy in finding a solution that passes the test grid.
+    
+    Cost estimate (Claude Sonnet 4.6 @ ₹92.1/USD):
+      ~₹7.73 per task → 50 tasks ≈ ₹386 (safely under ₹500)
     """
+    estimated_cost_inr = limit * 7.73
     print("=" * 60)
     print("Cognitive Synthesis Architecture - Evaluator")
     print(f"Running evaluation on {limit} tasks.")
+    print(f"Estimated cost: ~₹{estimated_cost_inr:.0f} (budget: ₹500)")
     print("=" * 60)
 
     # Boot up LLM (same priority as demo)
@@ -66,8 +71,8 @@ def evaluate_csa(limit: int = 5):
         print(f"\n[{i+1}/{total_tasks}] Currently processing task: {task['filename']}")
         
         try:
-            # We pass the dict directly 
-            result = controller.process_task(task)
+            # We pass the dict directly with router bypass (known ARC data)
+            result = controller.process_task(task, bypass_router=True)
             
             # The coding handler emits "Code validated against training pairs!" if successful,
             # and then also needs to print the test grid answer correctly.
@@ -110,4 +115,4 @@ def evaluate_csa(limit: int = 5):
     print("=" * 60)
 
 if __name__ == "__main__":
-    evaluate_csa(limit=2)
+    evaluate_csa(limit=50)

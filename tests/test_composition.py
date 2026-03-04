@@ -6,7 +6,7 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from src.core.agent import Agent
-from src.dsl.primitives import rotate_cw, reflect_horizontal
+from src.dsl.primitives import rotate_cw, flip_horizontal
 
 def test_composition_search():
     """
@@ -21,10 +21,10 @@ def test_composition_search():
     # Result: [[1, 3], [2, 4]]
     
     intermediate = rotate_cw(input_A)
-    expected_A = reflect_horizontal(intermediate)
+    expected_A = flip_horizontal(intermediate)
     
     agent = Agent()
     solution = agent.solve_task(input_A, expected_A)
     
-    assert "reflect_horizontal" in solution
+    assert "flip_horizontal" in solution
     assert "rotate_cw" in solution

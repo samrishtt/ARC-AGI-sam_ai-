@@ -38,19 +38,35 @@ class MetaController:
         # FIX #2: Memory persists across calls instead of being recreated per task
         self.memory = WorkingMemory()
         
-    def process_task(self, user_input: str) -> Dict[str, Any]:
+    def process_task(self, user_input: str, bypass_router: bool = False) -> Dict[str, Any]:
         """
         The main entry point for a general task.
+        
+        Args:
+            user_input: The task string or dict.
+            bypass_router: If True, skip the LLM-based router and go straight
+                           to visual_spatial pipeline. Saves one API call per task
+                           when running the ARC evaluator on known-ARC data.
         """
         print(f"\n[Meta-Controller] Received Task: '{str(user_input)[:100]}...'")
         
-        # Step 1: Route the Intent
-        # Truncate input severely for the router to save tokens on huge ARC grids
-        router_input = str(user_input)[:1000] if len(str(user_input)) > 1000 else str(user_input)
-        if "train" in router_input and "test" in router_input:
-            router_input = "Determine domain for this ARC JSON grid matrix puzzle."
+        if bypass_router:
+            # Skip the LLM router call entirely — saves tokens + latency
+            decision = RouteDecision(
+                domain=TaskDomain.VISUAL_SPATIAL,
+                complexity=TaskComplexity.HIGH,
+                reasoning="Router bypassed — task is known ARC-AGI data.",
+                requires_tools=True
+            )
+            print(f"[Meta-Controller] Router BYPASSED — direct to visual_spatial pipeline.")
+        else:
+            # Step 1: Route the Intent
+            # Truncate input severely for the router to save tokens on huge ARC grids
+            router_input = str(user_input)[:1000] if len(str(user_input)) > 1000 else str(user_input)
+            if "train" in router_input and "test" in router_input:
+                router_input = "Determine domain for this ARC JSON grid matrix puzzle."
 
-        decision: RouteDecision = self.router.route(router_input)
+            decision: RouteDecision = self.router.route(router_input)
         
         print(f"[Meta-Controller] Decision: Domain={decision.domain.value}, "
               f"Complexity={decision.complexity.value}")
@@ -151,7 +167,7 @@ class MetaController:
                 self.memory.add_observation(idx, f"In dims: {changes['input_dimensions']}, Out dims: {changes['output_dimensions']}")
 
             # Step 4: Hypothesis formation — ask the LLM to describe the rule
-            hypothesis = self._form_hypothesis(parsed_data)
+            hypothesis = self._form_hypothesis(parsed_data, training_pairs=training_pairs)
             self.memory.add_step("Hypothesis", hypothesis)
 
             # Step 5: Program-first solving — generate & validate transform()
@@ -245,10 +261,12 @@ class MetaController:
         except Exception as e:
             raise GridParsingError(f"SymbolicGridParser failed: {str(e)}")
 
-    def _form_hypothesis(self, parsed_data: Dict[str, Any]) -> str:
+    def _form_hypothesis(self, parsed_data: Dict[str, Any],
+                         training_pairs: List[Tuple] = None) -> str:
         """
         Asks the LLM to describe the transformation rule observed
-        across UP TO 2 training pairs before attempting code generation.
+        across ALL training pairs before attempting code generation.
+        Sends BOTH raw grids AND symbolic graphs for maximum accuracy.
         """
         # Claude has a massive context window; we can feed it all the pairs.
         compressed_data = {
@@ -256,14 +274,25 @@ class MetaController:
         }
         
         system_prompt = (
-            "You are an ARC-AGI pattern analyst. You are given symbolic graphs "
-            "of input→output training pairs. Your job is to describe "
+            "You are an ARC-AGI pattern analyst. You are given raw integer grids AND "
+            "symbolic geometric graphs of input→output training pairs. Your job is to describe "
             "the single transformation rule that converts every input into its "
             "corresponding output. Be precise and concise. Focus on what changes "
             "and what stays the same."
         )
+        
+        # Include raw grids alongside symbolic analysis for better pattern recognition
+        raw_grids_section = ""
+        if training_pairs:
+            raw_pairs = [{"input": inp, "output": out} for inp, out in training_pairs]
+            raw_grids_section = (
+                f"Raw training grids (integer matrices):\n"
+                f"{json.dumps(raw_pairs, separators=(',', ':'))}\n\n"
+            )
+        
         user_prompt = (
-            f"Here are the parsed symbolic graphs for ALL training pairs:\n\n"
+            f"{raw_grids_section}"
+            f"Parsed symbolic graphs for ALL training pairs:\n\n"
             f"{json.dumps(compressed_data, separators=(',', ':'))}\n\n"
             f"Observations from memory:\n{json.dumps(self.memory.get_all_observations())}\n\n"
             f"Describe the transformation rule in one paragraph."
@@ -271,7 +300,8 @@ class MetaController:
 
         response = self.llm.generate(
             system_prompt=system_prompt,
-            user_prompt=user_prompt
+            user_prompt=user_prompt,
+            temperature=0.3  # Slightly creative for hypothesis formation
         )
 
         if not response.content or response.content.startswith("Error"):

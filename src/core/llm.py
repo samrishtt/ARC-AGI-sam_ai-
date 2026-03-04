@@ -1,11 +1,14 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict, Any, Optional
 import os
+import logging
 from openai import OpenAI
 from pydantic import BaseModel
 from dotenv import load_dotenv
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
 load_dotenv()
+logger = logging.getLogger(__name__)
 
 class LLMResponse(BaseModel):
     content: str
@@ -13,7 +16,8 @@ class LLMResponse(BaseModel):
 
 class LLMProvider(ABC):
     @abstractmethod
-    def generate(self, system_prompt: str, user_prompt: str) -> LLMResponse:
+    def generate(self, system_prompt: str, user_prompt: str, temperature: float = 0.0) -> LLMResponse:
+        """Generate a response. temperature=0.0 for deterministic code, 0.5 for creative reasoning."""
         pass
 
 class OpenAIProvider(LLMProvider):
@@ -21,10 +25,11 @@ class OpenAIProvider(LLMProvider):
         self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
         self.model = model
 
-    def generate(self, system_prompt: str, user_prompt: str) -> LLMResponse:
+    def generate(self, system_prompt: str, user_prompt: str, temperature: float = 0.0) -> LLMResponse:
         try:
             response = self.client.chat.completions.create(
                 model=self.model,
+                temperature=temperature,
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt}
@@ -45,10 +50,13 @@ class GeminiProvider(LLMProvider):
         genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
         self.model = genai.GenerativeModel(model)
 
-    def generate(self, system_prompt: str, user_prompt: str) -> LLMResponse:
+    def generate(self, system_prompt: str, user_prompt: str, temperature: float = 0.0) -> LLMResponse:
         try:
             combined_prompt = f"SYSTEM INSTRUCTIONS:\n{system_prompt}\n\nUSER:\n{user_prompt}"
-            response = self.model.generate_content(combined_prompt)
+            response = self.model.generate_content(
+                combined_prompt,
+                generation_config={"temperature": temperature}
+            )
             return LLMResponse(content=response.text)
         except Exception as e:
             return LLMResponse(content=f"Error: {str(e)}")
@@ -61,10 +69,11 @@ class GroqProvider(LLMProvider):
         self.client = Groq(api_key=os.getenv("GROQ_API_KEY"))
         self.model = model
 
-    def generate(self, system_prompt: str, user_prompt: str) -> LLMResponse:
+    def generate(self, system_prompt: str, user_prompt: str, temperature: float = 0.0) -> LLMResponse:
         try:
             response = self.client.chat.completions.create(
                 model=self.model,
+                temperature=temperature,
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt}
@@ -78,22 +87,43 @@ class GroqProvider(LLMProvider):
             return LLMResponse(content=f"Error: {str(e)}")
 
 class AnthropicProvider(LLMProvider):
-    """Paid-tier Anthropic provider for Claude 4.6 Sonnet."""
-    def __init__(self, model: str = "claude-sonnet-4-6"):
+    """Paid-tier Anthropic provider for Claude 4.6 Sonnet.
+    
+    Pricing (as of March 2026):
+      - Input:  $3/MTok  (~₹276/MTok)
+      - Output: $15/MTok (~₹1382/MTok)
+    """
+    def __init__(self, model: str = "claude-sonnet-4-6", max_tokens: int = 8192):
         import anthropic
+        self._anthropic = anthropic  # Store module ref for retry exception types
         self.client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
         self.model = model
+        self.max_tokens = max_tokens
 
-    def generate(self, system_prompt: str, user_prompt: str) -> LLMResponse:
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=2, max=30),
+        reraise=True,
+        before_sleep=lambda retry_state: logger.warning(
+            f"Anthropic API rate-limited. Retrying in {retry_state.next_action.sleep} seconds... "
+            f"(attempt {retry_state.attempt_number}/3)"
+        )
+    )
+    def _call_api(self, system_prompt: str, user_prompt: str, temperature: float):
+        """Internal method with tenacity retry for rate-limit resilience."""
+        return self.client.messages.create(
+            model=self.model,
+            max_tokens=self.max_tokens,
+            temperature=temperature,
+            system=system_prompt,
+            messages=[
+                {"role": "user", "content": user_prompt}
+            ]
+        )
+
+    def generate(self, system_prompt: str, user_prompt: str, temperature: float = 0.0) -> LLMResponse:
         try:
-            response = self.client.messages.create(
-                model=self.model,
-                max_tokens=4096,
-                system=system_prompt,
-                messages=[
-                    {"role": "user", "content": user_prompt}
-                ]
-            )
+            response = self._call_api(system_prompt, user_prompt, temperature)
             content = response.content[0].text if response.content else ""
             return LLMResponse(
                 content=content,
@@ -106,7 +136,7 @@ class AnthropicProvider(LLMProvider):
             return LLMResponse(content=f"Error: {str(e)}")
 
 class MockLLMProvider(LLMProvider):
-    def generate(self, system_prompt: str, user_prompt: str) -> LLMResponse:
+    def generate(self, system_prompt: str, user_prompt: str, temperature: float = 0.0) -> LLMResponse:
         # Smart Mocking for Demo/Tests
         
         # If asking for Python code
