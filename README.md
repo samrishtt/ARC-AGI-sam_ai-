@@ -62,23 +62,52 @@ python src/eval/evaluate.py
 ```text
 arc_agi/
 ├── src/
+│   ├── __init__.py
 │   ├── core/
-│   │   ├── llm.py               # Supports Anthropic, Groq, Gemini, OpenAI
+│   │   ├── __init__.py
+│   │   ├── llm.py               # Supports Anthropic, Groq, Gemini, OpenAI, Mock
+│   │   ├── searcher.py          # A* Program Search over DSL primitives
+│   │   ├── planner.py           # LLM-based planning (System 2)
+│   │   ├── reflector.py         # Failure analysis & reasoning hints
+│   │   └── agent.py             # [LEGACY - unused, kept for reference]
 │   ├── csa/
-│   │   ├── router.py            # Intent Router
-│   │   ├── meta_controller.py   # Pipeline Orchestrator
-│   │   ├── coding.py            # Sandbox & Reflection
-│   │   ├── memory.py            # Working Memory
+│   │   ├── __init__.py
+│   │   ├── router.py            # Intent Router (LLM-based task classification)
+│   │   ├── meta_controller.py   # Pipeline Orchestrator (the "brain")
+│   │   ├── coding.py            # Python Sandbox & Reflection Loop
+│   │   ├── memory.py            # Working Memory (scratchpad)
 │   │   ├── vision.py            # Symbolic Grid Parser & Geometry
+│   │   └── models.py            # Pydantic models (RouteDecision, etc.)
 │   ├── dsl/
-│   │   ├── primitives.py        # Abstract Spatial Operations for the LLM
-│   ├── eval/
-│   │   ├── evaluate.py          # Formal Benchmark Script
+│   │   ├── __init__.py
+│   │   ├── primitives.py        # 11 spatial operations for the LLM
+│   │   └── utils.py             # Object counting & symmetry checks
+│   └── eval/
+│       ├── __init__.py
+│       └── evaluate.py          # Formal ARC Benchmark Script
+├── tests/
+│   ├── __init__.py
+│   ├── test_basic.py            # MetaController & sandbox tests
+│   ├── test_arc_toy.py          # DSL primitive tests
+│   ├── test_composition.py      # Composition & A* search tests
+│   └── test_learning.py         # Memory & learning tests
 ├── data/
-│   ├── training/                # ARC JSON datasets
-├── demo_csa.py                  # Test the Orchestrator
+│   └── training/                # ARC JSON datasets (400 tasks)
+├── logs/                        # Results JSONL from evaluation runs
+├── demo_csa.py                  # Interactive pipeline demo
+├── test_api.py                  # Quick Anthropic API connectivity check
+├── requirements.txt             # All dependencies
+├── .env                         # API keys (not committed)
 └── README.md
 ```
+
+## 🚀 Future Work: The Path to ARC-AGI-3 (2026+)
+With the announcement of **ARC-AGI-3** (an Interactive Reasoning Benchmark launching March 2026), true generalization requires testing agents in dynamic, video-game-like environments where test-takers must actively *explore* to discover rules. 
+
+While the current CSA framework excels at static geometric transformations (ARC-AGI 1 & 2), the architecture is perfectly positioned for this interactive future. Our immediate next steps involve extending the `MetaController`:
+1. **Interactive State Tracking:** Upgrading `vision.py` from a static grid parser to a temporal state-tracker that holds memory across frame changes.
+2. **Exploration Loop (Active Inference):** Implementing an RL-inspired "probing" phase where the LLM can generate exploratory hypotheses, test actions in the environment, and observe state changes *before* committing to a final execution strategy.
+3. **Action Efficiency Optimization:** Structuring the planner to minimize the *Action Efficiency* metric introduced by the ARC Foundation (inspired by François Chollet's definition of intelligence).
 
 ## 🎓 Research Impact
 This framework demonstrates exactly how **System 2 Orchestration** (injecting algorithmic bounds and reflection loops) and **Symbolic Grounding** (translating arrays into parsed geometric properties) drastically bridges the gap toward Artificial General Intelligence.

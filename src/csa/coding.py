@@ -108,10 +108,11 @@ class CodingHandler:
                      "decision": decision.model_dump()
                  }
              else:
-                 # Reflection! Tell the LLM what went wrong and let it try again.
+                 # Reflection! Include previous code so the LLM can self-correct
                  memory.add_step("Running Sandbox", f"Error encountered: {output}")
                  current_prompt = (
-                     f"Your previous code threw this error:\n{output}\n"
+                     f"Your previous code was:\n```python\n{code_str}\n```\n\n"
+                     f"It threw this error:\n{output}\n\n"
                      f"Please write a corrected python script to solve the original task: {task_description}"
                  )
 

@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # We import the LLM Providers
-from src.core.llm import OpenAIProvider, GeminiProvider, GroqProvider, AnthropicProvider, MockLLMProvider, LLMResponse
+from src.core.llm import AnthropicProvider
 from src.csa.meta_controller import MetaController
 import json
 
@@ -15,52 +15,15 @@ def run_demo():
     print("Full Pipeline: Router -> Sandbox -> Vision -> Hypothesis")
     print("==================================================\n")
 
-    # Priority: Anthropic (paid, best) > Groq (free, high quota) > Gemini (free, daily quota) > OpenAI (paid) > Mock (offline)
-    if os.getenv("ANTHROPIC_API_KEY"):
-        print("Using Anthropic Claude 4.6 Sonnet (PAID tier - BEST)\n")
-        llm = AnthropicProvider()
-    elif os.getenv("GROQ_API_KEY"):
-        print("Using Groq Llama 3.1 8B (FREE tier)\n")
-        llm = GroqProvider()
-    elif os.getenv("GEMINI_API_KEY"):
-        print("Using Google Gemini 2.0 Flash (FREE tier)\n")
-        llm = GeminiProvider(model="gemini-2.0-flash")
-    elif os.getenv("OPENAI_API_KEY"):
-        print("Using OpenAI GPT-4o (paid tier)\n")
-        llm = OpenAIProvider(model="gpt-4o")
-    else:
-        print("WARNING: No API keys found.")
-        print("Set GEMINI_API_KEY in .env for FREE testing (https://aistudio.google.com/apikey)")
-        print("Falling back to Demo Mock.\n")
+    # LOCKED: Claude Sonnet 4.6 ONLY — no fallback models
+    api_key = os.getenv("ANTHROPIC_API_KEY", "").strip()
+    if not api_key or len(api_key) < 10:
+        print("ERROR: ANTHROPIC_API_KEY not set in .env")
+        print("Get your key at: https://console.anthropic.com/settings/keys")
+        return
 
-        class DemoMockLLM(MockLLMProvider):
-            def __init__(self):
-                self.coding_attempts = 0
-
-            def generate(self, system_prompt: str, user_prompt: str):
-                if "routing engine" in system_prompt:
-                    if "Python" in user_prompt:
-                        return LLMResponse(content='{"domain": "coding", "complexity": "medium", "reasoning": "User asked for python code.", "requires_tools": true}')
-                    elif "JSON matrix" in user_prompt or "ARC" in user_prompt or '"train"' in user_prompt:
-                        return LLMResponse(content='{"domain": "visual_spatial", "complexity": "high", "reasoning": "ARC style spatial grid mapping.", "requires_tools": true}')
-                    elif "apples" in user_prompt:
-                        return LLMResponse(content='{"domain": "math_logic", "complexity": "medium", "reasoning": "Simple algebraic math word problem.", "requires_tools": true}')
-                    else:
-                        return LLMResponse(content='{"domain": "conversational", "complexity": "low", "reasoning": "Greeting or simple chat.", "requires_tools": false}')
-
-                if "pattern analyst" in system_prompt:
-                    return LLMResponse(content="The transformation rule appears to be: every non-background colored cell is duplicated symmetrically across the vertical axis of the grid.")
-
-                if "Code" in system_prompt or "coder" in system_prompt:
-                    self.coding_attempts += 1
-                    if self.coding_attempts % 2 == 1:
-                        return LLMResponse(content="```python\nprint(undefined_variable)\n```")
-                    else:
-                        return LLMResponse(content="```python\nprint('Total apples: 16 (Calculated by Mock Resolver)')\n```")
-
-                return super().generate(system_prompt, user_prompt)
-
-        llm = DemoMockLLM()
+    print("Using Anthropic Claude 4.6 Sonnet\n")
+    llm = AnthropicProvider()
 
     # Instantiate the Meta-Controller
     controller = MetaController(primary_llm=llm)
@@ -115,7 +78,7 @@ def run_demo():
         ]
     }
     try:
-        result = controller.process_task(json.dumps(arc_task))
+        result = controller.process_task(arc_task)
         _print_result(result)
     except Exception as e:
         print(f"Error: {e}")

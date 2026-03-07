@@ -101,25 +101,38 @@ class AnthropicProvider(LLMProvider):
         self.max_tokens = max_tokens
 
     @retry(
-        stop=stop_after_attempt(3),
-        wait=wait_exponential(multiplier=1, min=2, max=30),
+        stop=stop_after_attempt(5),
+        wait=wait_exponential(multiplier=1, min=2, max=60),
+        retry=retry_if_exception_type((Exception,)),  # Catches rate limits, connection, server errors
         reraise=True,
         before_sleep=lambda retry_state: logger.warning(
-            f"Anthropic API rate-limited. Retrying in {retry_state.next_action.sleep} seconds... "
-            f"(attempt {retry_state.attempt_number}/3)"
+            f"Anthropic API error: {retry_state.outcome.exception()}. "
+            f"Retrying in {retry_state.next_action.sleep:.1f}s... "
+            f"(attempt {retry_state.attempt_number}/5)"
         )
     )
     def _call_api(self, system_prompt: str, user_prompt: str, temperature: float):
         """Internal method with tenacity retry for rate-limit resilience."""
-        return self.client.messages.create(
-            model=self.model,
-            max_tokens=self.max_tokens,
-            temperature=temperature,
-            system=system_prompt,
-            messages=[
-                {"role": "user", "content": user_prompt}
-            ]
-        )
+        try:
+            return self.client.messages.create(
+                model=self.model,
+                max_tokens=self.max_tokens,
+                temperature=temperature,
+                system=system_prompt,
+                messages=[
+                    {"role": "user", "content": user_prompt}
+                ]
+            )
+        except self._anthropic.RateLimitError:
+            raise  # Let tenacity handle retry
+        except self._anthropic.APIConnectionError:
+            raise  # Let tenacity handle retry
+        except self._anthropic.InternalServerError:
+            raise  # Let tenacity handle retry
+        except self._anthropic.AuthenticationError:
+            raise  # Don't retry auth errors — re-raise immediately
+        except Exception:
+            raise  # Other errors also get retried
 
     def generate(self, system_prompt: str, user_prompt: str, temperature: float = 0.0) -> LLMResponse:
         try:

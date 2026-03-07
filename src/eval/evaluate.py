@@ -3,7 +3,7 @@ import json
 import logging
 from typing import Dict, Any, List
 
-from src.core.llm import OpenAIProvider, GroqProvider, GeminiProvider, AnthropicProvider
+from src.core.llm import AnthropicProvider
 from src.csa.meta_controller import MetaController
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -40,23 +40,15 @@ def evaluate_csa(limit: int = 50):
     print(f"Running evaluation on {limit} tasks.")
     print(f"Estimated cost: ~₹{estimated_cost_inr:.0f} (budget: ₹500)")
     print("=" * 60)
-
-    # Boot up LLM (same priority as demo)
-    if os.getenv("ANTHROPIC_API_KEY"):
-        llm = AnthropicProvider()
-        print("> Using Provider: Anthropic (Claude 4.6 Sonnet)")
-    elif os.getenv("GROQ_API_KEY"):
-        llm = GroqProvider()
-        print("> Using Provider: Groq (Llama 3.1 8B)")
-    elif os.getenv("GEMINI_API_KEY"):
-        llm = GeminiProvider(model="gemini-2.0-flash")
-        print("> Using Provider: Google Gemini")
-    elif os.getenv("OPENAI_API_KEY"):
-        llm = OpenAIProvider(model="gpt-4o")
-        print("> Using Provider: OpenAI")
-    else:
-        print("ERROR: No API key found. Evaluator requires a real LLM.")
+    # LOCKED: Claude Sonnet 4.6 ONLY — no fallback models
+    api_key = os.getenv("ANTHROPIC_API_KEY", "").strip()
+    if not api_key or len(api_key) < 10:
+        print("ERROR: ANTHROPIC_API_KEY not set in .env")
+        print("Get your key at: https://console.anthropic.com/settings/keys")
         return
+
+    llm = AnthropicProvider()
+    print("> Using Provider: Anthropic (Claude 4.6 Sonnet)")
 
     controller = MetaController(primary_llm=llm)
 
