@@ -3,7 +3,7 @@ import json
 import logging
 from typing import Dict, Any, List
 
-from src.core.llm import AnthropicProvider
+from src.core.llm import get_best_provider
 from src.csa.meta_controller import MetaController
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -33,22 +33,17 @@ def evaluate_csa(limit: int = 50):
     
     Cost estimate (Claude Sonnet 4.6 @ ₹92.1/USD):
       ~₹7.73 per task → 50 tasks ≈ ₹386 (safely under ₹500)
+    Note: Falls back to free models (Gemini/Groq) if no Anthropic key is set.
     """
     estimated_cost_inr = limit * 7.73
     print("=" * 60)
     print("Cognitive Synthesis Architecture - Evaluator")
     print(f"Running evaluation on {limit} tasks.")
-    print(f"Estimated cost: ~₹{estimated_cost_inr:.0f} (budget: ₹500)")
+    print(f"Estimated cost (if Claude): ~₹{estimated_cost_inr:.0f} | Free if using Gemini/Groq")
     print("=" * 60)
-    # LOCKED: Claude Sonnet 4.6 ONLY — no fallback models
-    api_key = os.getenv("ANTHROPIC_API_KEY", "").strip()
-    if not api_key or len(api_key) < 10:
-        print("ERROR: ANTHROPIC_API_KEY not set in .env")
-        print("Get your key at: https://console.anthropic.com/settings/keys")
-        return
 
-    llm = AnthropicProvider()
-    print("> Using Provider: Anthropic (Claude 4.6 Sonnet)")
+    # Smart fallback: Claude (paid) → Gemini (free) → Groq (free) → Mock (offline)
+    llm = get_best_provider(prefer_paid=True)
 
     controller = MetaController(primary_llm=llm)
 

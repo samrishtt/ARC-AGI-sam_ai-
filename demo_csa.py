@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # We import the LLM Providers
-from src.core.llm import AnthropicProvider
+from src.core.llm import get_best_provider
 from src.csa.meta_controller import MetaController
 import json
 
@@ -15,15 +15,8 @@ def run_demo():
     print("Full Pipeline: Router -> Sandbox -> Vision -> Hypothesis")
     print("==================================================\n")
 
-    # LOCKED: Claude Sonnet 4.6 ONLY — no fallback models
-    api_key = os.getenv("ANTHROPIC_API_KEY", "").strip()
-    if not api_key or len(api_key) < 10:
-        print("ERROR: ANTHROPIC_API_KEY not set in .env")
-        print("Get your key at: https://console.anthropic.com/settings/keys")
-        return
-
-    print("Using Anthropic Claude 4.6 Sonnet\n")
-    llm = AnthropicProvider()
+    # Smart fallback: Claude (paid) → Gemini (free) → Groq (free) → Mock (offline)
+    llm = get_best_provider(prefer_paid=True)
 
     # Instantiate the Meta-Controller
     controller = MetaController(primary_llm=llm)

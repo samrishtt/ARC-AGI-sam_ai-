@@ -168,3 +168,59 @@ class MockLLMProvider(LLMProvider):
              return LLMResponse(content='{"steps": [{"action": "ANALYZE", "description": "Analyze grid"}, {"action": "TRANSFORM", "description": "Apply rotation"}, {"action": "VERIFY", "description": "Check result"}]}')
 
         return LLMResponse(content=f"[MOCK] Processed: {user_prompt[:50]}...")
+
+
+def get_best_provider(prefer_paid: bool = True) -> LLMProvider:
+    """
+    Smart provider factory with automatic fallback.
+
+    Priority order:
+      1. Claude Sonnet 4.6  (paid — best quality)
+      2. Google Gemini Flash (free tier)
+      3. Groq Llama 3.1     (free tier)
+      4. MockLLM             (offline — always works)
+
+    Args:
+        prefer_paid: If True, try Claude first. If False, skip straight to free models.
+
+    Returns:
+        The best available LLMProvider instance.
+    """
+    # --- 1. Claude (primary, paid) ---
+    if prefer_paid:
+        anthropic_key = os.getenv("ANTHROPIC_API_KEY", "").strip()
+        if anthropic_key and len(anthropic_key) > 10:
+            try:
+                provider = AnthropicProvider()
+                logger.info("LLM Provider: Anthropic Claude Sonnet 4.6 (paid)")
+                print("[OK] Using Anthropic Claude Sonnet 4.6 (primary)")
+                return provider
+            except Exception as e:
+                logger.warning(f"Anthropic init failed: {e}")
+
+    # --- 2. Gemini (free fallback) ---
+    gemini_key = os.getenv("GEMINI_API_KEY", "").strip()
+    if gemini_key and len(gemini_key) > 5:
+        try:
+            provider = GeminiProvider()
+            logger.info("LLM Provider: Google Gemini Flash (free tier)")
+            print("[FREE] Using Google Gemini Flash (free fallback)")
+            return provider
+        except Exception as e:
+            logger.warning(f"Gemini init failed: {e}")
+
+    # --- 3. Groq (free fallback) ---
+    groq_key = os.getenv("GROQ_API_KEY", "").strip()
+    if groq_key and len(groq_key) > 5:
+        try:
+            provider = GroqProvider()
+            logger.info("LLM Provider: Groq Llama 3.1 (free tier)")
+            print("[FREE] Using Groq Llama 3.1 (free fallback)")
+            return provider
+        except Exception as e:
+            logger.warning(f"Groq init failed: {e}")
+
+    # --- 4. Mock (offline, always works) ---
+    logger.warning("No API keys found -- using MockLLM (offline mode)")
+    print("[WARN] No API keys found -- using MockLLM (offline mode)")
+    return MockLLMProvider()
