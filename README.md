@@ -38,9 +38,18 @@ pip install -r requirements.txt
 # Additional SDKs if needed: pip install anthropic openai google-generativeai groq
 
 # Create a .env file and add your preferred API Key!
-# Priority: ANTHROPIC > GROQ > GEMINI > OPENAI
-ANTHROPIC_API_KEY=sk-ant-api03...
+# Priority (free): GROQ > NVIDIA > GEMINI
+GROQ_API_KEY=gsk_...
+NVIDIA_API_KEY=nvapi-...
+GEMINI_API_KEY=AIza...
 ```
+
+### Free API Provider Sign-Up
+| Provider | Model | Sign-Up URL | Notes |
+|----------|-------|-------------|-------|
+| **Groq** (Primary) | llama-3.3-70b-versatile | [console.groq.com](https://console.groq.com) | Free, no credit card |
+| **NVIDIA NIM** (Fallback 1) | llama-4-scout-17b | [build.nvidia.com](https://build.nvidia.com) | Free, join Developer Program |
+| **Gemini** (Fallback 2) | gemini-1.5-flash | [aistudio.google.com](https://aistudio.google.com) | Free Google account |
 
 ## 🎯 Quick Start
 
