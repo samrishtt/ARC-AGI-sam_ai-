@@ -53,6 +53,9 @@ class MetaController:
         """TASK 3 FIX: Completely reset all state before each task."""
         self.memory = WorkingMemory()  # Fresh memory, no carryover
         self.coding_handler = CodingHandler(llm=self.llm)  # Fresh coding handler
+        # Reset multi-provider failover to start from Groq again
+        if hasattr(self.llm, 'reset_provider'):
+            self.llm.reset_provider()
         if task_id:
             print(f"\n[Reset] Task {task_id}: all state cleared for fresh start.")
 

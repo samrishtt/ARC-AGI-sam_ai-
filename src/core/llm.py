@@ -51,7 +51,7 @@ class RateLimiter:
         while self.window and self.window[0][0] < cutoff:
             self.window.popleft()
         used = sum(tk for _, tk in self.window)
-        if used + estimated_tokens > self.max_tokens:
+        if used + estimated_tokens > self.max_tokens and self.window:
             wait_until = self.window[0][0] + 60
             sleep_time = wait_until - time.time() + 1
             if sleep_time > 0:
@@ -285,6 +285,10 @@ class MultiProviderLLM(LLMProvider):
         # Initialize all available providers
         self._init_providers()
 
+    def reset_provider(self):
+        """Reset to primary provider (Groq). Called at start of each task."""
+        self.current_provider_idx = 0
+
     def _init_providers(self):
         """Initialize providers in priority order: Groq → NVIDIA → Gemini → Mock"""
         # Provider 1: Groq (PRIMARY)
@@ -294,18 +298,18 @@ class MultiProviderLLM(LLMProvider):
                 p = GroqProvider()
                 self.providers.append(p)
                 self.provider_names.append("Groq")
-                print("[OK] Provider 1: Groq (llama-3.3-70b-versatile) — PRIMARY")
+                print("[OK] Provider 1: Groq (llama-3.3-70b-versatile) -- PRIMARY")
             except Exception as e:
                 logger.warning(f"Groq init failed: {e}")
 
         # Provider 2: NVIDIA NIM (FALLBACK 1)
         nvidia_key = os.getenv("NVIDIA_API_KEY", "").strip()
-        if nvidia_key and len(nvidia_key) > 10:
+        if nvidia_key and len(nvidia_key) > 10 and nvidia_key != "your_key_here":
             try:
                 p = NvidiaProvider()
                 self.providers.append(p)
                 self.provider_names.append("NVIDIA")
-                print("[OK] Provider 2: NVIDIA NIM (llama-4-scout) — FALLBACK 1")
+                print("[OK] Provider 2: NVIDIA NIM (llama-4-scout) -- FALLBACK 1")
             except Exception as e:
                 logger.warning(f"NVIDIA init failed: {e}")
 
@@ -316,7 +320,7 @@ class MultiProviderLLM(LLMProvider):
                 p = GeminiProvider()
                 self.providers.append(p)
                 self.provider_names.append("Gemini")
-                print("[OK] Provider 3: Gemini 1.5 Flash — FALLBACK 2")
+                print("[OK] Provider 3: Gemini 1.5 Flash -- FALLBACK 2")
             except Exception as e:
                 logger.warning(f"Gemini init failed: {e}")
 
@@ -327,6 +331,7 @@ class MultiProviderLLM(LLMProvider):
     def generate(self, system_prompt: str, user_prompt: str,
                  temperature: float = 0.0, task_id: str = "") -> LLMResponse:
         """Generate with automatic failover across providers."""
+        # Always start from current_provider_idx (reset per task)
         start_idx = self.current_provider_idx
 
         for provider_offset in range(len(self.providers)):
