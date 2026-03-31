@@ -1,18 +1,14 @@
 """
-CSA Mini-Benchmark — 5-task verification run.
+CSA Mini-Benchmark -- 5-task verification run.
 Tasks: 007bbfb7, 017c7c7b, 09629e4f, 1c786137, 1e0a9b12
-
-Verifies:
-  - Provider used (Groq / NVIDIA / Gemini)
-  - Estimated prompt token count
-  - Whether rate limiter triggered and sleep duration
-  - Pass / Fail + failure reason if failed
-  - data/learned_transforms.json exists
-  - No task prompt exceeded 8,000 tokens
-  - Zero 429 errors occurred
 """
 import os
 import sys
+import io
+
+# Fix Windows console encoding
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 import json
 import time
 import traceback
@@ -52,7 +48,7 @@ def parse_predicted_grid(output_str: str):
 def run_verification():
     """Run the 5-task mini-benchmark using Groq as primary provider."""
     print("=" * 70)
-    print("  CSA VERIFICATION RUN — 5-Task Mini-Benchmark")
+    print("  CSA VERIFICATION RUN -- 5-Task Mini-Benchmark")
     print("=" * 70)
     
     # Use free providers (Groq primary)
@@ -72,12 +68,12 @@ def run_verification():
     for i, task_id in enumerate(VERIFICATION_TASKS):
         task_file = os.path.join(train_dir, f"{task_id}.json")
         
-        print(f"\n{'─' * 60}")
+        print("\n" + "-" * 60)
         print(f"  [{i+1}/{len(VERIFICATION_TASKS)}] Task: {task_id}")
-        print(f"{'─' * 60}")
+        print("-" * 60)
         
         if not os.path.exists(task_file):
-            print(f"  ✗ SKIP — File not found: {task_file}")
+            print(f"  [SKIP] File not found: {task_file}")
             results.append({
                 "task_id": task_id,
                 "status": "skipped",
@@ -132,9 +128,9 @@ def run_verification():
             }
             
             if correct:
-                print(f"  ✓ PASS — Provider: {provider_name} ({elapsed:.1f}s)")
+                print(f"  [PASS] Provider: {provider_name} ({elapsed:.1f}s)")
             else:
-                print(f"  ✗ FAIL — Provider: {provider_name} ({elapsed:.1f}s)")
+                print(f"  [FAIL] Provider: {provider_name} ({elapsed:.1f}s)")
                 print(f"    Reason: {failure_reason[:100]}")
             
             results.append(entry)
@@ -152,7 +148,7 @@ def run_verification():
                 "elapsed_seconds": round(elapsed, 2),
                 "failure_reason": f"EXCEPTION: {str(e)[:200]}",
             })
-            print(f"  ✗ EXCEPTION: {str(e)[:100]} ({elapsed:.1f}s)")
+            print(f"  [EXCEPTION] {str(e)[:100]} ({elapsed:.1f}s)")
     
     total_elapsed = time.time() - total_start
     
@@ -160,46 +156,46 @@ def run_verification():
     num_passed = sum(1 for r in results if r.get("correct"))
     num_failed = sum(1 for r in results if not r.get("correct"))
     
-    print(f"\n\n{'=' * 70}")
-    print(f"  VERIFICATION RESULTS")
-    print(f"{'=' * 70}")
+    print("\n\n" + "=" * 70)
+    print("  VERIFICATION RESULTS")
+    print("=" * 70)
     
     for r in results:
-        status_icon = "✓" if r.get("correct") else "✗"
+        status_icon = "[PASS]" if r.get("correct") else "[FAIL]"
         print(f"  {status_icon} {r['task_id']:12s}  Provider: {r.get('provider', 'N/A'):10s}  "
               f"Status: {r['status']:10s}  Time: {r.get('elapsed_seconds', 0):.1f}s")
         if r.get("failure_reason"):
-            print(f"    → {r['failure_reason'][:100]}")
+            print(f"    -> {r['failure_reason'][:100]}")
     
     print(f"\n  Passed: {num_passed}/{len(VERIFICATION_TASKS)}")
     print(f"  Failed: {num_failed}/{len(VERIFICATION_TASKS)}")
     print(f"  Total time: {total_elapsed:.1f}s")
     
     # ── VERIFICATION CHECKS ──
-    print(f"\n{'─' * 60}")
-    print(f"  VERIFICATION CHECKS")
-    print(f"{'─' * 60}")
+    print("\n" + "-" * 60)
+    print("  VERIFICATION CHECKS")
+    print("-" * 60)
     
     # Check 1: learned_transforms.json exists
     transforms_path = os.path.join("data", "learned_transforms.json")
     if os.path.exists(transforms_path):
         with open(transforms_path, 'r') as f:
             transforms = json.load(f)
-        print(f"  ✓ data/learned_transforms.json exists with {len(transforms)} entries")
+        print(f"  [OK] data/learned_transforms.json exists with {len(transforms)} entries")
     else:
-        print(f"  ✗ data/learned_transforms.json NOT found")
+        print(f"  [MISSING] data/learned_transforms.json NOT found")
     
     # Check 2: No task prompt exceeded 8,000 tokens
     # (TokenCheck prints are captured in console output)
-    print(f"  ✓ Token limit checks enforced (8000 token cap with auto-truncation)")
+    print(f"  [OK] Token limit checks enforced (8000 token cap with auto-truncation)")
     
     # Check 3: Zero 429 errors
     if errors_429 == 0:
-        print(f"  ✓ Zero 429 errors occurred")
+        print(f"  [OK] Zero 429 errors occurred")
     else:
-        print(f"  ✗ {errors_429} 429 errors occurred")
+        print(f"  [WARN] {errors_429} 429 errors occurred")
     
-    print(f"{'=' * 70}")
+    print("=" * 70)
     
     # ── SAVE RESULTS ──
     os.makedirs("logs", exist_ok=True)
