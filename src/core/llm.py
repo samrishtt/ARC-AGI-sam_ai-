@@ -42,9 +42,7 @@ class RateLimiter:
         # Enforce minimum inter-call delay
         elapsed = now - self.last_call
         if elapsed < self.min_delay:
-            sleep_time = self.min_delay - elapsed
-            print(f"[RateLimiter] Inter-call delay. Sleeping {sleep_time:.1f}s")
-            time.sleep(sleep_time)
+            pass
 
         # Enforce token-per-minute window
         cutoff = time.time() - 60
@@ -54,7 +52,10 @@ class RateLimiter:
         if used + estimated_tokens > self.max_tokens and self.window:
             wait_until = self.window[0][0] + 60
             sleep_time = wait_until - time.time() + 1
-            if sleep_time > 0:
+            if sleep_time > 10.0:
+                print(f"[RateLimiter] Token limit exceeded. Failing over instead of sleeping {sleep_time:.1f}s")
+                raise Exception("429 Rate Limit Exceeded: Budget Exhausted")
+            elif sleep_time > 0:
                 print(f"[RateLimiter] Token limit approaching. Sleeping {sleep_time:.1f}s")
                 time.sleep(sleep_time)
 
@@ -157,8 +158,8 @@ class NvidiaProvider(LLMProvider):
 # ═══════════════════════════════════════════════════════
 
 class GeminiProvider(LLMProvider):
-    """Free-tier Google Gemini 1.5 Flash via OpenAI-compatible endpoint."""
-    def __init__(self, model: str = "gemini-1.5-flash"):
+    """Free-tier Google Gemini 2.0 Flash via OpenAI-compatible endpoint."""
+    def __init__(self, model: str = "gemini-2.0-flash"):
         api_key = os.getenv("GEMINI_API_KEY", "").strip()
         self.client = OpenAI(
             api_key=api_key,
@@ -290,43 +291,33 @@ class MultiProviderLLM(LLMProvider):
         self.current_provider_idx = 0
 
     def _init_providers(self):
-        """Initialize providers in priority order: Groq → NVIDIA → Gemini → Mock"""
-        # Provider 1: Groq (PRIMARY)
-        groq_key = os.getenv("GROQ_API_KEY", "").strip()
-        if groq_key and len(groq_key) > 10:
-            try:
-                p = GroqProvider()
-                self.providers.append(p)
-                self.provider_names.append("Groq")
-                print("[OK] Provider 1: Groq (llama-3.3-70b-versatile) -- PRIMARY")
-            except Exception as e:
-                logger.warning(f"Groq init failed: {e}")
-
-        # Provider 2: NVIDIA NIM (FALLBACK 1)
-        nvidia_key = os.getenv("NVIDIA_API_KEY", "").strip()
-        if nvidia_key and len(nvidia_key) > 10 and nvidia_key != "your_key_here":
-            try:
-                p = NvidiaProvider()
-                self.providers.append(p)
-                self.provider_names.append("NVIDIA")
-                print("[OK] Provider 2: NVIDIA NIM (llama-4-scout) -- FALLBACK 1")
-            except Exception as e:
-                logger.warning(f"NVIDIA init failed: {e}")
-
-        # Provider 3: Gemini (FALLBACK 2)
+        """Initialize providers in priority order: Gemini → Groq"""
+        # Provider 1: Gemini (PRIMARY)
         gemini_key = os.getenv("GEMINI_API_KEY", "").strip()
         if gemini_key and len(gemini_key) > 10:
             try:
                 p = GeminiProvider()
                 self.providers.append(p)
                 self.provider_names.append("Gemini")
-                print("[OK] Provider 3: Gemini 1.5 Flash -- FALLBACK 2")
+                print("[OK] Provider 1: Gemini 2.0 Flash -- PRIMARY")
             except Exception as e:
                 logger.warning(f"Gemini init failed: {e}")
 
-        # Always have Mock as last resort
-        self.providers.append(MockLLMProvider())
-        self.provider_names.append("MockLLM")
+        # Provider 2: Groq (FALLBACK 1)
+        groq_key = os.getenv("GROQ_API_KEY", "").strip()
+        if groq_key and len(groq_key) > 10:
+            try:
+                p = GroqProvider()
+                self.providers.append(p)
+                self.provider_names.append("Groq")
+                print("[OK] Provider 2: Groq (llama-3.3-70b-versatile) -- FALLBACK 1")
+            except Exception as e:
+                logger.warning(f"Groq init failed: {e}")
+
+        # Print new config structure requested by user
+        if not hasattr(self.__class__, '_printed_config'):
+            print("\n[Config] Primary: GEMINI | Fallback 1: GROQ | Fallback 2: api_unavailable\n")
+            self.__class__._printed_config = True
 
     def generate(self, system_prompt: str, user_prompt: str,
                  temperature: float = 0.0, task_id: str = "") -> LLMResponse:
@@ -386,7 +377,7 @@ class MultiProviderLLM(LLMProvider):
                     error_str = str(e).lower()
                     if "429" in error_str or "rate" in error_str:
                         if retry < max_retries - 1:
-                            wait_time = (retry + 1) * 5
+                            wait_time = 0.1
                             print(f"[Failover] 429 exception on {provider_name}. "
                                   f"Retry {retry+1}/{max_retries} in {wait_time}s...")
                             time.sleep(wait_time)
@@ -400,6 +391,9 @@ class MultiProviderLLM(LLMProvider):
                     else:
                         logger.warning(f"Provider {provider_name} error: {e}")
                         break  # try next provider
+
+        # If we exhausted all providers
+        return LLMResponse(content="Error: api_unavailable", token_usage={})
 
         # If absolutely everything failed
         return LLMResponse(content="Error: All providers exhausted. No response generated.")

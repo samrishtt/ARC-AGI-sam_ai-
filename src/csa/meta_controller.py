@@ -310,10 +310,27 @@ class MetaController:
         # Include raw grids alongside symbolic analysis
         raw_grids_section = ""
         if training_pairs:
-            raw_pairs = [{"input": inp, "output": out} for inp, out in training_pairs]
+            truncated_pairs = []
+            for inp, out in training_pairs:
+                trunc_inp, trunc_out = inp, out
+                note = ""
+                # Truncate input
+                if len(inp) > 20 or (inp and len(inp[0]) > 20):
+                    trunc_inp = [row[:20] for row in inp[:20]]
+                    note = "[Grid truncated to 20x20 for token efficiency]"
+                # Truncate output 
+                if len(out) > 20 or (out and len(out[0]) > 20):
+                    trunc_out = [row[:20] for row in out[:20]]
+                    note = "[Grid truncated to 20x20 for token efficiency]"
+                
+                pair_dict = {"input": trunc_inp, "output": trunc_out}
+                if note:
+                    pair_dict["note"] = note
+                truncated_pairs.append(pair_dict)
+
             raw_grids_section = (
                 f"Raw training grids (integer matrices):\n"
-                f"{json.dumps(raw_pairs, separators=(',', ':'))}\n\n"
+                f"{json.dumps(truncated_pairs, separators=(',', ':'))}\n\n"
             )
         
         # TASK 5: Include object correspondence data

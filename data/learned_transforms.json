@@ -1,0 +1,8 @@
+[
+  {
+    "task_id": "seed_task_001",
+    "category": "recoloring",
+    "code": "def transform(grid):\n    return [[1 if val == 5 else val for val in row] for row in grid]",
+    "timestamp": 1711951200.0
+  }
+]
