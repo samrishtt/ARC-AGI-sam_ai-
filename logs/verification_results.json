@@ -8,48 +8,48 @@
   ],
   "passed": 0,
   "failed": 5,
-  "total_time_seconds": 22.34,
+  "total_time_seconds": 370.46,
   "errors_429": 0,
   "per_task": [
     {
       "task_id": "007bbfb7",
       "status": "fail",
       "correct": false,
-      "provider": "MockLLM",
-      "elapsed_seconds": 20.51,
-      "failure_reason": "Exhausted 3 retries.\nLast error: Hello from Mock Code\nError on pair 0: Traceback (most recent call last):\n  File \"C:\\Users\\admin\\AppData\\Local\\Temp\\tmpm8he_2j9.py\", line 11, in <module>\n    result = t"
+      "provider": "Groq",
+      "elapsed_seconds": 68.36,
+      "failure_reason": "Exhausted 3 retries.\nLast error: Pair 0 FAILED. Expected [[0, 0, 0, 0, 7, 7, 0, 7, 7], [0, 0, 0, 7, 7, 7, 7, 7, 7], [0, 0, 0, 0, 7, 7, 0, 7, 7], [0, 7, 7, 0, 7, 7, 0, 7, 7], [7, 7, 7, 7, 7, 7, 7, 7, 7"
     },
     {
       "task_id": "017c7c7b",
       "status": "fail",
       "correct": false,
-      "provider": "MockLLM",
-      "elapsed_seconds": 0.35,
-      "failure_reason": "Exhausted 3 retries.\nLast error: Hello from Mock Code\nError on pair 0: Traceback (most recent call last):\n  File \"C:\\Users\\admin\\AppData\\Local\\Temp\\tmpwx0w7rfj.py\", line 11, in <module>\n    result = t"
+      "provider": "Groq",
+      "elapsed_seconds": 60.52,
+      "failure_reason": "Exhausted 3 retries.\nLast error: Pair 0 FAILED. Expected [[0, 2, 0], [2, 2, 0], [0, 2, 0], [0, 2, 2], [0, 2, 0], [2, 2, 0], [0, 2, 0], [0, 2, 2], [0, 2, 0]], got [[0, 2, 0], [2, 2, 0], [0, 2, 0], [0, "
     },
     {
       "task_id": "09629e4f",
       "status": "fail",
       "correct": false,
-      "provider": "MockLLM",
-      "elapsed_seconds": 0.4,
-      "failure_reason": "Exhausted 3 retries.\nLast error: Hello from Mock Code\nError on pair 0: Traceback (most recent call last):\n  File \"C:\\Users\\admin\\AppData\\Local\\Temp\\tmppqgqtwwz.py\", line 11, in <module>\n    result = t"
+      "provider": "Groq",
+      "elapsed_seconds": 61.19,
+      "failure_reason": "Exhausted 3 retries.\nLast error: Pair 0 FAILED. Expected [[2, 2, 2, 5, 0, 0, 0, 5, 0, 0, 0], [2, 2, 2, 5, 0, 0, 0, 5, 0, 0, 0], [2, 2, 2, 5, 0, 0, 0, 5, 0, 0, 0], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [0"
     },
     {
       "task_id": "1c786137",
       "status": "fail",
       "correct": false,
-      "provider": "MockLLM",
-      "elapsed_seconds": 0.53,
-      "failure_reason": "Exhausted 3 retries.\nLast error: Hello from Mock Code\nError on pair 0: Traceback (most recent call last):\n  File \"C:\\Users\\admin\\AppData\\Local\\Temp\\tmprfcmhyo9.py\", line 11, in <module>\n    result = t"
+      "provider": "Groq",
+      "elapsed_seconds": 64.37,
+      "failure_reason": "Exhausted 3 retries.\nLast error: Pair 0 FAILED. Expected [[0, 0, 8, 0, 3, 3, 3, 3], [1, 0, 0, 0, 3, 0, 3, 1], [3, 3, 0, 3, 3, 0, 8, 1], [3, 3, 5, 1, 0, 3, 0, 0], [5, 1, 3, 0, 1, 3, 1, 1], [5, 0, 8, 0,"
     },
     {
       "task_id": "1e0a9b12",
       "status": "fail",
       "correct": false,
-      "provider": "MockLLM",
-      "elapsed_seconds": 0.37,
-      "failure_reason": "Exhausted 3 retries.\nLast error: Hello from Mock Code\nError on pair 0: Traceback (most recent call last):\n  File \"C:\\Users\\admin\\AppData\\Local\\Temp\\tmpnh5yb_o0.py\", line 11, in <module>\n    result = t"
+      "provider": "Groq",
+      "elapsed_seconds": 115.84,
+      "failure_reason": "Exhausted 3 retries.\nLast error: Pair 0 FAILED. Expected [[0, 0, 0, 0], [0, 0, 0, 0], [0, 4, 0, 0], [1, 4, 6, 9]], got [[0, 0, 0, 0], [0, 4, 4, 0], [0, 0, 0, 0], [0, 0, 0, 0]]"
     }
   ]
 }
