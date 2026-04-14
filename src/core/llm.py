@@ -104,6 +104,7 @@ class OpenRouterProvider(LLMProvider):
         self.client = OpenAI(
             api_key=api_key,
             base_url="https://openrouter.ai/api/v1",
+            timeout=300.0,  # 5 minutes for large models to reason
             default_headers={
                 "HTTP-Referer": "https://github.com/samrishtt/ARC-AGI",
                 "X-Title": "CSA ARC-AGI Solver"
@@ -161,11 +162,11 @@ class MultiProviderLLM(LLMProvider):
     Each model is on a DIFFERENT upstream provider, so their rate limits
     are independent -- if one pool is exhausted, the next has a fresh quota.
 
-    Provider order (all free, all open-source):
-      [1] Nemotron-120B (PRIMARY)   -- NVIDIA upstream, 262K ctx
-      [2] Hermes-405B  (FALLBACK 1) -- Nous Research, largest free model
-      [3] Qwen3-80B    (FALLBACK 2) -- Venice.ai upstream, 262K ctx
-      [4] Llama3.3-70B (FALLBACK 3) -- Meta via Together, 65K ctx
+    # Provider order (all free, all open-source, FAST models for 120s timeout):
+      [1] Llama3.3-70B (PRIMARY)    -- Meta via Together, fast reasoning
+      [2] Qwen3-Coder  (FALLBACK 1) -- Venice.ai, excellent code generation
+      [3] Gemma-3-27B  (FALLBACK 2) -- Google, strict instruct adherence
+      [4] OpenRouter-Auto (FALLBACK 3) -- Dynamic routing mechanism
 
     Failover triggers:
       - 429 / upstream rate-limit -> wait 65s then retry (resets per minute)
@@ -173,27 +174,27 @@ class MultiProviderLLM(LLMProvider):
       - Credits exhausted         -> switch immediately
     """
 
-    # -- Model IDs (all verified free on this OpenRouter account) -----------
+    # -- Model IDs (all verified free, selected for high speed) -----------
     MODELS = [
-        {
-            "id":   "nvidia/nemotron-3-super-120b-a12b:free",
-            "name": "Nemotron-120B",
-            "desc": "120B MoE | 262K ctx | NVIDIA upstream | Best reasoning"
-        },
-        {
-            "id":   "nousresearch/hermes-3-llama-3.1-405b:free",
-            "name": "Hermes-405B",
-            "desc": "405B dense | Largest free model | Deep logical reasoning"
-        },
-        {
-            "id":   "qwen/qwen3-next-80b-a3b-instruct:free",
-            "name": "Qwen3-80B",
-            "desc": "80B MoE | 262K ctx | Qwen3 architecture | Strong instruct"
-        },
         {
             "id":   "meta-llama/llama-3.3-70b-instruct:free",
             "name": "Llama3.3-70B",
-            "desc": "70B | 65K ctx | Meta Llama3.3 | Fast & reliable fallback"
+            "desc": "70B | 65K ctx | Fast & reliable reasoning"
+        },
+        {
+            "id":   "qwen/qwen3-coder:free",
+            "name": "Qwen3-Coder",
+            "desc": "Coder | 262K ctx | Excellent at writing transform()"
+        },
+        {
+            "id":   "google/gemma-3-27b-it:free",
+            "name": "Gemma-3-27B",
+            "desc": "27B | 131K ctx | Strict instruction following"
+        },
+        {
+            "id":   "openrouter/free",
+            "name": "OpenRouter-Auto",
+            "desc": "Dynamic free routing | Fastest available online"
         },
     ]
 
@@ -309,7 +310,7 @@ class MultiProviderLLM(LLMProvider):
                         print(f"[LLM] Credits exhausted on {provider_name}. Switching...")
                         break
                     else:
-                        logger.warning(f"[{provider_name}] Error: {str(e)[:200]}")
+                        print(f"[{provider_name}] Exception: {str(e)[:200]}")
                         break
 
         raise RuntimeError(
