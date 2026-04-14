@@ -1,16 +1,16 @@
 """
-Multi-provider LLM module -- OpenRouter ONLY (Qwen-powered).
+Multi-provider LLM module -- OpenRouter FREE stack (max power).
 
-Model stack (via OpenRouter):
-  PRIMARY  -> qwen/qwq-32b               (32B reasoning model -- best for ARC)
-  FALLBACK -> qwen/qwen-2.5-72b-instruct (72B instruct -- large, reliable backup)
+Provider stack (all FREE, all open-source, via OpenRouter):
+  [1] nvidia/nemotron-3-super-120b-a12b:free  -- 120B MoE, 262K ctx  (PRIMARY)
+  [2] nousresearch/hermes-3-llama-3.1-405b:free -- 405B reasoning   (FALLBACK 1)
+  [3] qwen/qwen3-next-80b-a3b-instruct:free   -- 80B Qwen3 MoE      (FALLBACK 2)
+  [4] meta-llama/llama-3.3-70b-instruct:free  -- 70B Llama3, fast   (FALLBACK 3)
 
-Why QwQ-32B first?
-  - Dedicated chain-of-thought reasoning model
-  - Outperforms much larger models on logical/spatial tasks
-  - Perfect fit for ARC-AGI pattern discovery
+All models: 100% free, 100% open-source weights.
+Each is on a separate upstream provider so rate limits are independent.
 
-API key: set OPENROUTER_API_KEY in .env
+API key: OPENROUTER_API_KEY in .env
 Get a free key: https://openrouter.ai (no credit card needed)
 """
 
@@ -43,7 +43,7 @@ class RateLimiter:
     def wait_if_needed(self, estimated_tokens: int):
         now = time.time()
 
-        # Enforce minimum inter-call delay (FIXED: was `pass` -- now actually sleeps)
+        # Enforce minimum inter-call delay (fixed: was a no-op `pass`)
         elapsed = now - self.last_call
         if elapsed < self.min_delay:
             time.sleep(self.min_delay - elapsed)
@@ -56,10 +56,7 @@ class RateLimiter:
         if used + estimated_tokens > self.max_tokens and self.window:
             wait_until = self.window[0][0] + 60
             sleep_time = wait_until - time.time() + 1
-            if sleep_time > 30.0:
-                print(f"[RateLimiter] Token budget exceeded. Sleeping {sleep_time:.1f}s...")
-                time.sleep(sleep_time)
-            elif sleep_time > 0:
+            if sleep_time > 0:
                 print(f"[RateLimiter] Token budget low. Sleeping {sleep_time:.1f}s...")
                 time.sleep(sleep_time)
 
@@ -84,23 +81,20 @@ class LLMProvider(ABC):
 
 
 # ===================================================
-# OPENROUTER PROVIDER
+# OPENROUTER PROVIDER (generic -- any model)
 # ===================================================
 
-# Separate rate limiter instances per slot so they don't share state
-openrouter_limiter_primary  = RateLimiter(max_tokens_per_min=150000, min_delay_sec=1.5)
-openrouter_limiter_fallback = RateLimiter(max_tokens_per_min=150000, min_delay_sec=1.5)
+def _make_limiter():
+    """Each provider slot gets its own rate limiter so they don't share state."""
+    return RateLimiter(max_tokens_per_min=120000, min_delay_sec=1.0)
 
 
 class OpenRouterProvider(LLMProvider):
     """
-    Routes requests through OpenRouter to any Qwen model.
+    Routes requests through OpenRouter to any open-source model.
     Uses the OpenAI-compatible API -- drop-in replacement.
-
-    Primary model  : qwen/qwq-32b  (chain-of-thought reasoning)
-    Fallback model : qwen/qwen-2.5-72b-instruct (72B production instruct)
     """
-    def __init__(self, model: str, limiter: RateLimiter):
+    def __init__(self, model: str, limiter: RateLimiter, display_name: str = ""):
         api_key = os.getenv("OPENROUTER_API_KEY", "").strip()
         if not api_key or len(api_key) < 10:
             raise RuntimeError(
@@ -117,7 +111,7 @@ class OpenRouterProvider(LLMProvider):
         )
         self.model = model
         self.limiter = limiter
-        self.name = f"OpenRouter({model})"
+        self.name = display_name or model
 
     def generate(self, system_prompt: str, user_prompt: str,
                  temperature: float = 0.0) -> LLMResponse:
@@ -127,7 +121,7 @@ class OpenRouterProvider(LLMProvider):
         response = self.client.chat.completions.create(
             model=self.model,
             temperature=temperature,
-            max_tokens=4096,   # cap for free-tier compatibility
+            max_tokens=4096,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user",   "content": user_prompt}
@@ -140,80 +134,102 @@ class OpenRouterProvider(LLMProvider):
 
 
 # ===================================================
-# MULTI-PROVIDER FAILOVER ENGINE (OpenRouter-only)
+# MULTI-PROVIDER FAILOVER ENGINE
 # ===================================================
 
 class MultiProviderLLM(LLMProvider):
     """
-    Two-tier OpenRouter failover:
-      [1] qwen/qwq-32b               -- reasoning powerhouse (PRIMARY)
-      [2] qwen/qwen-2.5-72b-instruct -- 72B instruct backup  (FALLBACK)
+    4-tier free open-source model stack via OpenRouter.
 
-    Failover rules:
-      - 429/rate-limit  -> sleep + retry same model (up to 3 times)
-      - 503/overloaded  -> switch to fallback immediately
-      - Exhausted quota -> switch to fallback immediately
+    Each model is on a DIFFERENT upstream provider, so their rate limits
+    are independent -- if one pool is exhausted, the next has a fresh quota.
+
+    Provider order (all free, all open-source):
+      [1] Nemotron-120B (PRIMARY)   -- NVIDIA upstream, 262K ctx
+      [2] Hermes-405B  (FALLBACK 1) -- Nous Research, largest free model
+      [3] Qwen3-80B    (FALLBACK 2) -- Venice.ai upstream, 262K ctx
+      [4] Llama3.3-70B (FALLBACK 3) -- Meta via Together, 65K ctx
+
+    Failover triggers:
+      - 429 / upstream rate-limit -> wait 65s then retry (resets per minute)
+      - 503 / overloaded          -> switch immediately
+      - Credits exhausted         -> switch immediately
     """
 
-    # Model constants -- change these two lines to swap models globally
-    PRIMARY_MODEL  = "qwen/qwen3-next-80b-a3b-instruct:free"   # 80B MoE -- FREE
-    FALLBACK_MODEL = "qwen/qwen3-coder:free"                    # Coder model -- FREE
+    # -- Model IDs (all verified free on this OpenRouter account) -----------
+    MODELS = [
+        {
+            "id":   "nvidia/nemotron-3-super-120b-a12b:free",
+            "name": "Nemotron-120B",
+            "desc": "120B MoE | 262K ctx | NVIDIA upstream | Best reasoning"
+        },
+        {
+            "id":   "nousresearch/hermes-3-llama-3.1-405b:free",
+            "name": "Hermes-405B",
+            "desc": "405B dense | Largest free model | Deep logical reasoning"
+        },
+        {
+            "id":   "qwen/qwen3-next-80b-a3b-instruct:free",
+            "name": "Qwen3-80B",
+            "desc": "80B MoE | 262K ctx | Qwen3 architecture | Strong instruct"
+        },
+        {
+            "id":   "meta-llama/llama-3.3-70b-instruct:free",
+            "name": "Llama3.3-70B",
+            "desc": "70B | 65K ctx | Meta Llama3.3 | Fast & reliable fallback"
+        },
+    ]
+
+    # Convenience properties for run_benchmark.py display
+    PRIMARY_MODEL  = MODELS[0]["id"]
+    FALLBACK_MODEL = MODELS[1]["id"]
 
     def __init__(self):
         self.providers: List[LLMProvider] = []
         self.provider_names: List[str] = []
         self.current_provider_idx = 0
-        self.name = "OpenRouter-Qwen"
+        self.name = "OpenRouter-FreeStack"
         self._init_providers()
 
     def reset_provider(self):
-        """Reset to primary (qwen/qwq-32b). Call at the start of each task."""
+        """Reset to primary provider. Called at start of each task."""
         self.current_provider_idx = 0
 
     def _init_providers(self):
-        """Build the two-model OpenRouter stack."""
-        sep = "=" * 55
+        """Build the free model stack."""
+        sep = "=" * 60
         print(f"\n{sep}")
-        print("  CSA -- OpenRouter Qwen Stack")
+        print("  CSA -- OpenRouter Free Stack (4 models, all open-source)")
         print(sep)
 
-        # PRIMARY: qwen3-next-80b-a3b-instruct:free
-        try:
-            p = OpenRouterProvider(
-                model=self.PRIMARY_MODEL,
-                limiter=openrouter_limiter_primary
-            )
-            self.providers.append(p)
-            self.provider_names.append("Qwen3-80B")
-            print(f"  [1] PRIMARY  : {self.PRIMARY_MODEL}")
-            print(f"      Role     : 80B MoE reasoning | Best for ARC pattern logic (FREE)")
-        except Exception as e:
-            logger.error(f"PRIMARY provider init failed: {e}")
+        for i, m in enumerate(self.MODELS):
+            try:
+                p = OpenRouterProvider(
+                    model=m["id"],
+                    limiter=_make_limiter(),
+                    display_name=m["name"]
+                )
+                self.providers.append(p)
+                self.provider_names.append(m["name"])
+                role = "PRIMARY " if i == 0 else f"FALLBACK {i}"
+                print(f"  [{i+1}] {role:<12}: {m['name']}")
+                print(f"        {m['desc']}")
+            except Exception as e:
+                logger.error(f"Model {m['id']} init failed: {e}")
 
-        # FALLBACK: qwen3-coder:free
-        try:
-            p = OpenRouterProvider(
-                model=self.FALLBACK_MODEL,
-                limiter=openrouter_limiter_fallback
-            )
-            self.providers.append(p)
-            self.provider_names.append("Qwen3-Coder")
-            print(f"  [2] FALLBACK : {self.FALLBACK_MODEL}")
-            print(f"      Role     : Coder model | Perfect for transform() code gen (FREE)")
-        except Exception as e:
-            logger.error(f"FALLBACK provider init failed: {e}")
-
+        print(f"\n  Rate-limit strategy: 65s wait on 429 (upstream resets per minute)")
+        print(f"  Each model is on a DIFFERENT upstream -- independent quotas")
         print(f"{sep}\n")
 
         if len(self.providers) == 0:
             raise RuntimeError(
-                "CRITICAL: OpenRouter provider failed to initialize.\n"
+                "CRITICAL: No providers initialized.\n"
                 "Check OPENROUTER_API_KEY in your .env file."
             )
 
     def generate(self, system_prompt: str, user_prompt: str,
                  temperature: float = 0.0, task_id: str = "") -> LLMResponse:
-        """Generate with automatic failover between Qwen models."""
+        """Generate with automatic failover across the 4-model free stack."""
         start_idx = self.current_provider_idx
 
         for provider_offset in range(len(self.providers)):
@@ -229,52 +245,58 @@ class MultiProviderLLM(LLMProvider):
 
                     response = provider.generate(system_prompt, user_prompt, temperature)
 
-                    # Check for error strings returned in content
+                    # Detect error strings returned in content body
                     if response.content.startswith("Error:"):
                         err = response.content.lower()
-                        if "429" in err or "rate" in err:
+                        if "429" in err or "rate" in err or "temporarily" in err:
                             if retry < max_retries - 1:
-                                wait = (retry + 1) * 10
-                                print(f"[LLM] 429 on {provider_name}. Retry in {wait}s...")
+                                wait = 65 if retry == 0 else 90
+                                print(f"[LLM] 429/rate-limit on {provider_name}.")
+                                print(f"[LLM] Waiting {wait}s for upstream reset...")
                                 time.sleep(wait)
                                 continue
                             else:
                                 print(f"[LLM] Persistent 429 on {provider_name}. Switching...")
                                 break
                         elif "503" in err or "overload" in err:
-                            print(f"[LLM] 503 on {provider_name}. Switching to fallback...")
+                            print(f"[LLM] 503 on {provider_name}. Switching...")
                             break
-                        elif "quota" in err or "credit" in err or "billing" in err:
-                            print(f"[LLM] Quota/credits exhausted on {provider_name}. Switching...")
+                        elif "afford" in err or "credit" in err or "quota" in err or "billing" in err:
+                            print(f"[LLM] Credits exhausted on {provider_name}. Switching...")
                             break
                         else:
                             if provider_offset == len(self.providers) - 1:
                                 return response
                             break
 
-                    # Success -- stick with this provider
+                    # Success
                     self.current_provider_idx = idx
                     return response
 
                 except Exception as e:
                     err = str(e).lower()
-                    if "429" in err or "rate" in err:
+                    if "429" in err or "rate" in err or "temporarily" in err:
                         if retry < max_retries - 1:
-                            wait = (retry + 1) * 10
-                            print(f"[LLM] 429 exception on {provider_name}. Retry in {wait}s...")
+                            wait = 65 if retry == 0 else 90
+                            print(f"[LLM] 429/rate-limit on {provider_name}.")
+                            print(f"[LLM] Waiting {wait}s for upstream reset...")
                             time.sleep(wait)
                             continue
                         else:
                             print(f"[LLM] Persistent 429 on {provider_name}. Switching...")
                             break
                     elif "503" in err or "overload" in err:
-                        print(f"[LLM] 503 on {provider_name}. Switching to fallback...")
+                        print(f"[LLM] 503 on {provider_name}. Switching...")
+                        break
+                    elif "afford" in err or "credit" in err or "quota" in err or "billing" in err:
+                        print(f"[LLM] Credits exhausted on {provider_name}. Switching...")
                         break
                     else:
-                        logger.warning(f"Provider {provider_name} error: {e}")
+                        logger.warning(f"[{provider_name}] Error: {str(e)[:200]}")
                         break
 
         raise RuntimeError(
-            "CRITICAL: All OpenRouter Qwen providers failed.\n"
-            "Check rate limits at https://openrouter.ai/activity"
+            "CRITICAL: All 4 free providers failed.\n"
+            "Try again in 1-2 minutes (upstream pools reset per minute).\n"
+            "Check activity: https://openrouter.ai/activity"
         )
