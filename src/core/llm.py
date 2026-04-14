@@ -1,9 +1,9 @@
 """
-Multi-provider LLM module — OpenRouter ONLY (Qwen-powered).
+Multi-provider LLM module -- OpenRouter ONLY (Qwen-powered).
 
 Model stack (via OpenRouter):
-  PRIMARY  → qwen/qwq-32b               (32B reasoning model — best for ARC)
-  FALLBACK → qwen/qwen-2.5-72b-instruct (72B instruct — larger, reliable backup)
+  PRIMARY  -> qwen/qwq-32b               (32B reasoning model -- best for ARC)
+  FALLBACK -> qwen/qwen-2.5-72b-instruct (72B instruct -- large, reliable backup)
 
 Why QwQ-32B first?
   - Dedicated chain-of-thought reasoning model
@@ -29,9 +29,9 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 
 
-# ═══════════════════════════════════════════════════════
+# ===================================================
 # RATE LIMITER
-# ═══════════════════════════════════════════════════════
+# ===================================================
 
 class RateLimiter:
     def __init__(self, max_tokens_per_min: int, min_delay_sec: float):
@@ -43,7 +43,7 @@ class RateLimiter:
     def wait_if_needed(self, estimated_tokens: int):
         now = time.time()
 
-        # Enforce minimum inter-call delay (FIXED: was `pass` — now actually sleeps)
+        # Enforce minimum inter-call delay (FIXED: was `pass` -- now actually sleeps)
         elapsed = now - self.last_call
         if elapsed < self.min_delay:
             time.sleep(self.min_delay - elapsed)
@@ -67,9 +67,9 @@ class RateLimiter:
         self.last_call = time.time()
 
 
-# ═══════════════════════════════════════════════════════
+# ===================================================
 # BASE CLASS
-# ═══════════════════════════════════════════════════════
+# ===================================================
 
 class LLMResponse(BaseModel):
     content: str
@@ -83,11 +83,11 @@ class LLMProvider(ABC):
         pass
 
 
-# ═══════════════════════════════════════════════════════
-# OPENROUTER PROVIDER — qwen/qwq-32b (PRIMARY)
-# ═══════════════════════════════════════════════════════
+# ===================================================
+# OPENROUTER PROVIDER
+# ===================================================
 
-# OpenRouter allows ~200K tokens/min on free accounts
+# Separate rate limiter instances per slot so they don't share state
 openrouter_limiter_primary  = RateLimiter(max_tokens_per_min=150000, min_delay_sec=1.5)
 openrouter_limiter_fallback = RateLimiter(max_tokens_per_min=150000, min_delay_sec=1.5)
 
@@ -95,7 +95,7 @@ openrouter_limiter_fallback = RateLimiter(max_tokens_per_min=150000, min_delay_s
 class OpenRouterProvider(LLMProvider):
     """
     Routes requests through OpenRouter to any Qwen model.
-    Uses the OpenAI-compatible API — drop-in replacement.
+    Uses the OpenAI-compatible API -- drop-in replacement.
 
     Primary model  : qwen/qwq-32b  (chain-of-thought reasoning)
     Fallback model : qwen/qwen-2.5-72b-instruct (72B production instruct)
@@ -127,6 +127,7 @@ class OpenRouterProvider(LLMProvider):
         response = self.client.chat.completions.create(
             model=self.model,
             temperature=temperature,
+            max_tokens=4096,   # cap for free-tier compatibility
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user",   "content": user_prompt}
@@ -138,25 +139,25 @@ class OpenRouterProvider(LLMProvider):
         )
 
 
-# ═══════════════════════════════════════════════════════
+# ===================================================
 # MULTI-PROVIDER FAILOVER ENGINE (OpenRouter-only)
-# ═══════════════════════════════════════════════════════
+# ===================================================
 
 class MultiProviderLLM(LLMProvider):
     """
     Two-tier OpenRouter failover:
-      [1] qwen/qwq-32b               — reasoning powerhouse (PRIMARY)
-      [2] qwen/qwen-2.5-72b-instruct — 72B instruct backup (FALLBACK)
+      [1] qwen/qwq-32b               -- reasoning powerhouse (PRIMARY)
+      [2] qwen/qwen-2.5-72b-instruct -- 72B instruct backup  (FALLBACK)
 
     Failover rules:
-      - 429/rate-limit  → sleep + retry same model (up to 3 times)
-      - 503/overloaded  → switch to fallback immediately
-      - Exhausted quota → switch to fallback immediately
+      - 429/rate-limit  -> sleep + retry same model (up to 3 times)
+      - 503/overloaded  -> switch to fallback immediately
+      - Exhausted quota -> switch to fallback immediately
     """
 
-    # Model constants — easy to swap in one place
-    PRIMARY_MODEL  = "qwen/qwq-32b"
-    FALLBACK_MODEL = "qwen/qwen-2.5-72b-instruct"
+    # Model constants -- change these two lines to swap models globally
+    PRIMARY_MODEL  = "qwen/qwen3-next-80b-a3b-instruct:free"   # 80B MoE -- FREE
+    FALLBACK_MODEL = "qwen/qwen3-coder:free"                    # Coder model -- FREE
 
     def __init__(self):
         self.providers: List[LLMProvider] = []
@@ -171,37 +172,38 @@ class MultiProviderLLM(LLMProvider):
 
     def _init_providers(self):
         """Build the two-model OpenRouter stack."""
-        print("\n" + "=" * 60)
-        print("  CSA — OpenRouter Qwen Stack")
-        print("=" * 60)
+        sep = "=" * 55
+        print(f"\n{sep}")
+        print("  CSA -- OpenRouter Qwen Stack")
+        print(sep)
 
-        # PRIMARY: qwen/qwq-32b
+        # PRIMARY: qwen3-next-80b-a3b-instruct:free
         try:
             p = OpenRouterProvider(
                 model=self.PRIMARY_MODEL,
                 limiter=openrouter_limiter_primary
             )
             self.providers.append(p)
-            self.provider_names.append("QwQ-32B")
-            print(f"  [1] PRIMARY  → {self.PRIMARY_MODEL}")
-            print(f"      Role: Chain-of-thought reasoning | Best for ARC pattern logic")
+            self.provider_names.append("Qwen3-80B")
+            print(f"  [1] PRIMARY  : {self.PRIMARY_MODEL}")
+            print(f"      Role     : 80B MoE reasoning | Best for ARC pattern logic (FREE)")
         except Exception as e:
             logger.error(f"PRIMARY provider init failed: {e}")
 
-        # FALLBACK: qwen/qwen-2.5-72b-instruct
+        # FALLBACK: qwen3-coder:free
         try:
             p = OpenRouterProvider(
                 model=self.FALLBACK_MODEL,
                 limiter=openrouter_limiter_fallback
             )
             self.providers.append(p)
-            self.provider_names.append("Qwen2.5-72B")
-            print(f"  [2] FALLBACK → {self.FALLBACK_MODEL}")
-            print(f"      Role: Large instruct model | Activates if QwQ-32B rate-limits")
+            self.provider_names.append("Qwen3-Coder")
+            print(f"  [2] FALLBACK : {self.FALLBACK_MODEL}")
+            print(f"      Role     : Coder model | Perfect for transform() code gen (FREE)")
         except Exception as e:
             logger.error(f"FALLBACK provider init failed: {e}")
 
-        print("=" * 60 + "\n")
+        print(f"{sep}\n")
 
         if len(self.providers) == 0:
             raise RuntimeError(
@@ -223,11 +225,11 @@ class MultiProviderLLM(LLMProvider):
             for retry in range(max_retries):
                 try:
                     label = f"Task {task_id}" if task_id else "Call"
-                    print(f"[LLM] {label} → {provider_name} (attempt {retry+1})")
+                    print(f"[LLM] {label} -> {provider_name} (attempt {retry+1})")
 
                     response = provider.generate(system_prompt, user_prompt, temperature)
 
-                    # Check for error strings in response content
+                    # Check for error strings returned in content
                     if response.content.startswith("Error:"):
                         err = response.content.lower()
                         if "429" in err or "rate" in err:
@@ -250,8 +252,8 @@ class MultiProviderLLM(LLMProvider):
                                 return response
                             break
 
-                    # Success
-                    self.current_provider_idx = idx  # sticky — keep using what works
+                    # Success -- stick with this provider
+                    self.current_provider_idx = idx
                     return response
 
                 except Exception as e:

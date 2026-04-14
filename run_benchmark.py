@@ -127,16 +127,16 @@ def run_benchmark(limit: int = 50):
     llm = MultiProviderLLM()
     controller = MetaController(primary_llm=llm)
 
-    # ── Show active model info ──────────────────────────────────────────
+    # -- Show active model info ------------------------------------------
     primary_model   = MultiProviderLLM.PRIMARY_MODEL
     fallback_model  = MultiProviderLLM.FALLBACK_MODEL
     print(f"  Model (primary):   {primary_model}")
     print(f"  Model (fallback):  {fallback_model}")
     print(f"  Provider:          OpenRouter")
     print(f"  LLM Role in pipeline:")
-    print(f"    [1] Hypothesis generation  — reads symbolic graph → describes transform rule")
-    print(f"    [2] Code generation        — reads pairs + hypothesis → writes transform()")
-    print(f"    [3] Code retry/re-hypo     — reads error + failed approach → tries new angle")
+    print(f"    [1] Hypothesis generation -- reads symbolic graph -> describes transform rule")
+    print(f"    [2] Code generation       -- reads pairs + hypothesis -> writes transform()")
+    print(f"    [3] Code retry/re-hypo    -- reads error + failed approach -> tries new angle")
     print(f"  A* search runs BEFORE LLM (free, no API cost, catches rotations/flips)")
     print("=" * 70)
 
