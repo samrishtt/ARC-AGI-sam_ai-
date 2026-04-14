@@ -1,126 +1,22 @@
 {
   "total_tasks": 50,
-  "solved": 15,
-  "failed": 35,
+  "solved": 0,
+  "failed": 50,
   "errors": 0,
-  "accuracy_pct": 30.0,
-  "total_time_seconds": 1798.68,
+  "accuracy_pct": 0.0,
+  "total_time_seconds": 17.7,
   "component_failures": {
-    "coding_sandbox": 8,
-    "llm_codegen": 2,
-    "llm_hypothesis": 25
+    "llm_hypothesis": 50
   },
   "failure_types": {
-    "code_execution_failed": 8,
-    "no_code_generated": 2,
-    "llm_error": 25
+    "llm_error": 50
   },
   "per_task": [
     {
       "task_id": "007bbfb7",
-      "status": "success",
-      "correct": true,
-      "predicted": [
-        [
-          7,
-          0,
-          7,
-          0,
-          0,
-          0,
-          7,
-          0,
-          7
-        ],
-        [
-          7,
-          0,
-          7,
-          0,
-          0,
-          0,
-          7,
-          0,
-          7
-        ],
-        [
-          7,
-          7,
-          0,
-          0,
-          0,
-          0,
-          7,
-          7,
-          0
-        ],
-        [
-          7,
-          0,
-          7,
-          0,
-          0,
-          0,
-          7,
-          0,
-          7
-        ],
-        [
-          7,
-          0,
-          7,
-          0,
-          0,
-          0,
-          7,
-          0,
-          7
-        ],
-        [
-          7,
-          7,
-          0,
-          0,
-          0,
-          0,
-          7,
-          7,
-          0
-        ],
-        [
-          7,
-          0,
-          7,
-          7,
-          0,
-          7,
-          0,
-          0,
-          0
-        ],
-        [
-          7,
-          0,
-          7,
-          7,
-          0,
-          7,
-          0,
-          0,
-          0
-        ],
-        [
-          7,
-          7,
-          0,
-          7,
-          7,
-          0,
-          0,
-          0,
-          0
-        ]
-      ],
+      "status": "error",
+      "correct": false,
+      "predicted": null,
       "expected": [
         [
           7,
@@ -222,457 +118,20 @@
           0
         ]
       ],
-      "elapsed_seconds": 12.9,
-      "output_snippet": "Code validated against training pairs!\nSUCCESS\n[[7, 0, 7, 0, 0, 0, 7, 0, 7], [7, 0, 7, 0, 0, 0, 7, 0, 7], [7, 7, 0, 0, 0, 0, 7, 7, 0], [7, 0, 7, 0, 0, 0, 7, 0, 7], [7, 0, 7, 0, 0, 0, 7, 0, 7], [7, 7, 0, 0, 0, 0, 7, 7, 0], [7, 0, 7, 7, 0, 7, 0, 0, 0], [7, 0, 7, 7, 0, 7, 0, 0, 0], [7, 7, 0, 7, 7, 0, 0, 0, 0]]",
+      "elapsed_seconds": 0.9,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDEu2qnyb7rv9iS2yQ'}",
       "pipeline": "visual_spatial",
-      "failure_info": null
+      "failure_info": {
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
+      }
     },
     {
       "task_id": "00d62c1b",
-      "status": "success",
-      "correct": true,
-      "predicted": [
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          3,
-          4,
-          3,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          3,
-          0,
-          3,
-          3,
-          3,
-          3,
-          3,
-          0,
-          3,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          3,
-          4,
-          4,
-          4,
-          4,
-          3,
-          4,
-          4,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          3,
-          3,
-          3,
-          3,
-          3,
-          0,
-          3,
-          3,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          3,
-          3,
-          3,
-          3,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          4,
-          4,
-          4,
-          3,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          4,
-          4,
-          4,
-          3,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          3,
-          3,
-          3,
-          3,
-          4,
-          4,
-          4,
-          3,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          4,
-          4,
-          4,
-          3,
-          4,
-          4,
-          4,
-          3,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          3,
-          3,
-          3,
-          3,
-          3,
-          4,
-          4,
-          4,
-          3,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          3,
-          4,
-          3,
-          0,
-          0,
-          0,
-          3,
-          3,
-          3,
-          3,
-          3,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          3,
-          4,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          3,
-          0,
-          3,
-          0,
-          3,
-          3,
-          3,
-          3,
-          3,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          4,
-          4,
-          4,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          4,
-          4,
-          4,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          3,
-          3,
-          3,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ]
-      ],
+      "status": "error",
+      "correct": false,
+      "predicted": null,
       "expected": [
         [
           0,
@@ -1115,14 +574,18 @@
           0
         ]
       ],
-      "elapsed_seconds": 15.5,
-      "output_snippet": "Code validated against training pairs!\nSUCCESS\n[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 3, 4, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 3, 0, 3, 3, 3, 3, 3, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 3, 4, 4, 4, 4, 3, 4, 4, 3, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 3, 3, 3, 3, 3, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 0, 0], [0, 0, 0, 0, 0, 0,",
+      "elapsed_seconds": 0.38,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDHDBqnFuWRH2JnzpU'}",
       "pipeline": "visual_spatial",
-      "failure_info": null
+      "failure_info": {
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
+      }
     },
     {
       "task_id": "017c7c7b",
-      "status": "failed",
+      "status": "error",
       "correct": false,
       "predicted": null,
       "expected": [
@@ -1172,18 +635,18 @@
           0
         ]
       ],
-      "elapsed_seconds": 43.51,
-      "output_snippet": "Exhausted 3 retries.\nLast error: Pair 0 FAILED. Expected [[0, 2, 0], [2, 2, 0], [0, 2, 0], [0, 2, 2], [0, 2, 0], [2, 2, 0], [0, 2, 0], [0, 2, 2], [0, 2, 0]], got [[0, 2, 2], [2, 2, 0], [2, 2, 0], [0, 2, 2], [2, 2, 0], [2, 2, 0], [0, 2, 2], [2, 2, 0], [2, 2, 0]]",
+      "elapsed_seconds": 0.29,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDJaHkAkYq2H7y771c'}",
       "pipeline": "visual_spatial",
       "failure_info": {
-        "component": "coding_sandbox",
-        "failure_type": "code_execution_failed",
-        "raw_output_snippet": "Exhausted 3 retries.\nLast error: Pair 0 FAILED. Expected [[0, 2, 0], [2, 2, 0], [0, 2, 0], [0, 2, 2], [0, 2, 0], [2, 2, 0], [0, 2, 0], [0, 2, 2], [0, 2, 0]], got [[0, 2, 2], [2, 2, 0], [2, 2, 0], [0, 2, 2], [2, 2, 0], [2, 2, 0], [0, 2, 2], [2, 2, 0], [2, 2, 0]]"
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
       }
     },
     {
       "task_id": "025d127b",
-      "status": "failed",
+      "status": "error",
       "correct": false,
       "predicted": null,
       "expected": [
@@ -1308,18 +771,18 @@
           0
         ]
       ],
-      "elapsed_seconds": 47.83,
-      "output_snippet": "Exhausted 3 retries.\nLast error: Pair 0 FAILED. Expected [[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 6, 6, 6, 0, 0, 0, 0], [0, 0, 6, 0, 0, 6, 0, 0, 0], [0, 0, 0, 6, 0, 0, 6, 0, 0], [0, 0, 0, 0, 6, 0, 6, 0, 0], [0, 0, 0, 0, 6, 6, 6, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 2, 2, 2, 0, 0, 0], [0, 0, 0, 2, 0, 2, 0, 0, 0], [0, 0, 0, 2, 2, 2, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0]], got [[0, 0, 0, 0, 0, 0, 0, 0, 0], [",
+      "elapsed_seconds": 0.27,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDKmEAJgGeeZQEyvR5'}",
       "pipeline": "visual_spatial",
       "failure_info": {
-        "component": "coding_sandbox",
-        "failure_type": "code_execution_failed",
-        "raw_output_snippet": "Exhausted 3 retries.\nLast error: Pair 0 FAILED. Expected [[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 6, 6, 6, 0, 0, 0, 0], [0, 0, 6, 0, 0, 6, 0, 0, 0], [0, 0, 0, 6, 0, 0, 6, 0, 0], [0, 0, 0, 0, 6, 0, 6, 0, 0], [0, 0, 0, 0, 6, 6, 6, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 2, 2, 2, 0, 0, 0], [0, 0, 0, "
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
       }
     },
     {
       "task_id": "045e512c",
-      "status": "failed",
+      "status": "error",
       "correct": false,
       "predicted": null,
       "expected": [
@@ -1807,36 +1270,20 @@
           0
         ]
       ],
-      "elapsed_seconds": 64.33,
-      "output_snippet": "Exhausted 3 retries.\nLast error: Pair 0 FAILED. Expected [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 8, 8, 8, 0, 3, 3, 3, 0, 3, 3, 3, ",
+      "elapsed_seconds": 0.29,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDLz9MXHxfXjwVLRtu'}",
       "pipeline": "visual_spatial",
       "failure_info": {
-        "component": "coding_sandbox",
-        "failure_type": "code_execution_failed",
-        "raw_output_snippet": "Exhausted 3 retries.\nLast error: Pair 0 FAILED. Expected [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0"
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
       }
     },
     {
       "task_id": "0520fde7",
-      "status": "success",
-      "correct": true,
-      "predicted": [
-        [
-          2,
-          0,
-          2
-        ],
-        [
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0
-        ]
-      ],
+      "status": "error",
+      "correct": false,
+      "predicted": null,
       "expected": [
         [
           2,
@@ -1854,80 +1301,20 @@
           0
         ]
       ],
-      "elapsed_seconds": 27.17,
-      "output_snippet": "Code validated against training pairs!\nSUCCESS\n[[2, 0, 2], [0, 0, 0], [0, 0, 0]]",
+      "elapsed_seconds": 0.28,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDNF45vfTEm8Kdd8jQ'}",
       "pipeline": "visual_spatial",
-      "failure_info": null
+      "failure_info": {
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
+      }
     },
     {
       "task_id": "05269061",
-      "status": "success",
-      "correct": true,
-      "predicted": [
-        [
-          2,
-          1,
-          4,
-          2,
-          1,
-          4,
-          2
-        ],
-        [
-          1,
-          4,
-          2,
-          1,
-          4,
-          2,
-          1
-        ],
-        [
-          4,
-          2,
-          1,
-          4,
-          2,
-          1,
-          4
-        ],
-        [
-          2,
-          1,
-          4,
-          2,
-          1,
-          4,
-          2
-        ],
-        [
-          1,
-          4,
-          2,
-          1,
-          4,
-          2,
-          1
-        ],
-        [
-          4,
-          2,
-          1,
-          4,
-          2,
-          1,
-          4
-        ],
-        [
-          2,
-          1,
-          4,
-          2,
-          1,
-          4,
-          2
-        ]
-      ],
+      "status": "error",
+      "correct": false,
+      "predicted": null,
       "expected": [
         [
           2,
@@ -1993,149 +1380,20 @@
           2
         ]
       ],
-      "elapsed_seconds": 19.89,
-      "output_snippet": "Code validated against training pairs!\nSUCCESS\n[[2, 1, 4, 2, 1, 4, 2], [1, 4, 2, 1, 4, 2, 1], [4, 2, 1, 4, 2, 1, 4], [2, 1, 4, 2, 1, 4, 2], [1, 4, 2, 1, 4, 2, 1], [4, 2, 1, 4, 2, 1, 4], [2, 1, 4, 2, 1, 4, 2]]",
+      "elapsed_seconds": 0.28,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDPRFNrCMJGCAeodeL'}",
       "pipeline": "visual_spatial",
-      "failure_info": null
+      "failure_info": {
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
+      }
     },
     {
       "task_id": "05f2a901",
-      "status": "success",
-      "correct": true,
-      "predicted": [
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          2,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          8,
-          8,
-          2,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          8,
-          8,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ]
-      ],
+      "status": "error",
+      "correct": false,
+      "predicted": null,
       "expected": [
         [
           0,
@@ -2270,745 +1528,20 @@
           0
         ]
       ],
-      "elapsed_seconds": 28.06,
-      "output_snippet": "Code validated against training pairs!\nSUCCESS\n[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 2, 0, 0, 0, 0, 0, 0], [0, 0, 0, 2, 2, 0, 0, 0, 0, 0], [0, 8, 8, 2, 2, 0, 0, 0, 0, 0], [0, 8, 8, 0, 2, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]",
+      "elapsed_seconds": 0.41,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDQeus82knskFriYKZ'}",
       "pipeline": "visual_spatial",
-      "failure_info": null
+      "failure_info": {
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
+      }
     },
     {
       "task_id": "06df4c85",
-      "status": "success",
-      "correct": true,
-      "predicted": [
-        [
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0
-        ],
-        [
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4
-        ],
-        [
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          8,
-          8,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          2,
-          2,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          8,
-          8,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          2,
-          2,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0
-        ],
-        [
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4
-        ],
-        [
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          8,
-          8,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          2,
-          2,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          8,
-          8,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          2,
-          2,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0
-        ],
-        [
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4
-        ],
-        [
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          8,
-          8,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          2,
-          2,
-          4,
-          0,
-          0,
-          4,
-          3,
-          3,
-          4,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          8,
-          8,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          2,
-          2,
-          4,
-          0,
-          0,
-          4,
-          3,
-          3,
-          4,
-          0,
-          0
-        ],
-        [
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4
-        ],
-        [
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          8,
-          8,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          2,
-          2,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          8,
-          8,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          2,
-          2,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0
-        ],
-        [
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4
-        ],
-        [
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          2,
-          2,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          2,
-          2,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0
-        ],
-        [
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4
-        ],
-        [
-          0,
-          0,
-          4,
-          2,
-          2,
-          4,
-          2,
-          2,
-          4,
-          2,
-          2,
-          4,
-          2,
-          2,
-          4,
-          2,
-          2,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          4,
-          2,
-          2,
-          4,
-          2,
-          2,
-          4,
-          2,
-          2,
-          4,
-          2,
-          2,
-          4,
-          2,
-          2,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0
-        ],
-        [
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4
-        ],
-        [
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0
-        ],
-        [
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4
-        ],
-        [
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0,
-          4,
-          0,
-          0
-        ]
-      ],
+      "status": "error",
+      "correct": false,
+      "predicted": null,
       "expected": [
         [
           0,
@@ -3739,116 +2272,20 @@
           0
         ]
       ],
-      "elapsed_seconds": 53.37,
-      "output_snippet": "Code validated against training pairs!\nSUCCESS\n[[0, 0, 4, 0, 0, 4, 0, 0, 4, 0, 0, 4, 0, 0, 4, 0, 0, 4, 0, 0, 4, 0, 0, 4, 0, 0], [0, 0, 4, 0, 0, 4, 0, 0, 4, 0, 0, 4, 0, 0, 4, 0, 0, 4, 0, 0, 4, 0, 0, 4, 0, 0], [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], [0, 0, 4, 0, 0, 4, 8, 8, 4, 0, 0, 4, 0, 0, 4, 2, 2, 4, 0, 0, 4, 0, 0, 4, 0, 0], [0, 0, 4, 0, 0, 4, 8, 8, 4, 0, 0, 4, 0, 0, 4, 2, 2, 4, 0, 0, 4, 0, 0, 4, 0, 0], [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, ",
+      "elapsed_seconds": 0.32,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDSY2Ha7VDNyxFuvpd'}",
       "pipeline": "visual_spatial",
-      "failure_info": null
+      "failure_info": {
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
+      }
     },
     {
       "task_id": "08ed6ac7",
-      "status": "success",
-      "correct": true,
-      "predicted": [
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          1,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          1,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          1,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          1,
-          0,
-          0,
-          0,
-          2,
-          0,
-          3,
-          0
-        ],
-        [
-          0,
-          1,
-          0,
-          0,
-          0,
-          2,
-          0,
-          3,
-          0
-        ],
-        [
-          0,
-          1,
-          0,
-          4,
-          0,
-          2,
-          0,
-          3,
-          0
-        ],
-        [
-          0,
-          1,
-          0,
-          4,
-          0,
-          2,
-          0,
-          3,
-          0
-        ],
-        [
-          0,
-          1,
-          0,
-          4,
-          0,
-          2,
-          0,
-          3,
-          0
-        ]
-      ],
+      "status": "error",
+      "correct": false,
+      "predicted": null,
       "expected": [
         [
           0,
@@ -3950,14 +2387,18 @@
           0
         ]
       ],
-      "elapsed_seconds": 10.56,
-      "output_snippet": "Code validated against training pairs!\nSUCCESS\n[[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 2, 0, 0, 0], [0, 1, 0, 0, 0, 2, 0, 0, 0], [0, 1, 0, 0, 0, 2, 0, 3, 0], [0, 1, 0, 0, 0, 2, 0, 3, 0], [0, 1, 0, 4, 0, 2, 0, 3, 0], [0, 1, 0, 4, 0, 2, 0, 3, 0], [0, 1, 0, 4, 0, 2, 0, 3, 0]]",
+      "elapsed_seconds": 0.41,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDTqA5jMrb7CLmx9o8'}",
       "pipeline": "visual_spatial",
-      "failure_info": null
+      "failure_info": {
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
+      }
     },
     {
       "task_id": "09629e4f",
-      "status": "failed",
+      "status": "error",
       "correct": false,
       "predicted": null,
       "expected": [
@@ -4105,13 +2546,13 @@
           0
         ]
       ],
-      "elapsed_seconds": 44.39,
-      "output_snippet": "No python code generated by LLM.",
+      "elapsed_seconds": 0.34,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDVkk1w4q713axsoaY'}",
       "pipeline": "visual_spatial",
       "failure_info": {
-        "component": "llm_codegen",
-        "failure_type": "no_code_generated",
-        "raw_output_snippet": "No python code generated by LLM."
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
       }
     },
     {
@@ -4289,13 +2730,13 @@
           0
         ]
       ],
-      "elapsed_seconds": 33.09,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': \"This request would exceed your organization's rate limit of 30,000 input tokens per minute (org: 6926fac4-207d-496f-883a-28d449950f0e, model: claude-sonnet-4-6). For details, refer to: https://docs.claude.com/en/api/rate-limits. You can see the response headers for current usage. Please reduce the prompt length or the maximum tokens reques",
+      "elapsed_seconds": 0.28,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDX2e9Q8f6NGffMEJm'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
-        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': \"This request would exceed your organization's rate limit of 30,000 input tokens per minute (org: 6926fac4-207d-496f-883a-28d449950f0e, model:"
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
       }
     },
     {
@@ -4624,13 +3065,13 @@
           0
         ]
       ],
-      "elapsed_seconds": 32.26,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': \"This request would exceed your organization's rate limit of 30,000 input tokens per minute (org: 6926fac4-207d-496f-883a-28d449950f0e, model: claude-sonnet-4-6). For details, refer to: https://docs.claude.com/en/api/rate-limits. You can see the response headers for current usage. Please reduce the prompt length or the maximum tokens reques",
+      "elapsed_seconds": 0.28,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDYD5rCf2U5g2t5dE1'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
-        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': \"This request would exceed your organization's rate limit of 30,000 input tokens per minute (org: 6926fac4-207d-496f-883a-28d449950f0e, model:"
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
       }
     },
     {
@@ -4688,13 +3129,13 @@
           1
         ]
       ],
-      "elapsed_seconds": 31.67,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': \"This request would exceed your organization's rate limit of 30,000 input tokens per minute (org: 6926fac4-207d-496f-883a-28d449950f0e, model: claude-sonnet-4-6). For details, refer to: https://docs.claude.com/en/api/rate-limits. You can see the response headers for current usage. Please reduce the prompt length or the maximum tokens reques",
+      "elapsed_seconds": 0.3,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDZTzD21BJdoKn1j7B'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
-        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': \"This request would exceed your organization's rate limit of 30,000 input tokens per minute (org: 6926fac4-207d-496f-883a-28d449950f0e, model:"
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
       }
     },
     {
@@ -4803,13 +3244,13 @@
           4
         ]
       ],
-      "elapsed_seconds": 30.68,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': \"This request would exceed your organization's rate limit of 30,000 input tokens per minute (org: 6926fac4-207d-496f-883a-28d449950f0e, model: claude-sonnet-4-6). For details, refer to: https://docs.claude.com/en/api/rate-limits. You can see the response headers for current usage. Please reduce the prompt length or the maximum tokens reques",
+      "elapsed_seconds": 0.3,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDamsC7GWQ1SBX6s7H'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
-        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': \"This request would exceed your organization's rate limit of 30,000 input tokens per minute (org: 6926fac4-207d-496f-883a-28d449950f0e, model:"
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
       }
     },
     {
@@ -4834,13 +3275,13 @@
           4
         ]
       ],
-      "elapsed_seconds": 32.45,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': \"This request would exceed your organization's rate limit of 30,000 input tokens per minute (org: 6926fac4-207d-496f-883a-28d449950f0e, model: claude-sonnet-4-6). For details, refer to: https://docs.claude.com/en/api/rate-limits. You can see the response headers for current usage. Please reduce the prompt length or the maximum tokens reques",
+      "elapsed_seconds": 0.38,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDcCCRZBfiNKFj7zG5'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
-        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': \"This request would exceed your organization's rate limit of 30,000 input tokens per minute (org: 6926fac4-207d-496f-883a-28d449950f0e, model:"
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
       }
     },
     {
@@ -5333,13 +3774,13 @@
           1
         ]
       ],
-      "elapsed_seconds": 219.04,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 413 - {'error': {'type': 'request_too_large', 'message': 'Request exceeds the maximum size'}}",
+      "elapsed_seconds": 1.65,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDj9QHJUXZ4BtezErR'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
-        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 413 - {'error': {'type': 'request_too_large', 'message': 'Request exceeds the maximum size'}}"
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
       }
     },
     {
@@ -5853,13 +4294,13 @@
           0
         ]
       ],
-      "elapsed_seconds": 33.21,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': \"This request would exceed your organization's rate limit of 30,000 input tokens per minute (org: 6926fac4-207d-496f-883a-28d449950f0e, model: claude-sonnet-4-6). For details, refer to: https://docs.claude.com/en/api/rate-limits. You can see the response headers for current usage. Please reduce the prompt length or the maximum tokens reques",
+      "elapsed_seconds": 0.28,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDkhAviqufhrGWBxS7'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
-        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': \"This request would exceed your organization's rate limit of 30,000 input tokens per minute (org: 6926fac4-207d-496f-883a-28d449950f0e, model:"
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
       }
     },
     {
@@ -6013,13 +4454,13 @@
           0
         ]
       ],
-      "elapsed_seconds": 31.77,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': \"This request would exceed your organization's rate limit of 30,000 input tokens per minute (org: 6926fac4-207d-496f-883a-28d449950f0e, model: claude-sonnet-4-6). For details, refer to: https://docs.claude.com/en/api/rate-limits. You can see the response headers for current usage. Please reduce the prompt length or the maximum tokens reques",
+      "elapsed_seconds": 0.3,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDmxpTMo847FgkiHjc'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
-        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': \"This request would exceed your organization's rate limit of 30,000 input tokens per minute (org: 6926fac4-207d-496f-883a-28d449950f0e, model:"
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
       }
     },
     {
@@ -6149,13 +4590,13 @@
           0
         ]
       ],
-      "elapsed_seconds": 32.59,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': \"This request would exceed your organization's rate limit of 30,000 input tokens per minute (org: 6926fac4-207d-496f-883a-28d449950f0e, model: claude-sonnet-4-6). For details, refer to: https://docs.claude.com/en/api/rate-limits. You can see the response headers for current usage. Please reduce the prompt length or the maximum tokens reques",
+      "elapsed_seconds": 0.29,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDoCUjvGq3fcdaXLEk'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
-        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': \"This request would exceed your organization's rate limit of 30,000 input tokens per minute (org: 6926fac4-207d-496f-883a-28d449950f0e, model:"
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
       }
     },
     {
@@ -6190,36 +4631,20 @@
           1
         ]
       ],
-      "elapsed_seconds": 32.9,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': \"This request would exceed your organization's rate limit of 30,000 input tokens per minute (org: 6926fac4-207d-496f-883a-28d449950f0e, model: claude-sonnet-4-6). For details, refer to: https://docs.claude.com/en/api/rate-limits. You can see the response headers for current usage. Please reduce the prompt length or the maximum tokens reques",
+      "elapsed_seconds": 0.3,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDpWN7FGzv5cJimzuz'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
-        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': \"This request would exceed your organization's rate limit of 30,000 input tokens per minute (org: 6926fac4-207d-496f-883a-28d449950f0e, model:"
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
       }
     },
     {
       "task_id": "137eaa0f",
-      "status": "success",
-      "correct": true,
-      "predicted": [
-        [
-          4,
-          9,
-          8
-        ],
-        [
-          9,
-          5,
-          4
-        ],
-        [
-          9,
-          2,
-          2
-        ]
-      ],
+      "status": "error",
+      "correct": false,
+      "predicted": null,
       "expected": [
         [
           4,
@@ -6237,14 +4662,18 @@
           2
         ]
       ],
-      "elapsed_seconds": 113.22,
-      "output_snippet": "Code validated against training pairs!\nSUCCESS\n[[4, 9, 8], [9, 5, 4], [9, 2, 2]]",
+      "elapsed_seconds": 0.3,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDqhnzVKaagSPeaxWk'}",
       "pipeline": "visual_spatial",
-      "failure_info": null
+      "failure_info": {
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
+      }
     },
     {
       "task_id": "150deff5",
-      "status": "failed",
+      "status": "error",
       "correct": false,
       "predicted": null,
       "expected": [
@@ -6353,177 +4782,20 @@
           0
         ]
       ],
-      "elapsed_seconds": 41.04,
-      "output_snippet": "Exhausted 3 retries.\nLast error: Pair 0 FAILED. Expected [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 8, 8, 0, 0, 0, 0, 0, 0, 0], [0, 0, 8, 8, 2, 2, 2, 0, 0, 0, 0], [0, 0, 0, 2, 8, 8, 0, 0, 0, 0, 0], [0, 0, 0, 2, 8, 8, 8, 8, 0, 0, 0], [0, 0, 0, 2, 0, 0, 8, 8, 0, 0, 0], [0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], got [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 8, 8, 0, 0, 0, 0, 0, 0, 0], [0, 0, 8, 8, 8, 8, 2, 0, 0, 0, 0], [0, 0, 0, 8, 8, ",
+      "elapsed_seconds": 0.3,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDs4u3vbjwHdvHNZSP'}",
       "pipeline": "visual_spatial",
       "failure_info": {
-        "component": "coding_sandbox",
-        "failure_type": "code_execution_failed",
-        "raw_output_snippet": "Exhausted 3 retries.\nLast error: Pair 0 FAILED. Expected [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 8, 8, 0, 0, 0, 0, 0, 0, 0], [0, 0, 8, 8, 2, 2, 2, 0, 0, 0, 0], [0, 0, 0, 2, 8, 8, 0, 0, 0, 0, 0], [0, 0, 0, 2, 8, 8, 8, 8, 0, 0, 0], [0, 0, 0, 2, 0, 0, 8, 8, 0, 0, 0], [0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0"
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
       }
     },
     {
       "task_id": "178fcbfb",
-      "status": "success",
-      "correct": true,
-      "predicted": [
-        [
-          3,
-          3,
-          3,
-          3,
-          3,
-          3,
-          3,
-          3,
-          3,
-          3,
-          3
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          2,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          2,
-          0
-        ],
-        [
-          3,
-          3,
-          3,
-          3,
-          3,
-          3,
-          3,
-          3,
-          3,
-          3,
-          3
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          2,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          2,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          2,
-          0
-        ],
-        [
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          2,
-          0
-        ],
-        [
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          2,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          2,
-          0
-        ]
-      ],
+      "status": "error",
+      "correct": false,
+      "predicted": null,
       "expected": [
         [
           3,
@@ -6682,549 +4954,20 @@
           0
         ]
       ],
-      "elapsed_seconds": 12.71,
-      "output_snippet": "Code validated against training pairs!\nSUCCESS\n[[3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3], [0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0], [0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0], [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3], [0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0], [0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0], [0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0], [0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0]]",
+      "elapsed_seconds": 0.3,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDtP2VutU8VDv5Fdh3'}",
       "pipeline": "visual_spatial",
-      "failure_info": null
+      "failure_info": {
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
+      }
     },
     {
       "task_id": "1a07d186",
-      "status": "success",
-      "correct": true,
-      "predicted": [
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          4,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          4,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          4,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          4,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          4,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          4,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          4,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          4,
-          4,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          4,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          4,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          2,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          4,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          4,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          4,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          4,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          4,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          4,
-          4,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          4,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          4,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          4,
-          0,
-          0,
-          0,
-          0,
-          0
-        ]
-      ],
+      "status": "error",
+      "correct": false,
+      "predicted": null,
       "expected": [
         [
           0,
@@ -7759,42 +5502,20 @@
           0
         ]
       ],
-      "elapsed_seconds": 23.88,
-      "output_snippet": "Code validated against training pairs!\nSUCCESS\n[[0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0], [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0], [0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0], [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0], [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0], [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, ",
+      "elapsed_seconds": 0.28,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDuai9vwFomkfmNqio'}",
       "pipeline": "visual_spatial",
-      "failure_info": null
+      "failure_info": {
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
+      }
     },
     {
       "task_id": "1b2d62fb",
-      "status": "success",
-      "correct": true,
-      "predicted": [
-        [
-          0,
-          0,
-          8
-        ],
-        [
-          8,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          8
-        ],
-        [
-          0,
-          0,
-          0
-        ],
-        [
-          8,
-          0,
-          0
-        ]
-      ],
+      "status": "error",
+      "correct": false,
+      "predicted": null,
       "expected": [
         [
           0,
@@ -7822,14 +5543,18 @@
           0
         ]
       ],
-      "elapsed_seconds": 9.26,
-      "output_snippet": "Code validated against training pairs!\nSUCCESS\n[[0, 0, 8], [8, 0, 0], [0, 0, 8], [0, 0, 0], [8, 0, 0]]",
+      "elapsed_seconds": 0.29,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDvqrthrtQ1JtuDRVf'}",
       "pipeline": "visual_spatial",
-      "failure_info": null
+      "failure_info": {
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
+      }
     },
     {
       "task_id": "1b60fb0c",
-      "status": "failed",
+      "status": "error",
       "correct": false,
       "predicted": null,
       "expected": [
@@ -7954,141 +5679,20 @@
           0
         ]
       ],
-      "elapsed_seconds": 64.63,
-      "output_snippet": "Exhausted 3 retries.\nLast error: Pair 0 FAILED. Expected [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 1, 1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 1, 0, 0, 0, 1, 0], [0, 2, 2, 0, 1, 1, 1, 1, 1, 0], [0, 2, 2, 2, 1, 1, 0, 1, 1, 0], [0, 2, 0, 0, 0, 1, 0, 0, 0, 0], [0, 0, 0, 0, 1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 1, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], got [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 2, 1, 1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 1, 0, 0",
+      "elapsed_seconds": 0.29,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDx6mSuFYwCYhNq2ch'}",
       "pipeline": "visual_spatial",
       "failure_info": {
-        "component": "coding_sandbox",
-        "failure_type": "code_execution_failed",
-        "raw_output_snippet": "Exhausted 3 retries.\nLast error: Pair 0 FAILED. Expected [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 1, 1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 1, 0, 0, 0, 1, 0], [0, 2, 2, 0, 1, 1, 1, 1, 1, 0], [0, 2, 2, 2, 1, 1, 0, 1, 1, 0], [0, 2, 0, 0, 0, 1, 0, 0, 0, 0], [0, 0, 0, 0, 1, 1,"
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
       }
     },
     {
       "task_id": "1bfc4729",
-      "status": "success",
-      "correct": true,
-      "predicted": [
-        [
-          2,
-          2,
-          2,
-          2,
-          2,
-          2,
-          2,
-          2,
-          2,
-          2
-        ],
-        [
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          2
-        ],
-        [
-          2,
-          2,
-          2,
-          2,
-          2,
-          2,
-          2,
-          2,
-          2,
-          2
-        ],
-        [
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          2
-        ],
-        [
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          2
-        ],
-        [
-          8,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          8
-        ],
-        [
-          8,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          8
-        ],
-        [
-          8,
-          8,
-          8,
-          8,
-          8,
-          8,
-          8,
-          8,
-          8,
-          8
-        ],
-        [
-          8,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          8
-        ],
-        [
-          8,
-          8,
-          8,
-          8,
-          8,
-          8,
-          8,
-          8,
-          8,
-          8
-        ]
-      ],
+      "status": "error",
+      "correct": false,
+      "predicted": null,
       "expected": [
         [
           2,
@@ -8211,10 +5815,14 @@
           8
         ]
       ],
-      "elapsed_seconds": 32.38,
-      "output_snippet": "Code validated against training pairs!\nSUCCESS\n[[2, 2, 2, 2, 2, 2, 2, 2, 2, 2], [2, 0, 0, 0, 0, 0, 0, 0, 0, 2], [2, 2, 2, 2, 2, 2, 2, 2, 2, 2], [2, 0, 0, 0, 0, 0, 0, 0, 0, 2], [2, 0, 0, 0, 0, 0, 0, 0, 0, 2], [8, 0, 0, 0, 0, 0, 0, 0, 0, 8], [8, 0, 0, 0, 0, 0, 0, 0, 0, 8], [8, 8, 8, 8, 8, 8, 8, 8, 8, 8], [8, 0, 0, 0, 0, 0, 0, 0, 0, 8], [8, 8, 8, 8, 8, 8, 8, 8, 8, 8]]",
+      "elapsed_seconds": 0.33,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDyKBuaQnYDVFWxJSS'}",
       "pipeline": "visual_spatial",
-      "failure_info": null
+      "failure_info": {
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
+      }
     },
     {
       "task_id": "1c786137",
@@ -8311,18 +5919,18 @@
           2
         ]
       ],
-      "elapsed_seconds": 31.4,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'prompt is too long: 1006834 tokens > 1000000 maximum'}, 'request_id': 'req_011CZZfpyFkwi2nSe894WeN1'}",
+      "elapsed_seconds": 0.36,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaE1577V2ySV1ZnHYFK'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
-        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'prompt is too long: 1006834 tokens > 1000000 maximum'}, 'request_id': 'req_011CZZfpyFkwi2nSe894WeN1'}"
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
       }
     },
     {
       "task_id": "1caeab9d",
-      "status": "failed",
+      "status": "error",
       "correct": false,
       "predicted": null,
       "expected": [
@@ -8447,53 +6055,20 @@
           0
         ]
       ],
-      "elapsed_seconds": 62.68,
-      "output_snippet": "Exhausted 3 retries.\nLast error: Pair 1 FAILED. Expected [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 2, 2, 2, 1, 1, 1, 4, 4, 4], [0, 2, 2, 2, 1, 1, 1, 4, 4, 4], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], got [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 2, 2, 2, 1, 1, 1, 4, 4, 4], [0, 2, 2, 2, 1, 1, 1",
+      "elapsed_seconds": 0.4,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaE2pXreQF15b2ucbTc'}",
       "pipeline": "visual_spatial",
       "failure_info": {
-        "component": "coding_sandbox",
-        "failure_type": "code_execution_failed",
-        "raw_output_snippet": "Exhausted 3 retries.\nLast error: Pair 1 FAILED. Expected [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 2, 2, 2, 1, 1, 1, 4, 4, 4], [0, 2, 2, 2, 1, 1, 1, 4, 4, 4], [0, 0, 0, 0, 0, 0,"
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
       }
     },
     {
       "task_id": "1cf80156",
-      "status": "success",
-      "correct": true,
-      "predicted": [
-        [
-          0,
-          0,
-          6,
-          6,
-          6,
-          6
-        ],
-        [
-          0,
-          0,
-          6,
-          0,
-          0,
-          0
-        ],
-        [
-          6,
-          0,
-          6,
-          0,
-          0,
-          0
-        ],
-        [
-          6,
-          6,
-          6,
-          6,
-          0,
-          0
-        ]
-      ],
+      "status": "error",
+      "correct": false,
+      "predicted": null,
       "expected": [
         [
           0,
@@ -8528,52 +6103,20 @@
           0
         ]
       ],
-      "elapsed_seconds": 9.97,
-      "output_snippet": "Code validated against training pairs!\nSUCCESS\n[[0, 0, 6, 6, 6, 6], [0, 0, 6, 0, 0, 0], [6, 0, 6, 0, 0, 0], [6, 6, 6, 6, 0, 0]]",
+      "elapsed_seconds": 0.28,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaE3zizi8SxCGUV77s4'}",
       "pipeline": "visual_spatial",
-      "failure_info": null
+      "failure_info": {
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
+      }
     },
     {
       "task_id": "1e0a9b12",
-      "status": "success",
-      "correct": true,
-      "predicted": [
-        [
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          5,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          5,
-          2,
-          0,
-          4,
-          0
-        ],
-        [
-          5,
-          2,
-          6,
-          4,
-          3
-        ]
-      ],
+      "status": "error",
+      "correct": false,
+      "predicted": null,
       "expected": [
         [
           0,
@@ -8611,14 +6154,18 @@
           3
         ]
       ],
-      "elapsed_seconds": 14.65,
-      "output_snippet": "Code validated against training pairs!\nSUCCESS\n[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [5, 0, 0, 0, 0], [5, 2, 0, 4, 0], [5, 2, 6, 4, 3]]",
+      "elapsed_seconds": 0.39,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaE5SXzmgTXQuLyew6M'}",
       "pipeline": "visual_spatial",
-      "failure_info": null
+      "failure_info": {
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
+      }
     },
     {
       "task_id": "1e32b0e9",
-      "status": "failed",
+      "status": "error",
       "correct": false,
       "predicted": null,
       "expected": [
@@ -8946,18 +6493,18 @@
           0
         ]
       ],
-      "elapsed_seconds": 67.88,
-      "output_snippet": "Exhausted 3 retries.\nLast error: Pair 0 FAILED. Expected [[0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0], [0, 0, 2, 0, 0, 8, 0, 0, 8, 0, 0, 8, 0, 0, 8, 0, 0], [0, 2, 2, 2, 0, 8, 0, 8, 8, 8, 0, 8, 0, 2, 2, 2, 0], [0, 0, 2, 0, 0, 8, 0, 0, 8, 0, 0, 8, 0, 0, 8, 0, 0], [0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0], [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8], [0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0], [0, 0, 8, 0, 0, 8, 0, 0, 2, 0, 0, 8, 0, 0, 8, 0, 0], [0, 8, 8, 8, 0, 8,",
+      "elapsed_seconds": 0.29,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaE6srvvKWnxKPyV3ra'}",
       "pipeline": "visual_spatial",
       "failure_info": {
-        "component": "coding_sandbox",
-        "failure_type": "code_execution_failed",
-        "raw_output_snippet": "Exhausted 3 retries.\nLast error: Pair 0 FAILED. Expected [[0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0], [0, 0, 2, 0, 0, 8, 0, 0, 8, 0, 0, 8, 0, 0, 8, 0, 0], [0, 2, 2, 2, 0, 8, 0, 8, 8, 8, 0, 8, 0, 2, 2, 2, 0], [0, 0, 2, 0, 0, 8, 0, 0, 8, 0, 0, 8, 0, 0, 8, 0, 0], [0, 0, 0, 0, 0, 8, 0, 0, 0, 0,"
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
       }
     },
     {
       "task_id": "1f0c79e5",
-      "status": "failed",
+      "status": "error",
       "correct": false,
       "predicted": null,
       "expected": [
@@ -9061,141 +6608,20 @@
           0
         ]
       ],
-      "elapsed_seconds": 64.8,
-      "output_snippet": "Exhausted 3 retries.\nLast error: Pair 3 FAILED. Expected [[7, 7, 0, 0, 0, 0, 7, 7, 7], [7, 7, 7, 0, 0, 7, 7, 7, 0], [0, 7, 7, 7, 7, 7, 7, 0, 0], [0, 0, 7, 7, 7, 7, 0, 0, 0], [0, 0, 7, 7, 7, 0, 0, 0, 0], [0, 7, 7, 7, 0, 0, 0, 0, 0], [7, 7, 7, 0, 0, 0, 0, 0, 0], [7, 7, 0, 0, 0, 0, 0, 0, 0], [7, 0, 0, 0, 0, 0, 0, 0, 0]], got [[7, 7, 0, 7, 7, 0, 0, 0, 0], [7, 7, 7, 7, 7, 0, 0, 0, 0], [0, 7, 7, 7, 7, 0, 0, 0, 0], [7, 7, 7, 7, 7, 0, 0, 0, 0], [7, 7, 7, 7, 7, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [",
+      "elapsed_seconds": 0.29,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaE89kdSRjZTiP7z57T'}",
       "pipeline": "visual_spatial",
       "failure_info": {
-        "component": "coding_sandbox",
-        "failure_type": "code_execution_failed",
-        "raw_output_snippet": "Exhausted 3 retries.\nLast error: Pair 3 FAILED. Expected [[7, 7, 0, 0, 0, 0, 7, 7, 7], [7, 7, 7, 0, 0, 7, 7, 7, 0], [0, 7, 7, 7, 7, 7, 7, 0, 0], [0, 0, 7, 7, 7, 7, 0, 0, 0], [0, 0, 7, 7, 7, 0, 0, 0, 0], [0, 7, 7, 7, 0, 0, 0, 0, 0], [7, 7, 7, 0, 0, 0, 0, 0, 0], [7, 7, 0, 0, 0, 0, 0, 0, 0], [7, 0, 0, "
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
       }
     },
     {
       "task_id": "1f642eb9",
-      "status": "success",
-      "correct": true,
-      "predicted": [
-        [
-          0,
-          0,
-          0,
-          6,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          9,
-          0,
-          9,
-          6,
-          8,
-          2,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          8,
-          8,
-          8,
-          7,
-          0,
-          0,
-          0,
-          7
-        ],
-        [
-          3,
-          0,
-          3,
-          8,
-          8,
-          8,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          4,
-          0,
-          4,
-          8,
-          6,
-          8,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          6,
-          0,
-          0,
-          0,
-          0,
-          0
-        ]
-      ],
+      "status": "error",
+      "correct": false,
+      "predicted": null,
       "expected": [
         [
           0,
@@ -9318,14 +6744,18 @@
           0
         ]
       ],
-      "elapsed_seconds": 32.57,
-      "output_snippet": "Code validated against training pairs!\nSUCCESS\n[[0, 0, 0, 6, 0, 2, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [9, 0, 9, 6, 8, 2, 0, 0, 0, 0], [0, 0, 8, 8, 8, 7, 0, 0, 0, 7], [3, 0, 3, 8, 8, 8, 0, 0, 0, 0], [4, 0, 4, 8, 6, 8, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 6, 0, 0, 0, 0, 0]]",
+      "elapsed_seconds": 0.29,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaE9PffozxZ7U9U2tBH'}",
       "pipeline": "visual_spatial",
-      "failure_info": null
+      "failure_info": {
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
+      }
     },
     {
       "task_id": "1f85a75f",
-      "status": "failed",
+      "status": "error",
       "correct": false,
       "predicted": null,
       "expected": [
@@ -9354,13 +6784,13 @@
           2
         ]
       ],
-      "elapsed_seconds": 45.03,
-      "output_snippet": "No python code generated by LLM.",
+      "elapsed_seconds": 0.46,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaEAm24qXhHzaK3bDKB'}",
       "pipeline": "visual_spatial",
       "failure_info": {
-        "component": "llm_codegen",
-        "failure_type": "no_code_generated",
-        "raw_output_snippet": "No python code generated by LLM."
+        "component": "llm_hypothesis",
+        "failure_type": "llm_error",
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
       }
     },
     {
@@ -9490,13 +6920,13 @@
           0
         ]
       ],
-      "elapsed_seconds": 31.39,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': \"This request would exceed your organization's rate limit of 30,000 input tokens per minute (org: 6926fac4-207d-496f-883a-28d449950f0e, model: claude-sonnet-4-6). For details, refer to: https://docs.claude.com/en/api/rate-limits. You can see the response headers for current usage. Please reduce the prompt length or the maximum tokens reques",
+      "elapsed_seconds": 0.29,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaECc9ZDA2DjfG7CaLH'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
-        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': \"This request would exceed your organization's rate limit of 30,000 input tokens per minute (org: 6926fac4-207d-496f-883a-28d449950f0e, model:"
+        "raw_output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id'"
       }
     },
     {
@@ -9513,8 +6943,8 @@
           0
         ]
       ],
-      "elapsed_seconds": 24.88,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZZgH74Y9w1cH1YG87oYu'}",
+      "elapsed_seconds": 0.3,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaEDtY1GpSzhrDq1Lma'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
@@ -9544,8 +6974,8 @@
           3
         ]
       ],
-      "elapsed_seconds": 19.32,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZZgJYps94QsuszRizdJV'}",
+      "elapsed_seconds": 0.29,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaEFABnEWt3yPq5dpTJ'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
@@ -9680,8 +7110,8 @@
           4
         ]
       ],
-      "elapsed_seconds": 19.63,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZZgKzftyLPUBDkzLbCEF'}",
+      "elapsed_seconds": 0.29,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaEGQqfhqnbiYY8JxPR'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
@@ -9816,8 +7246,8 @@
           0
         ]
       ],
-      "elapsed_seconds": 19.81,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZZgMSMm9GnDpVXLCdziX'}",
+      "elapsed_seconds": 0.35,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaEHhVAPMXRMVmtcrwN'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
@@ -9952,8 +7382,8 @@
           8
         ]
       ],
-      "elapsed_seconds": 19.98,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZZgNvv1rEMpphAb4DqF2'}",
+      "elapsed_seconds": 0.29,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaEKAnPDettDf41njmM'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
@@ -10088,8 +7518,8 @@
           5
         ]
       ],
-      "elapsed_seconds": 20.37,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZZgQQt3FqFdBLNmBheoZ'}",
+      "elapsed_seconds": 0.3,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaELTgH1wdUU421ry2r'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
@@ -10224,8 +7654,8 @@
           5
         ]
       ],
-      "elapsed_seconds": 20.39,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZZgRw5WvhYGJXajuzeUy'}",
+      "elapsed_seconds": 0.28,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaEMecQp2ThvULU5GW8'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
@@ -10360,8 +7790,8 @@
           4
         ]
       ],
-      "elapsed_seconds": 20.57,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZZgTS4ZmwG4paY759cyS'}",
+      "elapsed_seconds": 0.3,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaENwFURtFT9dSEAzQx'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
@@ -10406,8 +7836,8 @@
           8
         ]
       ],
-      "elapsed_seconds": 19.53,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZZgUs3G78ZFvpL9GkKKd'}",
+      "elapsed_seconds": 0.28,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaEQ8w8Yscu3rGWPb58'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
@@ -10521,8 +7951,8 @@
           0
         ]
       ],
-      "elapsed_seconds": 19.82,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZZgWLEQsjDBcp1Yh7D1T'}",
+      "elapsed_seconds": 0.28,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaERLcMs59FwMiP2mCk'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
@@ -10540,8 +7970,8 @@
           8
         ]
       ],
-      "elapsed_seconds": 20.02,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZZgXorbwtfjzEDDmtp97'}",
+      "elapsed_seconds": 0.41,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaET5Y6xQpi9Vgm2Ha1'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
@@ -10571,8 +8001,8 @@
           6
         ]
       ],
-      "elapsed_seconds": 19.41,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZZgZFvHk5qSPFtkZ15Zf'}",
+      "elapsed_seconds": 0.29,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaEUHiUjFZMxWGkfLnF'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
@@ -10767,8 +8197,8 @@
           0
         ]
       ],
-      "elapsed_seconds": 20.22,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZZgakEensDHWhXm1gWZm'}",
+      "elapsed_seconds": 0.29,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaEVXsyU1nt4JRDP3pX'}",
       "pipeline": "visual_spatial",
       "failure_info": {
         "component": "llm_hypothesis",
