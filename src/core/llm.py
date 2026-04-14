@@ -127,8 +127,25 @@ class OpenRouterProvider(LLMProvider):
                 {"role": "user",   "content": user_prompt}
             ]
         )
+
+        # Some reasoning models (Nemotron, Qwen3-thinking) return content=None
+        # when the answer is in the reasoning buffer -- extract it correctly
+        content = ""
+        if response.choices:
+            msg = response.choices[0].message
+            content = msg.content or ""
+            if not content:
+                # Try reasoning_content (Nemotron / OpenRouter thinking models)
+                raw = getattr(msg, "reasoning_content", None)
+                if raw:
+                    content = raw
+                else:
+                    # Last resort: check if model_extra has the content
+                    extra = getattr(msg, "model_extra", {}) or {}
+                    content = extra.get("content", "") or extra.get("reasoning", "") or ""
+
         return LLMResponse(
-            content=response.choices[0].message.content or "",
+            content=content,
             token_usage=response.usage.model_dump() if response.usage else {}
         )
 
