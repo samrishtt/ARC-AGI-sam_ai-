@@ -1,5 +1,5 @@
 """
-CSA Benchmark Runner — Evaluates 50 ARC training tasks.
+CSA Benchmark Runner -- Evaluates 50 ARC training tasks.
 Captures detailed per-task results including failure cases,
 predicted vs expected grids, and failure component analysis.
 """
@@ -121,7 +121,7 @@ def grid_to_compact_str(grid, max_rows=5):
 def run_benchmark(limit: int = 50):
     """Run the full CSA benchmark on ARC training tasks."""
     print("=" * 70)
-    print("  CSA BENCHMARK RUNNER — Structured Evaluation")
+    print("  CSA BENCHMARK RUNNER -- Structured Evaluation")
     print("=" * 70)
 
     llm = MultiProviderLLM()
@@ -158,9 +158,9 @@ def run_benchmark(limit: int = 50):
     try:
         for i, task in enumerate(tasks):
             task_id = task['filename'].replace('.json', '')
-            print(f"\n{'─' * 60}")
+            print(f"\n{'-' * 60}")
             print(f"  [{i+1}/{total_tasks}] Task: {task_id}")
-            print(f"{'─' * 60}")
+            print(f"{'-' * 60}")
             
             expected_output = task["test"][0].get("output")
             task_start = time.time()
@@ -202,18 +202,18 @@ def run_benchmark(limit: int = 50):
                 }
                 
                 if correct:
-                    print(f"  ✓ CORRECT ({elapsed:.1f}s) [Provider: {active_provider}]")
+                    print(f"  [v] CORRECT ({elapsed:.1f}s) [Provider: {active_provider}]")
                     solved_tasks.append(entry)
                 elif result.get("status") == "success":
                     # Code ran but test output didn't match
                     failure_info = classify_failure(result, task)
                     entry["failure_info"] = failure_info
-                    print(f"  ✗ INCORRECT — passed training, failed test ({elapsed:.1f}s) [Provider: {active_provider}]")
+                    print(f"  [x] INCORRECT -- passed training, failed test ({elapsed:.1f}s) [Provider: {active_provider}]")
                     failed_tasks.append(entry)
                 else:
                     failure_info = classify_failure(result, task)
                     entry["failure_info"] = failure_info
-                    print(f"  ✗ FAILED — {failure_info['component']}: {failure_info['failure_type']} ({elapsed:.1f}s) [Provider: {active_provider}]")
+                    print(f"  [x] FAILED -- {failure_info['component']}: {failure_info['failure_type']} ({elapsed:.1f}s) [Provider: {active_provider}]")
                     failed_tasks.append(entry)
                 
                 results_list.append(entry)
@@ -237,7 +237,7 @@ def run_benchmark(limit: int = 50):
                 }
                 error_tasks.append(entry)
                 results_list.append(entry)
-                print(f"  ✗ EXCEPTION: {str(e)[:100]} ({elapsed:.1f}s)")
+                print(f"  [x] EXCEPTION: {str(e)[:100]} ({elapsed:.1f}s)")
                 
             time.sleep(3)
     except KeyboardInterrupt:
@@ -246,7 +246,7 @@ def run_benchmark(limit: int = 50):
 
     total_elapsed = time.time() - start_time
     
-    # ── RESULTS SUMMARY ──
+    # -- RESULTS SUMMARY --
     num_solved = len(solved_tasks)
     num_failed = len(failed_tasks)
     num_errors = len(error_tasks)
@@ -264,13 +264,13 @@ def run_benchmark(limit: int = 50):
     print(f"  Avg time per task:      {total_elapsed/total_tasks:.1f}s")
     print("=" * 70)
     
-    # ── TOP 5 FAILURE CASES ──
+    # -- TOP 5 FAILURE CASES --
     all_failures = failed_tasks + error_tasks
     top_5 = all_failures[:5]
     
     if top_5:
         print("\n\n  TOP 5 FAILURE CASES (Predicted vs Expected)")
-        print("  " + "─" * 66)
+        print("  " + "-" * 66)
         for j, f in enumerate(top_5):
             print(f"\n  [{j+1}] Task ID: {f['task_id']}")
             if f.get("failure_info"):
@@ -284,7 +284,7 @@ def run_benchmark(limit: int = 50):
             print(grid_to_compact_str(f['predicted']))
             print(f"      Output snippet: {f['output_snippet'][:200]}")
     
-    # ── FAILURE PATTERN ANALYSIS ──
+    # -- FAILURE PATTERN ANALYSIS --
     component_counts = {}
     failure_type_counts = {}
     
@@ -296,7 +296,7 @@ def run_benchmark(limit: int = 50):
         failure_type_counts[ftype] = failure_type_counts.get(ftype, 0) + 1
     
     print("\n\n  FAILURE PATTERN ANALYSIS")
-    print("  " + "─" * 66)
+    print("  " + "-" * 66)
     print("\n  By Component:")
     for comp, count in sorted(component_counts.items(), key=lambda x: -x[1]):
         pct = count / len(all_failures) * 100 if all_failures else 0
@@ -307,7 +307,7 @@ def run_benchmark(limit: int = 50):
         pct = count / len(all_failures) * 100 if all_failures else 0
         print(f"    {ftype:30s}  {count:3d}  ({pct:.1f}%)")
     
-    # ── SAVE RESULTS ──
+    # -- SAVE RESULTS --
     os.makedirs("logs", exist_ok=True)
     results_file = os.path.join("logs", "benchmark_results.json")
     
@@ -335,7 +335,7 @@ def run_benchmark(limit: int = 50):
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(
-        description="CSA Benchmark — OpenRouter Qwen (qwq-32b primary)"
+        description="CSA Benchmark -- OpenRouter Qwen (qwq-32b primary)"
     )
     parser.add_argument(
         "--limit", type=int, default=50,
