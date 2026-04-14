@@ -1,17 +1,21 @@
 """
-Multi-provider LLM module with automatic failover and per-provider rate limiting.
+Multi-provider LLM module — OpenRouter ONLY (Qwen-powered).
 
-Provider Priority:
-  1. Groq (llama-3.3-70b-versatile)       — PRIMARY
-  2. NVIDIA NIM (llama-4-scout-17b)        — FALLBACK 1
-  3. Google Gemini 1.5 Flash               — FALLBACK 2
-  4. MockLLM                               — OFFLINE
+Model stack (via OpenRouter):
+  PRIMARY  → qwen/qwq-32b               (32B reasoning model — best for ARC)
+  FALLBACK → qwen/qwen-2.5-72b-instruct (72B instruct — larger, reliable backup)
 
-Each provider uses the OpenAI Python SDK with base_url override.
+Why QwQ-32B first?
+  - Dedicated chain-of-thought reasoning model
+  - Outperforms much larger models on logical/spatial tasks
+  - Perfect fit for ARC-AGI pattern discovery
+
+API key: set OPENROUTER_API_KEY in .env
+Get a free key: https://openrouter.ai (no credit card needed)
 """
 
 from abc import ABC, abstractmethod
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any
 from collections import deque
 import os
 import time
@@ -26,7 +30,7 @@ logger = logging.getLogger(__name__)
 
 
 # ═══════════════════════════════════════════════════════
-# TASK 2 — RATE LIMITER CLASS (per provider)
+# RATE LIMITER
 # ═══════════════════════════════════════════════════════
 
 class RateLimiter:
@@ -39,10 +43,10 @@ class RateLimiter:
     def wait_if_needed(self, estimated_tokens: int):
         now = time.time()
 
-        # Enforce minimum inter-call delay
+        # Enforce minimum inter-call delay (FIXED: was `pass` — now actually sleeps)
         elapsed = now - self.last_call
         if elapsed < self.min_delay:
-            pass
+            time.sleep(self.min_delay - elapsed)
 
         # Enforce token-per-minute window
         cutoff = time.time() - 60
@@ -52,25 +56,19 @@ class RateLimiter:
         if used + estimated_tokens > self.max_tokens and self.window:
             wait_until = self.window[0][0] + 60
             sleep_time = wait_until - time.time() + 1
-            if sleep_time > 10.0:
-                print(f"[RateLimiter] Token limit exceeded. Failing over instead of sleeping {sleep_time:.1f}s")
-                raise Exception("429 Rate Limit Exceeded: Budget Exhausted")
+            if sleep_time > 30.0:
+                print(f"[RateLimiter] Token budget exceeded. Sleeping {sleep_time:.1f}s...")
+                time.sleep(sleep_time)
             elif sleep_time > 0:
-                print(f"[RateLimiter] Token limit approaching. Sleeping {sleep_time:.1f}s")
+                print(f"[RateLimiter] Token budget low. Sleeping {sleep_time:.1f}s...")
                 time.sleep(sleep_time)
 
         self.window.append((time.time(), estimated_tokens))
         self.last_call = time.time()
 
 
-# Module-level rate limiter instances (one per provider)
-groq_limiter = RateLimiter(max_tokens_per_min=5000, min_delay_sec=3)
-nvidia_limiter = RateLimiter(max_tokens_per_min=999999, min_delay_sec=2)
-gemini_limiter = RateLimiter(max_tokens_per_min=900000, min_delay_sec=5)
-
-
 # ═══════════════════════════════════════════════════════
-# BASE CLASSES
+# BASE CLASS
 # ═══════════════════════════════════════════════════════
 
 class LLMResponse(BaseModel):
@@ -80,28 +78,49 @@ class LLMResponse(BaseModel):
 
 class LLMProvider(ABC):
     @abstractmethod
-    def generate(self, system_prompt: str, user_prompt: str, temperature: float = 0.0) -> LLMResponse:
-        """Generate a response. temperature=0.0 for deterministic code, 0.5 for creative reasoning."""
+    def generate(self, system_prompt: str, user_prompt: str,
+                 temperature: float = 0.0) -> LLMResponse:
         pass
 
 
 # ═══════════════════════════════════════════════════════
-# PROVIDER 1 — Groq (PRIMARY)
+# OPENROUTER PROVIDER — qwen/qwq-32b (PRIMARY)
 # ═══════════════════════════════════════════════════════
 
-class GroqProvider(LLMProvider):
-    """Free-tier Groq provider using llama-3.3-70b-versatile via OpenAI SDK."""
-    def __init__(self, model: str = "llama-3.3-70b-versatile"):
-        api_key = os.getenv("GROQ_API_KEY", "").strip()
+# OpenRouter allows ~200K tokens/min on free accounts
+openrouter_limiter_primary  = RateLimiter(max_tokens_per_min=150000, min_delay_sec=1.5)
+openrouter_limiter_fallback = RateLimiter(max_tokens_per_min=150000, min_delay_sec=1.5)
+
+
+class OpenRouterProvider(LLMProvider):
+    """
+    Routes requests through OpenRouter to any Qwen model.
+    Uses the OpenAI-compatible API — drop-in replacement.
+
+    Primary model  : qwen/qwq-32b  (chain-of-thought reasoning)
+    Fallback model : qwen/qwen-2.5-72b-instruct (72B production instruct)
+    """
+    def __init__(self, model: str, limiter: RateLimiter):
+        api_key = os.getenv("OPENROUTER_API_KEY", "").strip()
+        if not api_key or len(api_key) < 10:
+            raise RuntimeError(
+                "OPENROUTER_API_KEY not set in .env\n"
+                "Get a free key at https://openrouter.ai"
+            )
         self.client = OpenAI(
             api_key=api_key,
-            base_url="https://api.groq.com/openai/v1"
+            base_url="https://openrouter.ai/api/v1",
+            default_headers={
+                "HTTP-Referer": "https://github.com/samrishtt/ARC-AGI",
+                "X-Title": "CSA ARC-AGI Solver"
+            }
         )
         self.model = model
-        self.limiter = groq_limiter
-        self.name = "Groq"
+        self.limiter = limiter
+        self.name = f"OpenRouter({model})"
 
-    def generate(self, system_prompt: str, user_prompt: str, temperature: float = 0.0) -> LLMResponse:
+    def generate(self, system_prompt: str, user_prompt: str,
+                 temperature: float = 0.0) -> LLMResponse:
         estimated_tokens = (len(system_prompt) + len(user_prompt)) // 4
         self.limiter.wait_if_needed(estimated_tokens)
 
@@ -110,7 +129,7 @@ class GroqProvider(LLMProvider):
             temperature=temperature,
             messages=[
                 {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt}
+                {"role": "user",   "content": user_prompt}
             ]
         )
         return LLMResponse(
@@ -120,209 +139,79 @@ class GroqProvider(LLMProvider):
 
 
 # ═══════════════════════════════════════════════════════
-# PROVIDER 2 — NVIDIA NIM (FALLBACK 1)
-# ═══════════════════════════════════════════════════════
-
-class NvidiaProvider(LLMProvider):
-    """Free-tier NVIDIA NIM provider using meta/llama-4-scout via OpenAI SDK."""
-    def __init__(self, model: str = "meta/llama-4-scout-17b-16e-instruct"):
-        api_key = os.getenv("NVIDIA_API_KEY", "").strip()
-        self.client = OpenAI(
-            api_key=api_key,
-            base_url="https://integrate.api.nvidia.com/v1"
-        )
-        self.model = model
-        self.limiter = nvidia_limiter
-        self.name = "NVIDIA"
-
-    def generate(self, system_prompt: str, user_prompt: str, temperature: float = 0.0) -> LLMResponse:
-        estimated_tokens = (len(system_prompt) + len(user_prompt)) // 4
-        self.limiter.wait_if_needed(estimated_tokens)
-
-        response = self.client.chat.completions.create(
-            model=self.model,
-            temperature=temperature,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt}
-            ]
-        )
-        return LLMResponse(
-            content=response.choices[0].message.content or "",
-            token_usage=response.usage.model_dump() if response.usage else {}
-        )
-
-
-# ═══════════════════════════════════════════════════════
-# PROVIDER 3 — Google Gemini 1.5 Flash (FALLBACK 2)
-# ═══════════════════════════════════════════════════════
-
-class GeminiProvider(LLMProvider):
-    """Free-tier Google Gemini 2.0 Flash via OpenAI-compatible endpoint."""
-    def __init__(self, model: str = "gemini-2.0-flash"):
-        api_key = os.getenv("GEMINI_API_KEY", "").strip()
-        self.client = OpenAI(
-            api_key=api_key,
-            base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
-        )
-        self.model = model
-        self.limiter = gemini_limiter
-        self.name = "Gemini"
-
-    def generate(self, system_prompt: str, user_prompt: str, temperature: float = 0.0) -> LLMResponse:
-        estimated_tokens = (len(system_prompt) + len(user_prompt)) // 4
-        self.limiter.wait_if_needed(estimated_tokens)
-
-        response = self.client.chat.completions.create(
-            model=self.model,
-            temperature=temperature,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt}
-            ]
-        )
-        return LLMResponse(
-            content=response.choices[0].message.content or "",
-            token_usage=response.usage.model_dump() if response.usage else {}
-        )
-
-
-# ═══════════════════════════════════════════════════════
-# LEGACY PROVIDERS (kept for backwards compatibility)
-# ═══════════════════════════════════════════════════════
-
-class OpenAIProvider(LLMProvider):
-    def __init__(self, model: str = "gpt-4o"):
-        self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-        self.model = model
-        self.name = "OpenAI"
-
-    def generate(self, system_prompt: str, user_prompt: str, temperature: float = 0.0) -> LLMResponse:
-        try:
-            response = self.client.chat.completions.create(
-                model=self.model,
-                temperature=temperature,
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": user_prompt}
-                ]
-            )
-            return LLMResponse(
-                content=response.choices[0].message.content or "",
-                token_usage=response.usage.model_dump() if response.usage else {}
-            )
-        except Exception as e:
-            return LLMResponse(content=f"Error: {str(e)}")
-
-
-class AnthropicProvider(LLMProvider):
-    """Paid-tier Anthropic provider for Claude 4.6 Sonnet."""
-    def __init__(self, model: str = "claude-sonnet-4-6", max_tokens: int = 8192):
-        import anthropic
-        self._anthropic = anthropic
-        self.client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
-        self.model = model
-        self.max_tokens = max_tokens
-        self.name = "Anthropic"
-
-    def generate(self, system_prompt: str, user_prompt: str, temperature: float = 0.0) -> LLMResponse:
-        try:
-            response = self.client.messages.create(
-                model=self.model,
-                max_tokens=self.max_tokens,
-                temperature=temperature,
-                system=system_prompt,
-                messages=[{"role": "user", "content": user_prompt}]
-            )
-            content = response.content[0].text if response.content else ""
-            return LLMResponse(
-                content=content,
-                token_usage={
-                    "input_tokens": response.usage.input_tokens,
-                    "output_tokens": response.usage.output_tokens
-                }
-            )
-        except Exception as e:
-            return LLMResponse(content=f"Error: {str(e)}")
-
-
-class MockLLMProvider(LLMProvider):
-    def __init__(self):
-        self.name = "MockLLM"
-
-    def generate(self, system_prompt: str, user_prompt: str, temperature: float = 0.0) -> LLMResponse:
-        if "python code" in system_prompt.lower():
-            if "rotate" in user_prompt.lower():
-                return LLMResponse(content="```python\nimport numpy as np\nfrom src.dsl.primitives import rotate_cw\n\nprint('Rotation Logic Here')\n```")
-            return LLMResponse(content="```python\nprint('Hello from Mock Code')\n```")
-        if "valid JSON" in system_prompt:
-            if "hello" in user_prompt.lower():
-                return LLMResponse(content='{"steps": [{"action": "ANALYZE", "description": "User greeting"}]}')
-            return LLMResponse(content='{"steps": [{"action": "ANALYZE", "description": "Analyze grid"}, {"action": "TRANSFORM", "description": "Apply rotation"}, {"action": "VERIFY", "description": "Check result"}]}')
-        return LLMResponse(content=f"[MOCK] Processed: {user_prompt[:50]}...")
-
-
-# ═══════════════════════════════════════════════════════
-# MULTI-PROVIDER FAILOVER ENGINE
+# MULTI-PROVIDER FAILOVER ENGINE (OpenRouter-only)
 # ═══════════════════════════════════════════════════════
 
 class MultiProviderLLM(LLMProvider):
     """
-    Wraps multiple providers with automatic failover logic.
+    Two-tier OpenRouter failover:
+      [1] qwen/qwq-32b               — reasoning powerhouse (PRIMARY)
+      [2] qwen/qwen-2.5-72b-instruct — 72B instruct backup (FALLBACK)
 
     Failover rules:
-    - Start with Provider 1 (Groq)
-    - On 429 (rate limit): wait + retry same provider (up to 3 retries)
-    - On 503 (NVIDIA overloaded): try next provider immediately
-    - On credits exhausted or persistent 429: switch to next provider
-    - Logs which provider was used for each call
+      - 429/rate-limit  → sleep + retry same model (up to 3 times)
+      - 503/overloaded  → switch to fallback immediately
+      - Exhausted quota → switch to fallback immediately
     """
+
+    # Model constants — easy to swap in one place
+    PRIMARY_MODEL  = "qwen/qwq-32b"
+    FALLBACK_MODEL = "qwen/qwen-2.5-72b-instruct"
+
     def __init__(self):
         self.providers: List[LLMProvider] = []
         self.provider_names: List[str] = []
         self.current_provider_idx = 0
-        self.name = "MultiProvider"
-
-        # Initialize all available providers
+        self.name = "OpenRouter-Qwen"
         self._init_providers()
 
     def reset_provider(self):
-        """Reset to primary provider (Groq). Called at start of each task."""
+        """Reset to primary (qwen/qwq-32b). Call at the start of each task."""
         self.current_provider_idx = 0
 
     def _init_providers(self):
-        """Initialize providers in priority order: Gemini → Groq"""
-        # Provider 1: Gemini (PRIMARY)
-        gemini_key = os.getenv("GEMINI_API_KEY", "").strip()
-        if gemini_key and len(gemini_key) > 10:
-            try:
-                p = GeminiProvider()
-                self.providers.append(p)
-                self.provider_names.append("Gemini")
-                print("[OK] Provider 1: Gemini 2.0 Flash -- PRIMARY")
-            except Exception as e:
-                logger.warning(f"Gemini init failed: {e}")
+        """Build the two-model OpenRouter stack."""
+        print("\n" + "=" * 60)
+        print("  CSA — OpenRouter Qwen Stack")
+        print("=" * 60)
 
-        # Provider 2: Groq (FALLBACK 1)
-        groq_key = os.getenv("GROQ_API_KEY", "").strip()
-        if groq_key and len(groq_key) > 10:
-            try:
-                p = GroqProvider()
-                self.providers.append(p)
-                self.provider_names.append("Groq")
-                print("[OK] Provider 2: Groq (llama-3.3-70b-versatile) -- FALLBACK 1")
-            except Exception as e:
-                logger.warning(f"Groq init failed: {e}")
+        # PRIMARY: qwen/qwq-32b
+        try:
+            p = OpenRouterProvider(
+                model=self.PRIMARY_MODEL,
+                limiter=openrouter_limiter_primary
+            )
+            self.providers.append(p)
+            self.provider_names.append("QwQ-32B")
+            print(f"  [1] PRIMARY  → {self.PRIMARY_MODEL}")
+            print(f"      Role: Chain-of-thought reasoning | Best for ARC pattern logic")
+        except Exception as e:
+            logger.error(f"PRIMARY provider init failed: {e}")
 
-        # Print new config structure requested by user
-        if not hasattr(self.__class__, '_printed_config'):
-            print("\n[Config] Primary: GEMINI | Fallback 1: GROQ | Fallback 2: api_unavailable\n")
-            self.__class__._printed_config = True
+        # FALLBACK: qwen/qwen-2.5-72b-instruct
+        try:
+            p = OpenRouterProvider(
+                model=self.FALLBACK_MODEL,
+                limiter=openrouter_limiter_fallback
+            )
+            self.providers.append(p)
+            self.provider_names.append("Qwen2.5-72B")
+            print(f"  [2] FALLBACK → {self.FALLBACK_MODEL}")
+            print(f"      Role: Large instruct model | Activates if QwQ-32B rate-limits")
+        except Exception as e:
+            logger.error(f"FALLBACK provider init failed: {e}")
+
+        print("=" * 60 + "\n")
+
+        if len(self.providers) == 0:
+            raise RuntimeError(
+                "CRITICAL: OpenRouter provider failed to initialize.\n"
+                "Check OPENROUTER_API_KEY in your .env file."
+            )
 
     def generate(self, system_prompt: str, user_prompt: str,
                  temperature: float = 0.0, task_id: str = "") -> LLMResponse:
-        """Generate with automatic failover across providers."""
-        # Always start from current_provider_idx (reset per task)
+        """Generate with automatic failover between Qwen models."""
         start_idx = self.current_provider_idx
 
         for provider_offset in range(len(self.providers)):
@@ -333,102 +222,57 @@ class MultiProviderLLM(LLMProvider):
             max_retries = 3
             for retry in range(max_retries):
                 try:
-                    if task_id:
-                        print(f"[Provider] Task {task_id}: using {provider_name}")
-                    else:
-                        print(f"[Provider] Using {provider_name}")
+                    label = f"Task {task_id}" if task_id else "Call"
+                    print(f"[LLM] {label} → {provider_name} (attempt {retry+1})")
 
                     response = provider.generate(system_prompt, user_prompt, temperature)
 
-                    # Check for error responses that indicate we should failover
+                    # Check for error strings in response content
                     if response.content.startswith("Error:"):
-                        error_lower = response.content.lower()
-                        if "429" in error_lower or "rate" in error_lower:
+                        err = response.content.lower()
+                        if "429" in err or "rate" in err:
                             if retry < max_retries - 1:
-                                wait_time = (retry + 1) * 5
-                                print(f"[Failover] 429 rate limit on {provider_name}. "
-                                      f"Retry {retry+1}/{max_retries} in {wait_time}s...")
-                                time.sleep(wait_time)
+                                wait = (retry + 1) * 10
+                                print(f"[LLM] 429 on {provider_name}. Retry in {wait}s...")
+                                time.sleep(wait)
                                 continue
                             else:
-                                print(f"[Failover] Persistent 429 on {provider_name}. "
-                                      f"Switching to next provider.")
-                                break  # try next provider
-                        elif "503" in error_lower or "overloaded" in error_lower:
-                            print(f"[Failover] 503 overloaded on {provider_name}. "
-                                  f"Trying next provider...")
-                            break  # try next provider
-                        elif "credit" in error_lower or "quota" in error_lower:
-                            print(f"[Failover] Credits exhausted on {provider_name}. "
-                                  f"Switching to next provider.")
-                            break  # try next provider
+                                print(f"[LLM] Persistent 429 on {provider_name}. Switching...")
+                                break
+                        elif "503" in err or "overload" in err:
+                            print(f"[LLM] 503 on {provider_name}. Switching to fallback...")
+                            break
+                        elif "quota" in err or "credit" in err or "billing" in err:
+                            print(f"[LLM] Quota/credits exhausted on {provider_name}. Switching...")
+                            break
                         else:
-                            # Non-retryable error but still an error response
-                            # Try to return it if it's the last provider
                             if provider_offset == len(self.providers) - 1:
                                 return response
-                            break  # try next provider
+                            break
 
-                    # Success!
-                    self.current_provider_idx = idx  # Sticky: keep using what works
+                    # Success
+                    self.current_provider_idx = idx  # sticky — keep using what works
                     return response
 
                 except Exception as e:
-                    error_str = str(e).lower()
-                    if "429" in error_str or "rate" in error_str:
+                    err = str(e).lower()
+                    if "429" in err or "rate" in err:
                         if retry < max_retries - 1:
-                            wait_time = 0.1
-                            print(f"[Failover] 429 exception on {provider_name}. "
-                                  f"Retry {retry+1}/{max_retries} in {wait_time}s...")
-                            time.sleep(wait_time)
+                            wait = (retry + 1) * 10
+                            print(f"[LLM] 429 exception on {provider_name}. Retry in {wait}s...")
+                            time.sleep(wait)
                             continue
                         else:
-                            print(f"[Failover] Persistent 429 on {provider_name}. Switching.")
+                            print(f"[LLM] Persistent 429 on {provider_name}. Switching...")
                             break
-                    elif "503" in error_str or "overloaded" in error_str:
-                        print(f"[Failover] 503 on {provider_name}. Trying next provider.")
+                    elif "503" in err or "overload" in err:
+                        print(f"[LLM] 503 on {provider_name}. Switching to fallback...")
                         break
                     else:
                         logger.warning(f"Provider {provider_name} error: {e}")
-                        break  # try next provider
+                        break
 
-        # If we exhausted all providers
-        return LLMResponse(content="Error: api_unavailable", token_usage={})
-
-        # If absolutely everything failed
-        return LLMResponse(content="Error: All providers exhausted. No response generated.")
-
-
-# ═══════════════════════════════════════════════════════
-# FACTORY FUNCTION
-# ═══════════════════════════════════════════════════════
-
-def get_best_provider(prefer_paid: bool = False) -> LLMProvider:
-    """
-    Smart provider factory with automatic failover.
-
-    Priority order (free-first for ARC benchmarking):
-      1. Groq llama-3.3-70b       (free — primary)
-      2. NVIDIA NIM llama-4-scout  (free — fallback 1)
-      3. Gemini 1.5 Flash          (free — fallback 2)
-      4. MockLLM                   (offline — always works)
-
-    Args:
-        prefer_paid: If True, try Anthropic first (legacy behavior).
-
-    Returns:
-        A MultiProviderLLM instance with failover.
-    """
-    if prefer_paid:
-        anthropic_key = os.getenv("ANTHROPIC_API_KEY", "").strip()
-        if anthropic_key and len(anthropic_key) > 10:
-            try:
-                provider = AnthropicProvider()
-                logger.info("LLM Provider: Anthropic Claude Sonnet 4.6 (paid)")
-                print("[OK] Using Anthropic Claude Sonnet 4.6 (primary)")
-                return provider
-            except Exception as e:
-                logger.warning(f"Anthropic init failed: {e}")
-
-    # Default: use multi-provider failover engine with free providers
-    return MultiProviderLLM()
+        raise RuntimeError(
+            "CRITICAL: All OpenRouter Qwen providers failed.\n"
+            "Check rate limits at https://openrouter.ai/activity"
+        )

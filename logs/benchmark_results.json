@@ -4,7 +4,7 @@
   "failed": 50,
   "errors": 0,
   "accuracy_pct": 0.0,
-  "total_time_seconds": 17.7,
+  "total_time_seconds": 33.83,
   "component_failures": {
     "llm_hypothesis": 50
   },
@@ -118,9 +118,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.9,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDEu2qnyb7rv9iS2yQ'}",
+      "elapsed_seconds": 4.29,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbhobhbhaKNqDFqrWXh'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -574,9 +575,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.38,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDHDBqnFuWRH2JnzpU'}",
+      "elapsed_seconds": 0.37,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbhrrA9DQFNMmAFU479'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -635,9 +637,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.29,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDJaHkAkYq2H7y771c'}",
+      "elapsed_seconds": 0.32,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbhtU9GYryUUvJZMGcF'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -771,9 +774,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.27,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDKmEAJgGeeZQEyvR5'}",
+      "elapsed_seconds": 1.01,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbhuqziJ9vDvsDtBre9'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -1270,9 +1274,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.29,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDLz9MXHxfXjwVLRtu'}",
+      "elapsed_seconds": 0.53,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbhz9TTccXNGqAwrchx'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -1301,9 +1306,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.28,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDNF45vfTEm8Kdd8jQ'}",
+      "elapsed_seconds": 0.56,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbi2R8PoFawo9mzHKSH'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -1380,9 +1386,10 @@
           2
         ]
       ],
-      "elapsed_seconds": 0.28,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDPRFNrCMJGCAeodeL'}",
+      "elapsed_seconds": 0.56,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbi4wvtW77mPL1XAvdn'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -1528,9 +1535,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.41,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDQeus82knskFriYKZ'}",
+      "elapsed_seconds": 0.45,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbi7J4nDKNDKmW4Erci'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -2273,8 +2281,9 @@
         ]
       ],
       "elapsed_seconds": 0.32,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDSY2Ha7VDNyxFuvpd'}",
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbi9CfjGToNqAW67425'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -2387,9 +2396,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.41,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDTqA5jMrb7CLmx9o8'}",
+      "elapsed_seconds": 0.55,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbiAXYG15bTuG6ztTfs'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -2547,8 +2557,9 @@
         ]
       ],
       "elapsed_seconds": 0.34,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDVkk1w4q713axsoaY'}",
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbiD17iX8vdGyzQNTFv'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -2730,9 +2741,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.28,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDX2e9Q8f6NGffMEJm'}",
+      "elapsed_seconds": 1.02,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbiEQhLp8o71SBPYf59'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -3065,9 +3077,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.28,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDYD5rCf2U5g2t5dE1'}",
+      "elapsed_seconds": 0.57,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbiJoNHwtuHBxphkEc9'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -3129,9 +3142,10 @@
           1
         ]
       ],
-      "elapsed_seconds": 0.3,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDZTzD21BJdoKn1j7B'}",
+      "elapsed_seconds": 0.55,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbiMDyUZKjGT37syrcC'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -3244,9 +3258,10 @@
           4
         ]
       ],
-      "elapsed_seconds": 0.3,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDamsC7GWQ1SBX6s7H'}",
+      "elapsed_seconds": 0.35,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbiPYsE7DEGrUcQVE1h'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -3275,9 +3290,10 @@
           4
         ]
       ],
-      "elapsed_seconds": 0.38,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDcCCRZBfiNKFj7zG5'}",
+      "elapsed_seconds": 0.54,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbiQySq1sEgRM75Bj9s'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -3774,9 +3790,10 @@
           1
         ]
       ],
-      "elapsed_seconds": 1.65,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDj9QHJUXZ4BtezErR'}",
+      "elapsed_seconds": 1.8,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbiZCYiZ1gk9ZmWgCfq'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -4294,9 +4311,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.28,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDkhAviqufhrGWBxS7'}",
+      "elapsed_seconds": 0.4,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbib3g19Vno73Ufyfkx'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -4454,9 +4472,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.3,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDmxpTMo847FgkiHjc'}",
+      "elapsed_seconds": 0.35,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbicp6EaP4qWVuQPipJ'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -4590,9 +4609,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.29,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDoCUjvGq3fcdaXLEk'}",
+      "elapsed_seconds": 0.72,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbieN6oL3idCbMqGXgE'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -4631,9 +4651,10 @@
           1
         ]
       ],
-      "elapsed_seconds": 0.3,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDpWN7FGzv5cJimzuz'}",
+      "elapsed_seconds": 0.84,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbihbKpEPp8D8YDzWzF'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -4662,9 +4683,10 @@
           2
         ]
       ],
-      "elapsed_seconds": 0.3,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDqhnzVKaagSPeaxWk'}",
+      "elapsed_seconds": 0.37,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbim2T1sJvKjAxG4qHd'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -4782,9 +4804,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.3,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDs4u3vbjwHdvHNZSP'}",
+      "elapsed_seconds": 0.98,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbindgxNj61EFFQAXTa'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -4954,9 +4977,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.3,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDtP2VutU8VDv5Fdh3'}",
+      "elapsed_seconds": 0.56,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbirqSmn5CuRt1Ngkpk'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -5502,9 +5526,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.28,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDuai9vwFomkfmNqio'}",
+      "elapsed_seconds": 0.34,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbiuMFWWxzgmi7qgh8W'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -5543,9 +5568,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.29,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDvqrthrtQ1JtuDRVf'}",
+      "elapsed_seconds": 0.58,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbivjMQaJejxzFqtLji'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -5679,9 +5705,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.29,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDx6mSuFYwCYhNq2ch'}",
+      "elapsed_seconds": 0.55,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbiy8xmprJxP231R4Za'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -5815,9 +5842,10 @@
           8
         ]
       ],
-      "elapsed_seconds": 0.33,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaDyKBuaQnYDVFWxJSS'}",
+      "elapsed_seconds": 0.53,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbj1UMV1iZiCa71mcy8'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -5919,9 +5947,10 @@
           2
         ]
       ],
-      "elapsed_seconds": 0.36,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaE1577V2ySV1ZnHYFK'}",
+      "elapsed_seconds": 0.39,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbj45cvnSxGq5ngEfkL'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -6055,9 +6084,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.4,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaE2pXreQF15b2ucbTc'}",
+      "elapsed_seconds": 0.58,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbj5VCkzRZrELtU9Ezs'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -6103,9 +6133,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.28,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaE3zizi8SxCGUV77s4'}",
+      "elapsed_seconds": 0.34,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbj7wnkyRg6SMYRYJB7'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -6154,9 +6185,10 @@
           3
         ]
       ],
-      "elapsed_seconds": 0.39,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaE5SXzmgTXQuLyew6M'}",
+      "elapsed_seconds": 0.36,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbj9X3fuPBrS4yBvJUe'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -6493,9 +6525,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.29,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaE6srvvKWnxKPyV3ra'}",
+      "elapsed_seconds": 0.99,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbjAxrdARskpVFjomoF'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -6608,9 +6641,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.29,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaE89kdSRjZTiP7z57T'}",
+      "elapsed_seconds": 0.36,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbjFG56D8YpihKtzhJk'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -6744,9 +6778,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.29,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaE9PffozxZ7U9U2tBH'}",
+      "elapsed_seconds": 0.54,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbjGiPEt95WjQBbChwG'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -6784,9 +6819,10 @@
           2
         ]
       ],
-      "elapsed_seconds": 0.46,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaEAm24qXhHzaK3bDKB'}",
+      "elapsed_seconds": 0.58,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbjKCD3STUSwF88t5DS'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -6920,9 +6956,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.29,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaECc9ZDA2DjfG7CaLH'}",
+      "elapsed_seconds": 0.54,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbjMXrH14oovKGzQBZq'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -6943,9 +6980,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.3,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaEDtY1GpSzhrDq1Lma'}",
+      "elapsed_seconds": 0.83,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbjQ4eiuBa6Yw9PoNty'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -6974,9 +7012,10 @@
           3
         ]
       ],
-      "elapsed_seconds": 0.29,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaEFABnEWt3yPq5dpTJ'}",
+      "elapsed_seconds": 0.62,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbjTUnb3HhC3rVNBg7f'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -7110,9 +7149,10 @@
           4
         ]
       ],
-      "elapsed_seconds": 0.29,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaEGQqfhqnbiYY8JxPR'}",
+      "elapsed_seconds": 0.9,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbjW7Y12FXZbosyKyeK'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -7246,9 +7286,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.35,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaEHhVAPMXRMVmtcrwN'}",
+      "elapsed_seconds": 1.38,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbjZvEcT6BsRtTrZgGV'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -7382,9 +7423,10 @@
           8
         ]
       ],
-      "elapsed_seconds": 0.29,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaEKAnPDettDf41njmM'}",
+      "elapsed_seconds": 0.5,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbjg55AJb6bY4WfBaUe'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -7518,9 +7560,10 @@
           5
         ]
       ],
-      "elapsed_seconds": 0.3,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaELTgH1wdUU421ry2r'}",
+      "elapsed_seconds": 0.69,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbjiAppjFAzeptobE9i'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -7654,9 +7697,10 @@
           5
         ]
       ],
-      "elapsed_seconds": 0.28,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaEMecQp2ThvULU5GW8'}",
+      "elapsed_seconds": 0.56,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbjkzVRWQSDPtoxqXFM'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -7790,9 +7834,10 @@
           4
         ]
       ],
-      "elapsed_seconds": 0.3,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaENwFURtFT9dSEAzQx'}",
+      "elapsed_seconds": 0.67,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbjoW4E65UrY9RHceYY'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -7836,9 +7881,10 @@
           8
         ]
       ],
-      "elapsed_seconds": 0.28,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaEQ8w8Yscu3rGWPb58'}",
+      "elapsed_seconds": 0.55,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbjrJEHqqwK8pCmu9cT'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -7951,9 +7997,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.28,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaERLcMs59FwMiP2mCk'}",
+      "elapsed_seconds": 0.35,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbjteN46ZpxDPuHPtJr'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -7970,9 +8017,10 @@
           8
         ]
       ],
-      "elapsed_seconds": 0.41,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaET5Y6xQpi9Vgm2Ha1'}",
+      "elapsed_seconds": 0.34,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbjv8Qz69DEVuXsAiap'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -8001,9 +8049,10 @@
           6
         ]
       ],
-      "elapsed_seconds": 0.29,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaEUHiUjFZMxWGkfLnF'}",
+      "elapsed_seconds": 0.65,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbjwdhmgewCEZ6KmnUb'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",
@@ -8197,9 +8246,10 @@
           0
         ]
       ],
-      "elapsed_seconds": 0.29,
-      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZdaEVXsyU1nt4JRDP3pX'}",
+      "elapsed_seconds": 0.62,
+      "output_snippet": "Hypothesis Formation Failed: LLM failed to generate a hypothesis: Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZgbjzbYstzTc5hFrFoVK'}",
       "pipeline": "visual_spatial",
+      "provider": "Anthropic",
       "failure_info": {
         "component": "llm_hypothesis",
         "failure_type": "llm_error",

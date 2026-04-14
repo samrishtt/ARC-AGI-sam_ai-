@@ -18,7 +18,10 @@ import json
 import traceback
 from typing import Tuple, Dict, Any, List
 
+import numpy as np
+
 from src.core.llm import LLMProvider
+from src.core.searcher import ProgramSearch
 from src.csa.models import RouteDecision
 from src.csa.memory import WorkingMemory
 
@@ -217,6 +220,22 @@ class CodingHandler:
             "decision": decision.model_dump()
         }
 
+    def _regenerate_hypothesis(self, training_pairs: list, failed_approach: str) -> str:
+        """Ask LLM for a fresh hypothesis, explicitly telling it what didn't work."""
+        pairs_for_prompt = [{"input": inp, "output": out} for inp, out in training_pairs]
+        system_prompt = (
+            "You are an ARC-AGI expert. A previous attempt to solve this puzzle used the "
+            "following approach and FAILED. You must describe a COMPLETELY DIFFERENT "
+            "transformation rule. Do not repeat the failed approach."
+        )
+        user_prompt = (
+            f"Training pairs:\n{json.dumps(pairs_for_prompt, separators=(',', ':'))}\n\n"
+            f"FAILED approach (do NOT use this):\n{failed_approach}\n\n"
+            f"Describe an alternative transformation rule in one paragraph."
+        )
+        response = self.llm.generate(system_prompt=system_prompt, user_prompt=user_prompt, temperature=0.7)
+        return response.content
+
     def execute_visual_task(self, training_pairs: List[Tuple], test_grid: Any,
                             decision: RouteDecision, memory: WorkingMemory,
                             task_id: str = "") -> Dict[str, Any]:
@@ -224,17 +243,59 @@ class CodingHandler:
         Asks the LLM to write a Python function transform(grid) -> grid,
         then uses the sandbox to validate it against every training pair
         before submitting the answer for the test grid.
-        
-        TASK 4 FIXES:
-        - Full traceback capture in sandbox
-        - Error details in retry prompts
-        - Output shape validation
-        - Static checks before execution
-        TASK 6: TransformationLibrary integration
+
+        UPGRADES:
+        - [1] A* DSL search runs FIRST (free, no API cost)
+        - [2] Re-hypothesize on last retry with anti-hint
+        - [3] Structured memory features injected into prompt
+        - [4] Full traceback capture in sandbox
+        - [5] Error details in retry prompts + output shape validation
+        - [6] TransformationLibrary integration
         """
         # Import TransformationLibrary here to avoid circular imports
         from src.core.searcher import TransformationLibrary
         transform_lib = TransformationLibrary()
+
+        # ── UPGRADE 2: A* DSL PRE-SOLVE (fast, free) ──────────────────────
+        print(f"[CodingHandler] Attempting A* DSL search first (fast, free)...")
+        try:
+            searcher = ProgramSearch(max_depth=3)
+            np_pairs = [(np.array(inp), np.array(out)) for inp, out in training_pairs]
+            dsl_solution = searcher.solve(np_pairs, max_iterations=5000)
+            if dsl_solution:
+                print(f"[CodingHandler] A* found DSL solution: {dsl_solution}")
+                dsl_code = (
+                    "import sys, os\n"
+                    "sys.path.append(os.getcwd())\n"
+                    "from src.dsl.primitives import *\n\n"
+                    f"def transform(grid):\n"
+                    f"    return {dsl_solution.replace('x', 'grid')}\n"
+                )
+                astar_script = (
+                    dsl_code +
+                    f"\n\ntraining_pairs = {repr(training_pairs)}\n"
+                    "import json\nall_ok = True\n"
+                    "for inp, out in training_pairs:\n"
+                    "    if transform(inp) != out:\n"
+                    "        all_ok = False\n"
+                    "        break\n"
+                    "if all_ok:\n"
+                    "    print('SUCCESS')\n"
+                    "    import json\n"
+                    f"    print(json.dumps(transform({repr(test_grid)})))\n"
+                )
+                success, output = PythonSandbox.run_code(astar_script)
+                if success and "SUCCESS" in output:
+                    memory.add_step("A* Search", f"Found DSL solution: {dsl_solution}")
+                    return {
+                        "status": "success",
+                        "pipeline": "visual_spatial_astar",
+                        "output": f"A* DSL solution found!\n{output}",
+                        "decision": decision.model_dump()
+                    }
+        except Exception as e:
+            print(f"[CodingHandler] A* search failed/timed out: {e}. Falling back to LLM.")
+        # ── END A* PRE-SOLVE ───────────────────────────────────────────────
 
         system_prompt = (
             "You are an expert Python coder for ARC-AGI puzzles.\n"
@@ -268,10 +329,13 @@ class CodingHandler:
             for inp, out in training_pairs
         ]
         hypothesis_summary = memory.get_summary()
-        
+
+        # UPGRADE 5: Structured memory features
+        structured_features = memory.get_structured_features()
+        features_str = json.dumps(structured_features, indent=2)
+
         # TASK 6: Get past successful solutions as examples
         library_section = ""
-        # Try to determine a category from the hypothesis
         category = self._infer_category(hypothesis_summary)
         candidates = transform_lib.get_candidates(category, top_k=3)
         if candidates:
@@ -285,6 +349,7 @@ class CodingHandler:
             f"Here are ALL the ARC training pairs showing the transformation:\n\n"
             f"{json.dumps(pairs_for_prompt, separators=(',', ':'))}\n\n"
             f"Observed hypothesis from pattern analysis:\n{hypothesis_summary}\n\n"
+            f"Structured grid features extracted from training pairs:\n{features_str}\n\n"
             f"{library_section}"
         )
 
@@ -293,10 +358,10 @@ class CodingHandler:
         print(f"[TokenCheck] Task {task_id} code-gen prompt: ~{estimated} tokens")
         if estimated > 8000:
             print(f"[TokenCheck] WARNING: Truncating code-gen prompt from {estimated} tokens")
-            # Reduce to just raw pairs + hypothesis
             base_context = (
                 f"Training pairs:\n{json.dumps(pairs_for_prompt, separators=(',', ':'))}\n\n"
                 f"Hypothesis:\n{hypothesis_summary}\n\n"
+                f"Structured grid features:\n{features_str}\n\n"
             )
 
         current_prompt = (
@@ -332,6 +397,9 @@ class CodingHandler:
 
             # Build a validation script that tests against ALL training pairs
             test_script = "import sys, json, os, traceback\n"
+            test_script += "import numpy as np\n"
+            test_script += "import math, collections, itertools\n"
+            test_script += "from copy import deepcopy\n"
             test_script += "sys.path.append(os.getcwd())\n\n"
             test_script += code_str + "\n\n"
             test_script += f"training_pairs = {repr(training_pairs)}\n"
@@ -402,15 +470,26 @@ class CodingHandler:
                 # TASK 4 FIX: Detailed error in retry prompt
                 last_error = output
                 error_detail = output if output else "Unknown error (no output captured)"
+                print(f"\n[Sandbox Execution Error Verbatim]:\n{error_detail}\n")
                 memory.add_step("Visual Sandbox", f"Attempt {attempt+1} failed: {error_detail}")
-                
-                current_prompt = (
-                    base_context +
-                    f"Your PREVIOUS `transform` function was:\n```python\n{last_code_str}\n```\n\n"
-                    f"Your previous attempt failed with this error:\n{error_detail}\n\n"
-                    f"Fix the exact bug above and return corrected Python code.\n"
-                    f"Make sure your function returns a 2D list with the correct shape."
-                )
+
+                # UPGRADE 3: Re-hypothesize on last retry (break single-hypothesis trap)
+                if attempt == max_attempts - 1 and last_error:
+                    print(f"[CodingHandler] Last attempt — regenerating hypothesis...")
+                    fresh_hypothesis = self._regenerate_hypothesis(training_pairs, hypothesis_summary)
+                    current_prompt = (
+                        base_context.replace(hypothesis_summary, fresh_hypothesis) +
+                        f"Previous approach failed with: {last_error}\n\n"
+                        f"Write a NEW `transform(grid)` function based on this alternative hypothesis."
+                    )
+                else:
+                    current_prompt = (
+                        base_context +
+                        f"Your PREVIOUS `transform` function was:\n```python\n{last_code_str}\n```\n\n"
+                        f"Your previous attempt failed with this error:\n{error_detail}\n\n"
+                        f"Fix the exact bug above and return corrected Python code.\n"
+                        f"Make sure your function returns a 2D list with the correct shape."
+                    )
 
         return {
             "status": "failed",
@@ -432,21 +511,30 @@ class CodingHandler:
 
     @staticmethod
     def _infer_category(hypothesis: str) -> str:
-        """Infer a transformation category from the hypothesis text."""
-        hypothesis_lower = hypothesis.lower()
-        if any(w in hypothesis_lower for w in ["rotate", "rotation", "90", "clockwise"]):
-            return "rotation"
-        elif any(w in hypothesis_lower for w in ["flip", "mirror", "reflect"]):
-            return "reflection"
-        elif any(w in hypothesis_lower for w in ["color", "recolor", "fill", "replace"]):
-            return "recoloring"
-        elif any(w in hypothesis_lower for w in ["scale", "resize", "enlarge", "shrink", "tile"]):
-            return "scaling"
-        elif any(w in hypothesis_lower for w in ["move", "shift", "translate", "slide"]):
-            return "translation"
-        elif any(w in hypothesis_lower for w in ["crop", "extract", "cut"]):
-            return "cropping"
-        elif any(w in hypothesis_lower for w in ["pattern", "repeat", "symmetr"]):
-            return "pattern"
-        else:
+        """
+        Score hypothesis against category keyword sets.
+        Returns the highest-scoring category instead of first-match.
+        """
+        h = hypothesis.lower()
+
+        categories = {
+            "rotation":    ["rotat", "90", "clockwise", "counter-clock", "turn", "orient"],
+            "reflection":  ["flip", "mirror", "reflect", "symmetric", "symmetry", "invert axis"],
+            "recoloring":  ["color", "recolor", "fill", "replace", "hue", "shade", "map", "remap",
+                            "palette", "value", "integer", "cell", "frequency", "count"],
+            "scaling":     ["scale", "resize", "enlarge", "shrink", "tile", "repeat", "zoom",
+                            "double", "halve", "magnif"],
+            "translation": ["move", "shift", "translate", "slide", "offset", "displace"],
+            "cropping":    ["crop", "extract", "cut", "trim", "bounding", "content"],
+            "pattern":     ["pattern", "repeat", "tiling", "periodic", "motif", "stamp"],
+            "filling":     ["flood", "fill interior", "enclose", "inside", "hole", "enclosed"],
+        }
+
+        scores = {}
+        for category, keywords in categories.items():
+            scores[category] = sum(1 for kw in keywords if kw in h)
+
+        best = max(scores, key=scores.get)
+        if scores[best] == 0:
             return "general"
+        return best

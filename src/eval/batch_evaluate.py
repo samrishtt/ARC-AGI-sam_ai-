@@ -355,12 +355,57 @@ def batch_evaluate(limit: int = 50, model: str = "claude-sonnet-4-6",
             print(f"  [SKIP] {fname}: local parsing error: {e}")
     
     print(f"  → Successfully parsed {len(task_data)}/{len(tasks)} tasks")
-    
+
+    # ─── PHASE 0: A* DSL PRE-SOLVE (free, local) ────────────────────────
+    print(f"\n[2.5/5] Phase 0: A* DSL pre-solve (free, no API cost)...")
+    from src.core.searcher import ProgramSearch
+    import numpy as np
+
+    astar_solved = 0
+    for fname, data in list(task_data.items()):
+        try:
+            training_pairs = data["parsed_info"]["training_pairs"]
+            test_grid = data["parsed_info"]["test_grid"]
+            np_pairs = [(np.array(inp), np.array(out)) for inp, out in training_pairs]
+
+            searcher = ProgramSearch(max_depth=3)
+            dsl_solution = searcher.solve(np_pairs, max_iterations=5000)
+
+            if dsl_solution:
+                dsl_code = (
+                    "import sys, os\n"
+                    "sys.path.append(os.getcwd())\n"
+                    "from src.dsl.primitives import *\n\n"
+                    f"def transform(grid):\n"
+                    f"    return {dsl_solution.replace('x', 'grid')}\n"
+                )
+                success, output = validate_code_in_sandbox(dsl_code, training_pairs, test_grid)
+                if success and "SUCCESS" in output:
+                    data["hypothesis"] = f"A* DSL solution: {dsl_solution}"
+                    data["code"] = dsl_code
+                    data["sandbox_output"] = output
+                    data["solved"] = True
+                    lines = output.split('\n')
+                    try:
+                        llm_answer = json.loads(lines[-1])
+                        data["test_correct"] = (llm_answer == data["task"]["test"][0]["output"])
+                    except (json.JSONDecodeError, IndexError):
+                        data["test_correct"] = False
+                    astar_solved += 1
+        except Exception:
+            pass
+
+    print(f"  → A* pre-solved: {astar_solved} tasks "
+          f"(saved {astar_solved} hypothesis + codegen API calls)")
+
+    # Filter out already-solved tasks from LLM batch phases
+    unsolved_task_data = {f: d for f, d in task_data.items() if not d.get("solved")}
+
     # ─── PHASE 1: BATCH HYPOTHESIS REQUESTS ─────────────────────────────
-    print(f"\n[3/5] Phase 1: Submitting {len(task_data)} hypothesis requests (batch, 50% off)...")
-    
+    print(f"\n[3/5] Phase 1: Submitting {len(unsolved_task_data)} hypothesis requests (batch, 50% off)...")
+
     hypothesis_requests = []
-    for fname, data in task_data.items():
+    for fname, data in unsolved_task_data.items():
         user_prompt = build_hypothesis_prompt(data["parsed_info"])
         hypothesis_requests.append({
             "custom_id": f"hyp_{fname}",
@@ -378,7 +423,7 @@ def batch_evaluate(limit: int = 50, model: str = "claude-sonnet-4-6",
     
     # Store hypotheses
     hyp_success = 0
-    for fname, data in task_data.items():
+    for fname, data in unsolved_task_data.items():
         custom_id = f"hyp_{fname}"
         result = hyp_results.get(custom_id, {})
         if result.get("status") == "succeeded" and result["content"]:
@@ -386,11 +431,11 @@ def batch_evaluate(limit: int = 50, model: str = "claude-sonnet-4-6",
             hyp_success += 1
         else:
             print(f"  [WARN] Hypothesis failed for {fname}: {result.get('error', 'empty')}")
-    
-    print(f"  → Hypotheses received: {hyp_success}/{len(task_data)}")
-    
+
+    print(f"  → Hypotheses received: {hyp_success}/{len(unsolved_task_data)}")
+
     # ─── PHASE 2: BATCH CODE GENERATION REQUESTS ────────────────────────
-    codegen_candidates = {f: d for f, d in task_data.items() if d["hypothesis"]}
+    codegen_candidates = {f: d for f, d in unsolved_task_data.items() if d["hypothesis"]}
     print(f"\n[4/5] Phase 2: Submitting {len(codegen_candidates)} code-gen requests (batch, 50% off)...")
     
     codegen_requests = []

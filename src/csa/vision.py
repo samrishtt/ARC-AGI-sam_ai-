@@ -236,10 +236,19 @@ def find_object_correspondence(input_grid: List[List[int]],
     """
     input_objects = _extract_objects_for_correspondence(input_grid, bg_color)
     output_objects = _extract_objects_for_correspondence(output_grid, bg_color)
-    
+
+    # UPGRADE 4: Detect if this looks like a recoloring task → adaptive weights
+    in_colors = set(o["color"] for o in input_objects) if input_objects else set()
+    out_colors = set(o["color"] for o in output_objects) if output_objects else set()
+    is_recoloring_task = (in_colors != out_colors) and (len(in_colors) == len(out_colors))
+
+    color_weight     = 1.0 if is_recoloring_task else 3.0
+    shape_weight     = 3.0 if is_recoloring_task else 2.0
+    proximity_weight = 2.0 if is_recoloring_task else 1.0
+
     correspondences = []
     matched_output_ids = set()
-    
+
     # For each input object, find best matching output object
     for in_obj in input_objects:
         best_match = None
@@ -250,22 +259,22 @@ def find_object_correspondence(input_grid: List[List[int]],
                 continue
             
             score = 0.0
-            
-            # Color match (weight 3)
+
+            # Color match (adaptive weight)
             if in_obj["color"] == out_obj["color"]:
-                score += 3.0
-            
-            # Shape match (weight 2) — compare dimensions
-            w_match = 1.0 - min(abs(in_obj["dimensions"]["width"] - out_obj["dimensions"]["width"]) / 
+                score += color_weight
+
+            # Shape match (adaptive weight) — compare dimensions
+            w_match = 1.0 - min(abs(in_obj["dimensions"]["width"] - out_obj["dimensions"]["width"]) /
                                max(in_obj["dimensions"]["width"], 1), 1.0)
-            h_match = 1.0 - min(abs(in_obj["dimensions"]["height"] - out_obj["dimensions"]["height"]) / 
+            h_match = 1.0 - min(abs(in_obj["dimensions"]["height"] - out_obj["dimensions"]["height"]) /
                                max(in_obj["dimensions"]["height"], 1), 1.0)
-            size_match = 1.0 - min(abs(in_obj["size"] - out_obj["size"]) / 
+            size_match = 1.0 - min(abs(in_obj["size"] - out_obj["size"]) /
                                    max(in_obj["size"], 1), 1.0)
             shape_score = (w_match + h_match + size_match) / 3.0
-            score += shape_score * 2.0
-            
-            # Proximity (weight 1) — centroid distance  
+            score += shape_score * shape_weight
+
+            # Proximity (adaptive weight) — centroid distance
             in_grid_h = len(input_grid)
             in_grid_w = len(input_grid[0]) if input_grid else 1
             max_dist = (in_grid_h ** 2 + in_grid_w ** 2) ** 0.5
@@ -275,7 +284,7 @@ def find_object_correspondence(input_grid: List[List[int]],
                 proximity = 1.0 - min(dist / max_dist, 1.0)
             else:
                 proximity = 1.0
-            score += proximity * 1.0
+            score += proximity * proximity_weight
             
             if score > best_score:
                 best_score = score
@@ -283,9 +292,10 @@ def find_object_correspondence(input_grid: List[List[int]],
         
         if best_match is not None:
             matched_output_ids.add(best_match["id"])
-            
-            # Determine confidence (max possible score = 3 + 2 + 1 = 6)
-            confidence = min(best_score / 6.0, 1.0)
+
+            # Determine confidence using adaptive max score
+            max_score = color_weight + shape_weight + proximity_weight
+            confidence = min(best_score / max_score, 1.0)
             
             # Determine transformation type
             transform_type = _classify_transform(in_obj, best_match)

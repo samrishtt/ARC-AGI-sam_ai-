@@ -54,6 +54,31 @@ class WorkingMemory:
             summary += f"[{i+1}] {step.action} -> {step.result}\n"
         return summary
 
+    def get_structured_features(self) -> dict:
+        """
+        Returns a structured dict of features derived from observations.
+        This is what we actually feed into code-gen prompts — not the raw log.
+        """
+        features = {
+            "dimension_changes": [],
+            "object_count_changes": [],
+            "color_observations": []
+        }
+        for pair_idx, obs_list in self.observations.items():
+            for obs in obs_list:
+                if "Dim changed: True" in obs:
+                    features["dimension_changes"].append(f"Pair {pair_idx}: dimensions change")
+                if "Object delta:" in obs:
+                    try:
+                        delta = int(obs.split("Object delta:")[1].strip())
+                        features["object_count_changes"].append(f"Pair {pair_idx}: object delta={delta}")
+                    except ValueError:
+                        pass
+        for key, val in self.variables.items():
+            if "color" in key.lower():
+                features["color_observations"].append(f"{key}: {val}")
+        return features
+
     def dump(self) -> str:
         data = {
             "context": self.context,

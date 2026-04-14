@@ -13,7 +13,7 @@ from typing import Dict, Any, List, Tuple
 from dotenv import load_dotenv
 load_dotenv()
 
-from src.core.llm import get_best_provider, LLMProvider
+from src.core.llm import MultiProviderLLM, LLMProvider
 from src.csa.meta_controller import MetaController
 
 def load_data(data_dir: str, limit: int = None) -> List[Dict]:
@@ -123,13 +123,26 @@ def run_benchmark(limit: int = 50):
     print("=" * 70)
     print("  CSA BENCHMARK RUNNER — Structured Evaluation")
     print("=" * 70)
-    
-    llm = get_best_provider(prefer_paid=True)
+
+    llm = MultiProviderLLM()
     controller = MetaController(primary_llm=llm)
-    
+
+    # ── Show active model info ──────────────────────────────────────────
+    primary_model   = MultiProviderLLM.PRIMARY_MODEL
+    fallback_model  = MultiProviderLLM.FALLBACK_MODEL
+    print(f"  Model (primary):   {primary_model}")
+    print(f"  Model (fallback):  {fallback_model}")
+    print(f"  Provider:          OpenRouter")
+    print(f"  LLM Role in pipeline:")
+    print(f"    [1] Hypothesis generation  — reads symbolic graph → describes transform rule")
+    print(f"    [2] Code generation        — reads pairs + hypothesis → writes transform()")
+    print(f"    [3] Code retry/re-hypo     — reads error + failed approach → tries new angle")
+    print(f"  A* search runs BEFORE LLM (free, no API cost, catches rotations/flips)")
+    print("=" * 70)
+
     train_dir = os.path.join("data", "training")
     tasks = load_data(train_dir, limit=limit)
-    
+
     total_tasks = len(tasks)
     print(f"\n  Loaded {total_tasks} tasks from {train_dir}/")
     print(f"  Starting evaluation...\n")
@@ -142,79 +155,95 @@ def run_benchmark(limit: int = 50):
     
     start_time = time.time()
     
-    for i, task in enumerate(tasks):
-        task_id = task['filename'].replace('.json', '')
-        print(f"\n{'─' * 60}")
-        print(f"  [{i+1}/{total_tasks}] Task: {task_id}")
-        print(f"{'─' * 60}")
-        
-        expected_output = task["test"][0].get("output")
-        task_start = time.time()
-        
-        try:
-            result = controller.process_task(task, bypass_router=True)
-            elapsed = time.time() - task_start
+    try:
+        for i, task in enumerate(tasks):
+            task_id = task['filename'].replace('.json', '')
+            print(f"\n{'─' * 60}")
+            print(f"  [{i+1}/{total_tasks}] Task: {task_id}")
+            print(f"{'─' * 60}")
             
-            predicted = None
-            correct = False
+            expected_output = task["test"][0].get("output")
+            task_start = time.time()
             
-            if result.get("status") == "success":
-                output_str = result.get("output", "")
-                predicted = parse_predicted_grid(output_str)
+            try:
+                result = controller.process_task(task, bypass_router=True)
+                elapsed = time.time() - task_start
                 
-                if predicted is not None and expected_output is not None:
-                    correct = (predicted == expected_output)
-            
-            entry = {
-                "task_id": task_id,
-                "status": result.get("status"),
-                "correct": correct,
-                "predicted": predicted,
-                "expected": expected_output,
-                "elapsed_seconds": round(elapsed, 2),
-                "output_snippet": result.get("output", "")[:500],
-                "pipeline": result.get("pipeline", ""),
-                "failure_info": None
-            }
-            
-            if correct:
-                print(f"  ✓ CORRECT ({elapsed:.1f}s)")
-                solved_tasks.append(entry)
-            elif result.get("status") == "success":
-                # Code ran but test output didn't match
-                failure_info = classify_failure(result, task)
-                entry["failure_info"] = failure_info
-                print(f"  ✗ INCORRECT — passed training, failed test ({elapsed:.1f}s)")
-                failed_tasks.append(entry)
-            else:
-                failure_info = classify_failure(result, task)
-                entry["failure_info"] = failure_info
-                print(f"  ✗ FAILED — {failure_info['component']}: {failure_info['failure_type']} ({elapsed:.1f}s)")
-                failed_tasks.append(entry)
-            
-            results_list.append(entry)
-            
-        except Exception as e:
-            elapsed = time.time() - task_start
-            entry = {
-                "task_id": task_id,
-                "status": "exception",
-                "correct": False,
-                "predicted": None,
-                "expected": expected_output,
-                "elapsed_seconds": round(elapsed, 2),
-                "output_snippet": f"EXCEPTION: {traceback.format_exc()[-500:]}",
-                "pipeline": "crashed",
-                "failure_info": {
-                    "component": "system_crash",
-                    "failure_type": "exception",
-                    "raw_output_snippet": str(e)[:300]
+                predicted = None
+                correct = False
+                
+                if result.get("status") == "success":
+                    output_str = result.get("output", "")
+                    predicted = parse_predicted_grid(output_str)
+                    
+                    if predicted is not None and expected_output is not None:
+                        correct = (predicted == expected_output)
+                
+                active_provider = "Unknown provider"
+                if hasattr(llm, "name"):
+                    active_provider = llm.name
+                if hasattr(llm, "current_provider_idx") and hasattr(llm, "provider_names") and getattr(llm, "provider_names"):
+                    try:
+                        active_provider = llm.provider_names[llm.current_provider_idx]
+                    except IndexError:
+                        pass
+                
+                entry = {
+                    "task_id": task_id,
+                    "status": result.get("status"),
+                    "correct": correct,
+                    "predicted": predicted,
+                    "expected": expected_output,
+                    "elapsed_seconds": round(elapsed, 2),
+                    "output_snippet": result.get("output", "")[:500],
+                    "pipeline": result.get("pipeline", ""),
+                    "provider": active_provider,
+                    "failure_info": None
                 }
-            }
-            error_tasks.append(entry)
-            results_list.append(entry)
-            print(f"  ✗ EXCEPTION: {str(e)[:100]} ({elapsed:.1f}s)")
-    
+                
+                if correct:
+                    print(f"  ✓ CORRECT ({elapsed:.1f}s) [Provider: {active_provider}]")
+                    solved_tasks.append(entry)
+                elif result.get("status") == "success":
+                    # Code ran but test output didn't match
+                    failure_info = classify_failure(result, task)
+                    entry["failure_info"] = failure_info
+                    print(f"  ✗ INCORRECT — passed training, failed test ({elapsed:.1f}s) [Provider: {active_provider}]")
+                    failed_tasks.append(entry)
+                else:
+                    failure_info = classify_failure(result, task)
+                    entry["failure_info"] = failure_info
+                    print(f"  ✗ FAILED — {failure_info['component']}: {failure_info['failure_type']} ({elapsed:.1f}s) [Provider: {active_provider}]")
+                    failed_tasks.append(entry)
+                
+                results_list.append(entry)
+                
+            except Exception as e:
+                elapsed = time.time() - task_start
+                entry = {
+                    "task_id": task_id,
+                    "status": "exception",
+                    "correct": False,
+                    "predicted": None,
+                    "expected": expected_output,
+                    "elapsed_seconds": round(elapsed, 2),
+                    "output_snippet": f"EXCEPTION: {traceback.format_exc()[-500:]}",
+                    "pipeline": "crashed",
+                    "failure_info": {
+                        "component": "system_crash",
+                        "failure_type": "exception",
+                        "raw_output_snippet": str(e)[:300]
+                    }
+                }
+                error_tasks.append(entry)
+                results_list.append(entry)
+                print(f"  ✗ EXCEPTION: {str(e)[:100]} ({elapsed:.1f}s)")
+                
+            time.sleep(3)
+    except KeyboardInterrupt:
+        print("\n\n[!] Benchmark interrupted by user. Saving midway results...")
+        total_tasks = i + 1  # Adjust total tasks to how many were actually evaluated
+
     total_elapsed = time.time() - start_time
     
     # ── RESULTS SUMMARY ──
@@ -304,4 +333,13 @@ def run_benchmark(limit: int = 50):
 
 
 if __name__ == "__main__":
-    run_benchmark(limit=50)
+    import argparse
+    parser = argparse.ArgumentParser(
+        description="CSA Benchmark — OpenRouter Qwen (qwq-32b primary)"
+    )
+    parser.add_argument(
+        "--limit", type=int, default=50,
+        help="Number of ARC tasks to evaluate (default: 50)"
+    )
+    args = parser.parse_args()
+    run_benchmark(limit=args.limit)
